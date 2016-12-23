@@ -51,7 +51,7 @@ RUN apt-get update \
 
 RUN gem install bundler --version "$BUNDLER_VERSION"
 
-# install things globally, for great justice and don't create ".bundle" in all our apps
+# Environment variables for bundle
 ENV GEM_HOME /usr/local/bundle
 ENV BUNDLE_PATH="$GEM_HOME" \
 	BUNDLE_BIN="$GEM_HOME/bin" \
@@ -59,11 +59,12 @@ ENV BUNDLE_PATH="$GEM_HOME" \
 	BUNDLE_APP_CONFIG="$GEM_HOME"
 ENV PATH $BUNDLE_BIN:$PATH
 RUN mkdir -p "$GEM_HOME" "$BUNDLE_BIN" \
-	&& chmod 777 "$GEM_HOME" "$BUNDLE_BIN"
+	&& chmod 744 "$GEM_HOME" "$BUNDLE_BIN"
 
 # Install Rails and its dependencies
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
+	nodejs \
 	libpq-dev \
 	postgresql-client \
 	&& rm -rf /var/lib/apt/lists/*
@@ -71,6 +72,7 @@ WORKDIR /usr/src/app
 COPY src/Gemfile* ./
 RUN bundle install \
     && apt-get purge -y --auto-remove ${BUILD_DEPS}
+VOLUME /usr/src/app
 
 EXPOSE 3000
 

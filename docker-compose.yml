@@ -1,0 +1,25 @@
+version: '2'
+services:
+  db: 
+    image: postgres:9.5.5
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER = rails_user
+      - POSTGRES_PASSWORD = secret_password
+      - POSTGRES_DB = devel
+    volumes:
+      - "pgvol:/var/lib/postgresql/data"
+  web:
+    build: .
+    image: ubuntu-rails:latest
+    volumes:
+      - ./src:/usr/src/app
+    ports:
+      - "3000:3000"
+    links:
+      - db
+volumes:
+  pgvol:
+    driver: local
+    external: false
