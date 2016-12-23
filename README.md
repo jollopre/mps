@@ -8,7 +8,7 @@ This application is composed of different micro-services controlled through dock
 
 ### Database
 
-Please, type the following commands to create a data volume for persisting data into a db and afterward built the postgres image
+Please, type the following commands to create a data volume for persisting data into a db and afterwards built the postgres image:
 
 ```
 docker run -d --name postgres_container -p 5432:5432 -e POSTGRES_USER=rails_user -e POSTGRES_PASSWORD=secret_password  -e POSTGRES_DB=devel -v pgvol:/var/lib/postgresql/data postgres:9.5.5
@@ -17,7 +17,7 @@ docker volume create --name pgvol
 
 ### Application
 
-Please, type the following command to build a docker image with ruby, rails and any gem dependencies specified on src/Gemfile.
+Please, type the following command to build a docker image with ruby, rails and any gem dependencies specified on src/Gemfile:
 
 ```
 docker build -t ubuntu-rails .
@@ -25,7 +25,7 @@ docker build -t ubuntu-rails .
 
 ## Run
 
-It is crucial to follows the next steps as you reading them. 
+It is crucial to follow below steps in order. 
 
 ### Database
 
