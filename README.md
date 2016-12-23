@@ -11,7 +11,7 @@ This application is composed of different micro-services controlled through dock
 Please, type the following commands to create a data volume for persisting data into a db and afterwards built the postgres image:
 
 ```
-docker run -d --name postgres_container -p 5432:5432 -e POSTGRES_USER=rails_user -e POSTGRES_PASSWORD=secret_password  -e POSTGRES_DB=devel -v pgvol:/var/lib/postgresql/data postgres:9.5.5
+docker pull postgres:9.5.5
 docker volume create --name pgvol
 ```
 
