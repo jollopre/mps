@@ -1,6 +1,6 @@
 # Marshall Packaging System (MPS)
 
-A tailored ruby on rails app for one of my customers.
+A tailored ruby on rails app.
 
 ## Build 
 
