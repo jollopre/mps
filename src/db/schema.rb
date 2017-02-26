@@ -10,9 +10,86 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20170226155759) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "customers", force: :cascade do |t|
+    t.string   "reference"
+    t.string   "company_name"
+    t.string   "address"
+    t.string   "telephone"
+    t.string   "email"
+    t.string   "contact_name"
+    t.string   "contact_surname"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["reference"], name: "index_customers_on_reference", using: :btree
+  end
+
+  create_table "feature_options", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "feature_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["feature_id"], name: "index_feature_options_on_feature_id", using: :btree
+  end
+
+  create_table "features", force: :cascade do |t|
+    t.string   "name"
+    t.string   "feature_type"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["feature_type"], name: "index_features_on_feature_type", using: :btree
+  end
+
+  create_table "order_item_features", force: :cascade do |t|
+    t.integer  "order_item_id"
+    t.integer  "feature_id"
+    t.string   "value",         default: ""
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.index ["feature_id"], name: "index_order_item_features_on_feature_id", using: :btree
+    t.index ["order_item_id"], name: "index_order_item_features_on_order_item_id", using: :btree
+  end
+
+  create_table "order_items", force: :cascade do |t|
+    t.integer  "quantify",   default: 1
+    t.integer  "order_id"
+    t.integer  "product_id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.index ["order_id"], name: "index_order_items_on_order_id", using: :btree
+    t.index ["product_id"], name: "index_order_items_on_product_id", using: :btree
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer  "customer_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["customer_id"], name: "index_orders_on_customer_id", using: :btree
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "products_and_features", id: false, force: :cascade do |t|
+    t.integer "product_id"
+    t.integer "feature_id"
+    t.index ["feature_id"], name: "index_products_and_features_on_feature_id", using: :btree
+    t.index ["product_id"], name: "index_products_and_features_on_product_id", using: :btree
+  end
+
+  add_foreign_key "feature_options", "features"
+  add_foreign_key "order_item_features", "features"
+  add_foreign_key "order_item_features", "order_items"
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "order_items", "products"
+  add_foreign_key "orders", "customers"
+  add_foreign_key "products_and_features", "features"
+  add_foreign_key "products_and_features", "products"
 end
