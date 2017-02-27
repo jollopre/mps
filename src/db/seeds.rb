@@ -18,6 +18,13 @@ def populate_features(values)
 	end
 end
 
+def populate_products_and_features(product_name, feature_names)
+	product = Product.find_by(name: product_name)
+	feature_names.each do |feature_name|
+		product.features << Feature.find_by(name: feature_name)
+	end
+end
+
 def populate_feature_options(feature_name, values)
 	feature = Feature.find_by(name: feature_name)
 	values.each do |value|
@@ -28,7 +35,15 @@ end
 populate_products([
 	{ name: 'Plastic Carrier Bag'},
 	{ name: 'Kraft Paper Carrier Bag'},
-	{ name: 'Luxury Paper Carrier Bag'}
+	{ name: 'Luxury Paper Carrier Bag'},
+	{ name: 'Rigid Gift Box'},
+	{ name: 'Folding Gift Box'},
+	{ name: 'Tissue Paper'},
+	{ name: 'Ribbon'},
+	{ name: 'Labels'},
+	{ name: 'Garment Covers'},
+	{ name: 'Jewelery Boxes'},
+	{ name: 'Fabric Pouch'}
 ])
 
 populate_features([
@@ -49,9 +64,29 @@ populate_features([
 	{ name: 'Card Base', feature_type: 'options' }
 ])
 
-populate_feature_options('Bag Style', ["Bottom Gusset", "Side Gusset", "Block Bottom"])
-populate_feature_options('Handle Style', ["Patch", "Side Gusset", "Block Bottom", "Vest", "Clip Close", "TOT (Turnover Top)"])
-populate_feature_options('Turnover Top', ["Yes", "No"])
-populate_feature_options('Material', ["Hdpe", "Ldpe"])
-populate_feature_options('Finish', ["Matt", "Gloss Laquer"])
-populate_feature_options('Card Base', ["Yes", "No"])
+populate_feature_options('Bag Style', ['Bottom Gusset', 'Side Gusset', 'Block Bottom'])
+populate_feature_options('Handle Style', ['Patch', 'Side Gusset', 'Block Bottom', 'Vest', 'Clip Close', 'TOT (Turnover Top)'])
+populate_feature_options('Turnover Top', ['Yes', 'No'])
+populate_feature_options('Material', ['Hdpe', 'Ldpe'])
+populate_feature_options('Finish', ['Matt', 'Gloss Laquer'])
+populate_feature_options('Card Base', ['Yes', 'No'])
+
+populate_products_and_features('Plastic Carrier Bag', [
+	'Bag Style',
+	'Handle Style',
+	'Handle Colour',
+	'Turnover Top',
+	'Material',
+	'Micron',
+	'Film Colour',
+	'Width',
+	'Height',
+	'Depth',
+	'No. Printed Colours',
+	'No. Printed Sides',
+	'% Ink Coverage',
+	'Finish',
+	'Card Base'
+])
+
+

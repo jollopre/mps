@@ -44,6 +44,13 @@ ActiveRecord::Schema.define(version: 20170226155759) do
     t.index ["feature_type"], name: "index_features_on_feature_type", using: :btree
   end
 
+  create_table "features_products", id: false, force: :cascade do |t|
+    t.integer "product_id"
+    t.integer "feature_id"
+    t.index ["feature_id"], name: "index_features_products_on_feature_id", using: :btree
+    t.index ["product_id"], name: "index_features_products_on_product_id", using: :btree
+  end
+
   create_table "order_item_features", force: :cascade do |t|
     t.integer  "order_item_id"
     t.integer  "feature_id"
@@ -77,19 +84,12 @@ ActiveRecord::Schema.define(version: 20170226155759) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "products_and_features", id: false, force: :cascade do |t|
-    t.integer "product_id"
-    t.integer "feature_id"
-    t.index ["feature_id"], name: "index_products_and_features_on_feature_id", using: :btree
-    t.index ["product_id"], name: "index_products_and_features_on_product_id", using: :btree
-  end
-
   add_foreign_key "feature_options", "features"
+  add_foreign_key "features_products", "features"
+  add_foreign_key "features_products", "products"
   add_foreign_key "order_item_features", "features"
   add_foreign_key "order_item_features", "order_items"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "orders", "customers"
-  add_foreign_key "products_and_features", "features"
-  add_foreign_key "products_and_features", "products"
 end
