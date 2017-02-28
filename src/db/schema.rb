@@ -39,16 +39,11 @@ ActiveRecord::Schema.define(version: 20170226155759) do
   create_table "features", force: :cascade do |t|
     t.string   "name"
     t.string   "feature_type"
+    t.integer  "product_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.index ["feature_type"], name: "index_features_on_feature_type", using: :btree
-  end
-
-  create_table "features_products", id: false, force: :cascade do |t|
-    t.integer "product_id"
-    t.integer "feature_id"
-    t.index ["feature_id"], name: "index_features_products_on_feature_id", using: :btree
-    t.index ["product_id"], name: "index_features_products_on_product_id", using: :btree
+    t.index ["product_id"], name: "index_features_on_product_id", using: :btree
   end
 
   create_table "order_item_features", force: :cascade do |t|
@@ -85,8 +80,7 @@ ActiveRecord::Schema.define(version: 20170226155759) do
   end
 
   add_foreign_key "feature_options", "features"
-  add_foreign_key "features_products", "features"
-  add_foreign_key "features_products", "products"
+  add_foreign_key "features", "products"
   add_foreign_key "order_item_features", "features"
   add_foreign_key "order_item_features", "order_items"
   add_foreign_key "order_items", "orders"
