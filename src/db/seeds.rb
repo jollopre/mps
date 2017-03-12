@@ -94,9 +94,117 @@ populate_features('Plastic Carrier Bag', [
 	{feature_label: 'Finish (out)', feature_type: 'options', feature_options: ['Matt', 'Gloss Laquer'] },
 	{feature_label: 'Card Base', feature_type: 'options', feature_options: ['Yes', 'No'] }
 ])
+populate_features('Kraft Paper Carrier Bag', [
+	{feature_label: 'Bag Style', feature_type: 'options', feature_options: ['SOS (Self Opening Satchel', 'Unstrung'] },
+	{feature_label: 'Handle Style', feature_type: 'options', feature_options: ['Twisted Paper', 'Rope', 'Sack'] },
+	{feature_label: 'Handle Colour', feature_type: 'text' },
+	{feature_label: 'Handle Material', feature_type: 'text' },
+	{feature_label: 'Turnover Top', feature_type: 'options', feature_options: ['Yes', 'No'] },
+	{feature_label: 'Material', feature_type: 'text' },
+	{feature_label: 'Colour', feature_type: 'text' },
+	{feature_label: 'GSM', feature_type: 'number' },
+	{feature_label: 'Width', feature_type: 'number' },
+	{feature_label: 'Height', feature_type: 'number' },
+	{feature_label: 'Depth', feature_type: 'number' },
+	{feature_label: 'No. Printed Colours (out)', feature_type: 'number' },
+	{feature_label: 'No. Printed Sides', feature_type: 'number' },
+	{feature_label: '% Ink Coverage (out)', feature_type: 'number' },
+	{feature_label: 'Finish (out)', feature_type: 'options', feature_options: ['Matt', 'Gloss Laquer'] },
+	{feature_label: 'Card Base', feature_type: 'options', feature_options: ['Yes', 'No'] },
+])
+populate_features('Luxury Paper Carrier Bag', [
+	{feature_label: 'Bag Style', feature_type: 'options', feature_options: ['Luxury Art Carrier'] },
+	{feature_label: 'Handle Style', feature_type: 'options', feature_options: ['Rope', 'Ribbon', 'Die Cut'] },
+	{feature_label: 'Handle Colour', feature_type: 'text' },
+	{feature_label: 'Handle Material', feature_type: 'text' },
+	{feature_label: 'Handle Tie Style', feature_type: 'options', feature_options: ['Knotted', 'Glued'] },
+	{feature_label: 'Material', feature_type: 'text' },
+	{feature_label: 'Colour', feature_type: 'text' },
+	{feature_label: 'GSM', feature_type: 'number'},
+	{feature_label: 'Width', feature_type: 'number' },
+	{feature_label: 'Height', feature_type: 'number' },
+	{feature_label: 'Depth', feature_type: 'number' },
+	{feature_label: 'No. Printed Colours (out)', feature_type: 'number' },
+	{feature_label: 'No. Printed Colours (in)', feature_type: 'number' },
+	{feature_label: '% Ink Coverage (out)', feature_type: 'number' },
+	{feature_label: 'Finish (out)', feature_type: 'options', feature_options: ['Matt', 'Gloss Lamination'] },
+	{feature_label: 'Card Base', feature_type: 'options', feature_options: ['Yes'] },
+	{feature_label: 'No. Printed Sides', feature_type: 'number' },
+	{feature_label: 'Textured Embossed Finish', feature_type: 'options', feature_options: ['Yes', 'No'] },
+	{feature_label: 'Tissue Paper Packing', feature_type: 'options', feature_options: ['Yes', 'No'] },
+	{feature_label: 'Create Fold In Base', feature_type: 'options', feature_options: ['Yes', 'No'] }
+])
+populate_features('Gift Box', [
+	{feature_label: 'Box Style', feature_type: 'options', feature_options: ['Rigid', 'Magnetic Folding', 'Folding Double Walled', 'Tuck in lid', 'Base Carton'] },
+	{feature_label: 'Handle Style', feature_type: 'options', feature_options: ['Two Piece Box', 'Fold Flat Box'] },
+	{feature_label: 'Thumbcuts', feature_type: 'options', feature_options: ['Yes', 'No'] },
+	{feature_label: 'Material', feature_type: 'text' },
+	{feature_label: 'Colour', feature_type: 'text' },
+	{feature_label: 'GSM', feature_type: 'number' },
+	{feature_label: 'Width', feature_type: 'number' },
+	{feature_label: 'Length', feature_type: 'number' },
+	{feature_label: 'Depth', feature_type: 'number' },
+	{feature_label: 'No. Printed Colours (out)', feature_type: 'number' },
+	{feature_label: 'No. Printed Colours (in)', feature_type: 'number' },
+	{feature_label: '% Ink Coverage (out)', feature_type: 'number' },
+	{feature_label: '% Ink Coverage (in)', feature_type: 'number' },
+	{feature_label: 'Finish (out)', feature_type: 'options', feature_options: ['Matt', 'Gloss Lamination'] },
+	{feature_label: 'Finish (in)', feature_type: 'options', feature_options: ['Matt', 'Gloss Lamination', 'Gloss Sealer'] },
+	{feature_label: 'Insert', feature_type: 'text', feature_options: [] },
+	{feature_label: 'No. Printed Sides', feature_type: 'number' },
+	{feature_label: 'Textured Embossed Finish', feature_type: 'options', feature_options: ['Yes', 'No'] },
+	{feature_label: 'Tissue Paper Packing', feature_type: 'options', feature_options: ['Yes', 'No'] },
+	{feature_label: 'Foil', feature_type: 'text' }
+])
+populate_features('Tissue Paper', [
+	{feature_label: 'Material', feature_type: 'text' },
+	{feature_label: 'Colour', feature_type: 'text' },
+	{feature_label: 'GSM', feature_type: 'number' },
+	{feature_label: 'No. Printed Colours (out)', feature_type: 'number' },
+	{feature_label: 'Register Print', feature_type: 'options', feature_options: ['Yes', 'No'] },
+	{feature_label: '% Ink Coverage (out)', feature_type: 'number' },
+	{feature_label: 'Packing (reams)', feature_type: 'number' }
+])
+populate_features('Ribbon', [
+	{feature_label: 'Material', feature_type: 'text' },
+	{feature_label: 'Colour', feature_type: 'text' },
+	{feature_label: 'Print', feature_type: 'options', feature_options: [] },
+	{feature_label: 'No. Printed Colours (out)', feature_type: 'number' },
+	{feature_label: 'Register Print', feature_type: 'options', feature_options: ['Yes', 'No'] },
+	{feature_label: '% Ink Coverage (out)', feature_type: 'number' },
+	{feature_label: 'Packing (reams)', feature_type: 'number' }
+])
+populate_features('Labels', [
+	{feature_label: 'Material', feature_type: 'options', feature_options: ['Vinyl', 'Art Paper'] },
+	{feature_label: 'Colour', feature_type: 'text' },
+	{feature_label: 'GSM', feature_type: 'number' },
+	{feature_label: 'No. Printed Colours (out)', feature_type: 'number' },
+	{feature_label: '% Ink Coverage (out)', feature_type: 'number' },
+	{feature_label: 'Foils', feature_type: 'options', feature_options: ['Yes', 'No'] },
+	{feature_label: 'Packing (reams)', feature_type: 'number' }
+])
 
 =begin
 populate_features('', [
 	{feature_label: '', feature_type: '', feature_options: [] },
+	{feature_label: '', feature_type: '', feature_options: [] },
+	{feature_label: '', feature_type: '', feature_options: [] },
+	{feature_label: '', feature_type: '', feature_options: [] },
+	{feature_label: '', feature_type: '', feature_options: [] },
+	{feature_label: '', feature_type: '', feature_options: [] },
+	{feature_label: '', feature_type: '', feature_options: [] },
+	{feature_label: '', feature_type: '', feature_options: [] },
+	{feature_label: '', feature_type: '', feature_options: [] },
+	{feature_label: '', feature_type: '', feature_options: [] },
+	{feature_label: '', feature_type: '', feature_options: [] },
+	{feature_label: '', feature_type: '', feature_options: [] },
+	{feature_label: '', feature_type: '', feature_options: [] },
+	{feature_label: '', feature_type: '', feature_options: [] },
+	{feature_label: '', feature_type: '', feature_options: [] },
+	{feature_label: '', feature_type: '', feature_options: [] },
+	{feature_label: '', feature_type: '', feature_options: [] },
+	{feature_label: '', feature_type: '', feature_options: [] },
+	{feature_label: '', feature_type: '', feature_options: [] },
+	{feature_label: '', feature_type: '', feature_options: [] }
 ])
 =end
