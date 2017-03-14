@@ -34,6 +34,10 @@ docker run -d --name postgres_container -p 5432:5432 -e POSTGRES_PASSWORD=secret
 ```
 
 Note, the first time you run the above mentioned command, you will need to ensure that POSGRES_USER has privileges to read/write on POSTGRES_DB. Please, visit the [link](https://www.postgresql.org/docs/9.5/static/sql-grant.html) for defining access privileges.
+To connect as the default user to the container type:
+```
+docker exec -it postgres_container psql -U postgres
+```
 
 ### Application
 
