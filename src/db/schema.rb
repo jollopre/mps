@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 20170311235306) do
   end
 
   create_table "features", force: :cascade do |t|
-    t.string   "feature_type"
+    t.integer  "feature_type"
     t.integer  "product_id"
     t.integer  "feature_label_id"
     t.datetime "created_at",       null: false
