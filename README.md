@@ -30,7 +30,7 @@ It is crucial to follow below steps in order.
 ### Database
 
 ```
-docker run -d --name postgres_container -p 5432:5432 -e POSTGRES_PASSWORD=secret_password -e POSTGRES_USER=rails_user -e POSTGRES_DB=devel -v pgvol:/var/lib/postgresql/data postgres:9.5.5
+docker run -d --name postgres_container -p 5432:5432 -e POSTGRES_USER=mps_user -e POSTGRES_PASSWORD=secret_password -e POSTGRES_DB=mps_devel -v mps_devel:/var/lib/postgresql/data postgres:9.5.5
 ```
 
 Note, the first time you run the above mentioned command, you will need to ensure that POSGRES_USER has privileges to read/write on POSTGRES_DB. Please, visit the [link](https://www.postgresql.org/docs/9.5/static/sql-grant.html) for defining access privileges.

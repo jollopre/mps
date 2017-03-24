@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170311235306) do
+ActiveRecord::Schema.define(version: 20170324004114) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,16 @@ ActiveRecord::Schema.define(version: 20170311235306) do
     t.index ["feature_id"], name: "index_feature_options_on_feature_id", using: :btree
   end
 
+  create_table "feature_values", force: :cascade do |t|
+    t.string   "value",         null: false
+    t.integer  "feature_id"
+    t.integer  "order_item_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["feature_id"], name: "index_feature_values_on_feature_id", using: :btree
+    t.index ["order_item_id"], name: "index_feature_values_on_order_item_id", using: :btree
+  end
+
   create_table "features", force: :cascade do |t|
     t.integer  "feature_type"
     t.integer  "product_id"
@@ -50,16 +60,6 @@ ActiveRecord::Schema.define(version: 20170311235306) do
     t.index ["feature_label_id"], name: "index_features_on_feature_label_id", using: :btree
     t.index ["feature_type"], name: "index_features_on_feature_type", using: :btree
     t.index ["product_id"], name: "index_features_on_product_id", using: :btree
-  end
-
-  create_table "features_order_items", force: :cascade do |t|
-    t.string   "value",         null: false
-    t.integer  "feature_id"
-    t.integer  "order_item_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-    t.index ["feature_id"], name: "index_features_order_items_on_feature_id", using: :btree
-    t.index ["order_item_id"], name: "index_features_order_items_on_order_item_id", using: :btree
   end
 
   create_table "order_items", force: :cascade do |t|
@@ -86,10 +86,10 @@ ActiveRecord::Schema.define(version: 20170311235306) do
   end
 
   add_foreign_key "feature_options", "features"
+  add_foreign_key "feature_values", "features"
+  add_foreign_key "feature_values", "order_items"
   add_foreign_key "features", "feature_labels"
   add_foreign_key "features", "products"
-  add_foreign_key "features_order_items", "features"
-  add_foreign_key "features_order_items", "order_items"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "orders", "customers"

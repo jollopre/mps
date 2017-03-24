@@ -3,7 +3,7 @@ class Feature < ApplicationRecord
 	belongs_to :product
 	belongs_to :feature_label
 	has_many :feature_options
-	has_many :order_item_features
+	has_many :feature_values
 
 	# Enum attributes
 	enum feature_type: [:number, :options, :text]

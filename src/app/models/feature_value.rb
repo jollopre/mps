@@ -1,0 +1,2 @@
+class FeatureValue < ApplicationRecord
+end
