@@ -27,6 +27,14 @@ def populate_features(product_name, values)
 	end
 end
 
+def populate_customers(values)
+	values.each do |value|
+		Customer.create({ reference: value[:reference], company_name: value[:company_name],
+			address: value[:address], telephone: value[:telephone], email: value[:email],
+			contact_name: value[:contact_name], contact_surname: value[:contact_surname]})
+	end
+end
+
 populate_products([
 	'Plastic Carrier Bag',
 	'Kraft Paper Carrier Bag',
@@ -182,6 +190,12 @@ populate_features('Labels', [
 	{feature_label: '% Ink Coverage (out)', feature_type: 'number' },
 	{feature_label: 'Foils', feature_type: 'options', feature_options: ['Yes', 'No'] },
 	{feature_label: 'Packing (reams)', feature_type: 'number' }
+])
+
+populate_customers([
+	{reference: 'REF1', company_name: 'Some Company', 
+		address: 'Nowhere', telephone: '', email: 'someone@somewhere.com',
+		contact_name: 'Someone', contact_surname: ''}
 ])
 
 =begin
