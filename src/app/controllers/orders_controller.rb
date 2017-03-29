@@ -1,22 +1,14 @@
 class OrdersController < ApplicationController
-
-	# POST /orders
+	# POST /orders with body { "order": { "customer_id": number }}
 	def create
+		# TODO ActionDispatch::ParamsParser for when JSON is invalid (e.g {order: {}} since order is without quotes)
 		begin
-			customer = Customer.find(params[:order][:customer_id])
-			@order = Order.new({customer: customer})
-			begin
-				@order.save!
-				render json: {}.to_json, status: :no_content
-			rescue ActiveRecord::RecordNotSaved => e
-				render json: {
-					detail: e.message
-				}.to_json, status: :internal_server_error
-			end
-		rescue ActiveRecord::RecordNotFound => e
-			render json: {
-				detail: e.message
-			}.to_json, status: :not_found
+			Order.create!(order_params)
+			render body: nil, status: :no_content
+		rescue ActiveRecord::RecordInvalid => e
+			render json: { detail: e.message }, status: :bad_request
+		rescue ActionController::ParameterMissing => e
+			render json: { detail: e.message }, status: :bad_request
 		end
 	end
 
@@ -32,9 +24,12 @@ class OrdersController < ApplicationController
 			order = Order.find(params[:id])
 			render json: order.as_json()
 		rescue ActiveRecord::RecordNotFound => e
-			render json: {
-				detail: e.message
-			}.to_json, status: :not_found
+			render json: { detail: e.message }, status: :not_found
 		end
 	end
+	private
+		def order_params
+			# require raises ParameterMissing if :order does not exist
+			params.require(:order).permit(:customer_id)
+		end
 end
