@@ -5,9 +5,9 @@ class OrdersController < ApplicationController
 		begin
 			Order.create!(order_params)
 			render body: nil, status: :no_content
-		rescue ActiveRecord::RecordInvalid => e
-			render json: { detail: e.message }, status: :bad_request
 		rescue ActionController::ParameterMissing => e
+			render json: { detail: e.message }, status: :bad_request
+		rescue ActiveRecord::RecordInvalid => e
 			render json: { detail: e.message }, status: :bad_request
 		end
 	end
@@ -15,10 +15,10 @@ class OrdersController < ApplicationController
 	# GET /orders
 	def index
 		@orders = Order.all
-		render json: @orders.as_json({only: [:id, :created_at, :updated_at]})
+		render json: @orders.as_json({only: [:id, :created_at, :updated_at]}), status: :success
 	end
 
-	# /orders/:id
+	# GET /orders/:id
 	def show
 		begin
 			order = Order.find(params[:id])
