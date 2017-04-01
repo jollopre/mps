@@ -4,7 +4,7 @@ class OrdersController < ApplicationController
 		# TODO ActionDispatch::ParamsParser for when JSON is invalid (e.g {order: {}} since order is without quotes)
 		begin
 			Order.create!(order_params)
-			render body: nil, status: :no_content
+			head :no_content
 		rescue ActionController::ParameterMissing => e
 			render json: { detail: e.message }, status: :bad_request
 		rescue ActiveRecord::RecordInvalid => e
@@ -15,7 +15,7 @@ class OrdersController < ApplicationController
 	# GET /orders
 	def index
 		@orders = Order.all
-		render json: @orders.as_json({only: [:id, :created_at, :updated_at]}), status: :success
+		render json: @orders.as_json({only: [:id, :created_at, :updated_at]}), status: :ok
 	end
 
 	# GET /orders/:id

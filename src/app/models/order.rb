@@ -4,7 +4,7 @@ class Order < ApplicationRecord
 
 	def as_json(options=nil)
 		if options.nil?
-			super(
+			super({
 				only: :id,
 				include: {
 					customer: { 
@@ -14,7 +14,7 @@ class Order < ApplicationRecord
 						only: [:id]
 					}
 				}
-			)
+			})
 		else
 			super(options)
 		end

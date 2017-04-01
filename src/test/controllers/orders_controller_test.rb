@@ -18,8 +18,7 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
 	# GET /orders
 	test 'should get success at index action' do
 		get orders_path
-  		# FIXME, currently getting 500 error
-  		assert_response :success
+  		assert_response :ok
 	end
 
 	# GET /orders/:id
@@ -29,7 +28,7 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
 	end
 	test 'should get success at show action' do
 		get order_path('1')
-  		assert_response :success
+  		assert_response :ok
 	end
 
 end

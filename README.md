@@ -45,7 +45,7 @@ docker exec -it postgres_container psql -U postgres
 docker run --name rails_container -it --rm -p 3000:3000 -v "$PWD/src":/usr/src/app --link postgres_container:db ubuntu-rails:latest
 ```
 
-### Running test
+### Running every test
 ```
 rails test -e test
 ```
