@@ -23,11 +23,11 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
 
 	# GET /orders/:id
 	test 'should get not found at show action' do
-		get order_path('10000')
+		get order_path(10000)
   		assert_response :not_found
 	end
 	test 'should get success at show action' do
-		get order_path('1')
+		get order_path(1)
   		assert_response :ok
 	end
 

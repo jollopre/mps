@@ -13,7 +13,6 @@ class OrderItemsController < ApplicationController
 	# POST /orders/:order_id/order_items
 	def create
 		# TODO ActionDispatch::ParamsParser for when JSON is invalid
-		# TODO investigate how to rescue if after_create callback fails at OrderItem model
 		begin
 			params.require(:order_item).permit(:quantity, :product_id)
 			OrderItem.create!({ 
@@ -45,7 +44,7 @@ class OrderItemsController < ApplicationController
 			permitted = params.require(:order_item).permit(:quantity)
 			order_item = OrderItem.find(params[:id])
 			order_item.update_attributes!(permitted)
-			head :no_content
+			render json: order_item.as_json, status: :ok
 		rescue ActionController::ParameterMissing => e
 			render json: { detail: e.message }, status: :bad_request
 		rescue ActiveRecord::RecordNotFound => e
