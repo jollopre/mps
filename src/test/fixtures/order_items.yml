@@ -13,4 +13,5 @@
 order_item1:
   id: 1
   product: product1
+  order: order1
   quantity: 2

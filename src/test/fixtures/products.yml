@@ -6,11 +6,9 @@
 #
 
 product1:
-  id: 1
   name: First product
 
 product2:
-  id: 2
   name: Second product
 
 
