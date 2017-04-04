@@ -6,7 +6,6 @@
 #
 
 customer1:
-  id: 1
   reference: REF1
   telephone: 123456789
   email: someone@somewhere.com
