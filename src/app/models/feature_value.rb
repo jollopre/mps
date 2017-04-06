@@ -17,8 +17,7 @@ class FeatureValue < ApplicationRecord
 	end
 	
 	protected
-		# Checks whether or not the value conforms to its feature_type,
-		# TODO, investigate how to raise ActiveRecord::RecordInvalid when checking fails
+		# Checks whether or not the value conforms to its feature_type
 		def value_conforms_to_feature_type
 			if self.value.present?
 				if self.feature.float?
@@ -51,7 +50,7 @@ class FeatureValue < ApplicationRecord
 					self.feature.option?
 					return self.value.to_i
 				elsif self.feature.string?
-					return self
+					return self.value
 				else
 					return nil
 				end
