@@ -9,3 +9,11 @@
 #
 #two: {}
 # column: value
+
+feature_option1:
+  name: option1
+  feature: feature3
+
+feature_option2:
+  name: option2
+  feature: feature4

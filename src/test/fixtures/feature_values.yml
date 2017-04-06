@@ -9,3 +9,23 @@
 #
 #two: {}
 # column: value
+
+fv_float:
+  order_item: order_item1
+  feature: feature1
+  value: 2.3
+
+fv_integer:
+  order_item: order_item1
+  feature: feature2
+  value: 2
+
+fv_option:
+  order_item: order_item1
+  feature: feature3
+  value: ''
+
+fv_string:
+  order_item: order_item1
+  feature: feature5
+  value: 'anything'

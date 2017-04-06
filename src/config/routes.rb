@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  # feature_values
+  resources :feature_values, only: [:update]
+  
   # orders
   resources :orders, only: [:create, :index, :show] do
   	# order_items shadow nesting

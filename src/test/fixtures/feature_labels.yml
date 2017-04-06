@@ -9,3 +9,15 @@
 #
 #two: {}
 # column: value
+
+label1:
+  name: Introduce float
+
+label2:
+  name: Introduce integer
+
+label3: 
+  name: Select from options
+
+label4:
+  name: Introduce string

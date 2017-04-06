@@ -5,8 +5,9 @@ class Feature < ApplicationRecord
 	has_many :feature_options
 	has_many :feature_values
 
-	# Enum attributes
-	enum feature_type: [:number, :options, :text]
+	# Enum attributes. If new value is added, it should be added at the end of the array
+	# in order to preserve mapping to database integers (e.g. float: 0, integer: 1 and so on)
+	enum feature_type: [:float, :integer, :option, :string]
 
 	# Validations
 	validates :feature_type, 

@@ -29,7 +29,7 @@ class OrderItem < ApplicationRecord
 
 	protected
 		def create_feature_values
-			features = self.product.features
+			features = self.product.features #TODO, eager loading of features
 			features.each do |f|
 				self.feature_values << FeatureValue.new({order_item_id: self.id, feature_id: f.id, value: '' })
 			end
