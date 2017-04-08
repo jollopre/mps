@@ -16,4 +16,13 @@ class Feature < ApplicationRecord
 
 	# Scope to be applied across all queries to the model
 	default_scope { includes(:feature_label, :feature_options)} #TODO This might affect performance (e.g. when checking value in FeatureValue accoding to feature.feature_type)
+
+	def serializable_hash(options = nil)
+		if options.present?
+			super(options)
+		else
+			super({only:[:id, :feature_type],
+				include: [:feature_label, :feature_options]})
+		end
+	end
 end

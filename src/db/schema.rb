@@ -29,7 +29,9 @@ ActiveRecord::Schema.define(version: 20170324004114) do
   end
 
   create_table "feature_labels", force: :cascade do |t|
-    t.string "name"
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["name"], name: "index_feature_labels_on_name", using: :btree
   end
 
