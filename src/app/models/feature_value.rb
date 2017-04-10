@@ -6,13 +6,13 @@ class FeatureValue < ApplicationRecord
 	# Validations
 	validate :value_conforms_to_feature_type
 
-	def as_json(options=nil)
-		if options.nil?
-			super({
-				only: [:order_item_id, :feature_id]
-			}).merge({:value => self.value_to_feature_type})
-		else
+	def serializable_hash(options=nil)
+		if options.present?
 			super(options)
+		else
+			super({
+				only: [:id]
+			}).merge({:value => self.value_to_feature_type})
 		end
 	end
 	

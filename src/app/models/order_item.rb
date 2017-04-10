@@ -11,19 +11,14 @@ class OrderItem < ApplicationRecord
 	# Callbacks
 	after_create :create_feature_values
 
-	def as_json(options = nil)
-		if options.nil?
+	def serializable_hash(options = nil)
+		if options.present?
+			super(options)
+		else
 			super({
 					only: [:id, :quantity],
-					include: {
-						product: { only: [:id, :name]},
-						feature_values: { 
-							only: [:id, :value, :feature_id],
-						}
-					}
+					include: [:product, :feature_values]
 				})
-		else
-			super(options)
 		end
 	end
 

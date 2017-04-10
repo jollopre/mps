@@ -2,21 +2,21 @@ class Order < ApplicationRecord
 	belongs_to :customer
 	has_many :order_items
 
-	def as_json(options=nil)
-		if options.nil?
+	def serializable_hash(options=nil)
+		if options.present?
+			super(options)
+		else
 			super({
 				only: :id,
 				include: {
 					customer: { 
-						only: [:reference, :telephone, :email, :contact_name, :contact_surname]
+						only: [:id, :reference]
 					},
 					order_items: {
 						only: [:id]
 					}
 				}
 			})
-		else
-			super(options)
 		end
 	end
 end
