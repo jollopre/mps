@@ -14,9 +14,6 @@ class Feature < ApplicationRecord
 		inclusion: { in: self.feature_types.keys() ,
 					 message: '%{value} is not a valid feature_type.' }
 
-	# Scope to be applied across all queries to the model
-	default_scope { includes(:feature_label, :feature_options)} #TODO This might affect performance (e.g. when checking value in FeatureValue accoding to feature.feature_type)
-
 	def serializable_hash(options = nil)
 		if options.present?
 			super(options)
