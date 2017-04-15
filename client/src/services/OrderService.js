@@ -1,6 +1,6 @@
 import Fetch from './Fetch';
-export default class Order {
-	static index(client=0){
+export default class OrderService {
+	static index(customer_id = 1){
 		return Fetch.get('/orders');
 	}
 	static show(id=1) {

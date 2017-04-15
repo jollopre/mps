@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
+import OrderContainer from './containers/OrderContainer';
 
-class App extends Component {
+export default class App extends Component {
   render() {
-    return <p>Hello from MPS</p>;
+    return <OrderContainer></OrderContainer>;
   }
 }
-
-export default App;
