@@ -23,13 +23,6 @@ export default class OrderContainer extends Component {
 				error => console.log(error.statusText));
 		}, error => console.log(error.statusText));
 	}
-	show(id){
-		OrderService.show(id).then((data) => {
-			console.log(data);
-		}, (error) => {
-			console.log(error);
-		});
-	}
 	render(){
 		return (
 			<Grid>
@@ -40,7 +33,7 @@ export default class OrderContainer extends Component {
 				</Row>
 				<Row>
 					<Col xs={12}>
-						<OrderList list={this.state.list} show={this.show} />
+						<OrderList list={this.state.list} />
 					</Col>
 				</Row>
 			</Grid>

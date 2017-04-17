@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 export default class OrderList extends Component {
-	constructor(props){
-		super(props);
-		this.show = this.show.bind(this);
-	}
-	show(e, id) {
-		e.preventDefault();
-		this.props.show(id);
-	}
 	render() {
 		const header = (
 			<Row>
@@ -27,7 +20,7 @@ export default class OrderList extends Component {
 					<Col xs={3}>{value.created_at}</Col>
 					<Col xs={3}>{value.updated_at}</Col>	
 					<Col xs={2}>
-						<a href="#" onClick={e => this.show(e, value.id)}>Show</a>
+						<Link to={`/order/${value.id}`}>Show</Link>
 					</Col>
 				</Row>
 			);
@@ -43,5 +36,4 @@ export default class OrderList extends Component {
 
 OrderList.propTypes = {
 	list: PropTypes.array.isRequired,
-	show: PropTypes.func.isRequired,
 };
