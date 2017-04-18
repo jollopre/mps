@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { RoutesHelper } from '../Routes';
 
 export default class OrderList extends Component {
 	render() {
+		console.log(RoutesHelper);
 		const header = (
 			<Row>
 				<Col xs={2}><strong>#</strong></Col>
@@ -20,7 +22,7 @@ export default class OrderList extends Component {
 					<Col xs={3}>{value.created_at}</Col>
 					<Col xs={3}>{value.updated_at}</Col>	
 					<Col xs={2}>
-						<Link to={`/order/${value.id}`}>Show</Link>
+						<Link to={RoutesHelper.order_path(`${value.id}`)}>Show</Link>
 					</Col>
 				</Row>
 			);
