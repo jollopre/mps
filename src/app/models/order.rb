@@ -7,7 +7,7 @@ class Order < ApplicationRecord
 			super(options)
 		else
 			super({
-				only: :id,
+				except: [:customer_id],
 				include: {
 					customer: { 
 						only: [:id, :reference]

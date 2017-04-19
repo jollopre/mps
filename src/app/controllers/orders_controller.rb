@@ -3,8 +3,8 @@ class OrdersController < ApplicationController
 	def create
 		# TODO ActionDispatch::ParamsParser for when JSON is invalid (e.g {order: {}} since order is without quotes)
 		begin
-			Order.create!(order_params)
-			head :no_content
+			order = Order.create!(order_params)
+			head :created, location: order_path(order)
 		rescue ActionController::ParameterMissing => e
 			render json: { detail: e.message }, status: :bad_request
 		rescue ActiveRecord::RecordInvalid => e

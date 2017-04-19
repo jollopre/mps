@@ -15,9 +15,9 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
 		post orders_path, params: {order: {customer_id: 10000}}
 		assert_response :bad_request
 	end
-	test 'should get no content for valid data at create action' do
+	test 'should get created for valid data at create action' do
 		post orders_path, params: {order: {customer_id: @customer.id}}
-		assert_response :no_content
+		assert_response :created
 	end
 
 	# GET /orders
