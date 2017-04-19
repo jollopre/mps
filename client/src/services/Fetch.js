@@ -7,7 +7,7 @@ export default class Fetch {
 					'Accept-Charset': 'utf-8',
 				},
 			}).then((onFullfilled) => {
-				if(onFullfilled.ok) {
+				if(onFullfilled.ok) { // status in the range 200-299
 					resolve(onFullfilled.json());
 				} else {
 					reject({ status: onFullfilled.status,

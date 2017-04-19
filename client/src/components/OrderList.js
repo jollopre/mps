@@ -6,7 +6,6 @@ import { RoutesHelper } from '../Routes';
 
 export default class OrderList extends Component {
 	render() {
-		console.log(RoutesHelper);
 		const header = (
 			<Row>
 				<Col xs={2}><strong>#</strong></Col>

@@ -16,11 +16,8 @@ export default class OrdersContainer extends Component {
 			error => console.log(error.statusText));
 	}
 	addOrder(){
-		OrderService.create(1).then(() => {
-			// TODO use Array.prototype.concat instead of calling server again
-			OrderService.index().then(
-				data => this.setState({ list: data }),
-				error => console.log(error.statusText));
+		OrderService.create().then((data) => {
+			this.setState({ list: this.state.list.concat(data)})
 		}, error => console.log(error.statusText));
 	}
 	render(){
