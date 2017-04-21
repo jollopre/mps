@@ -14,3 +14,8 @@ order_item1:
   product: product1
   order: order1
   quantity: 2
+
+order_item2:
+  product: product2
+  order: order2
+  quantity: 3

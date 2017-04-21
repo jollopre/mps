@@ -1,6 +1,8 @@
 class FeatureValuesController < ApplicationController
 	# PATCH/PUT /feature_values/:id
 	def update
+		# TODO optimistic locking in case a value has been updated
+		# while the user was still editing
 		begin
 			permitted = params.require(:feature_value).permit(:value)
 			feature_value = FeatureValue.find(params[:id])

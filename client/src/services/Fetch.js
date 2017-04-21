@@ -41,4 +41,26 @@ export default class Fetch {
 			});
 		});
 	}
+	static put(URL, body){
+		return new Promise((resolve, reject) => {
+			fetch(URL, {
+				method: 'PUT',
+				headers: {
+					'Accept-Charset': 'utf-8',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(body),
+			}).then((onFullfilled) => {
+				if(onFullfilled.ok) {
+					resolve(onFullfilled);
+				} else {
+					reject({ status: onFullfilled.status,
+						statusText: onFullfilled.statusText});
+				}
+			}, (onRejected) => {
+				reject({ status: onRejected.status,
+						statusText: onRejected.statusText});
+			});
+		});
+	}
 }

@@ -27,13 +27,13 @@ class OrderItemsControllerTest < ActionDispatch::IntegrationTest
   	post order_order_items_path(@order.id), params: {order_item: {product_id: @product.id, quantity: 'aaa'}}
   	assert_response :bad_request
   end
-  test 'should get no content for valid data at create action (quantity param missed)' do
+  test 'should get created for valid data at create action (quantity param missed)' do
   	post order_order_items_path(@order.id), params: {order_item: {product_id: @product.id}}
-  	assert_response :no_content
+  	assert_response :created
   end
-  test 'should get no content for valid data at create action (quantity param as integer)' do
+  test 'should get created for valid data at create action (quantity param as integer)' do
   	post order_order_items_path(@order.id), params: {order_item: {product_id: @product.id, quantity: 2}}
-  	assert_response :no_content
+  	assert_response :created
   end
 
   # GET /order_items/:id

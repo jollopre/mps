@@ -11,7 +11,7 @@ class FeatureValue < ApplicationRecord
 			super(options)
 		else
 			super({
-				only: [:id]
+				only: [:id, :feature_id, :order_item_id]
 			}).merge({:value => self.value_to_feature_type})
 		end
 	end

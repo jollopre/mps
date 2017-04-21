@@ -11,14 +11,18 @@ class OrderItem < ApplicationRecord
 	# Callbacks
 	after_create :create_feature_values
 
+	def feature_values_to_hash()
+		self.feature_values.reduce({}) { |h, fv| h["#{fv.id}"] = fv.as_json(); h }
+	end
+
 	def serializable_hash(options = nil)
 		if options.present?
 			super(options)
 		else
 			super({
 					only: [:id, :quantity],
-					include: [:product, :feature_values]
-				})
+					include: [:product]
+				}).merge(feature_values: feature_values_to_hash)
 		end
 	end
 

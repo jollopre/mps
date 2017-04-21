@@ -14,7 +14,7 @@ export default class OrderAdd extends Component {
 	render() {
 		return (
 			<div className="pull-right">
-				<Button onClick={this.add}>Add Order</Button>
+				<Button bsStyle="success" onClick={this.add}>Add Order</Button>
 			</div>
 		);
 	}

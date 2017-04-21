@@ -14,12 +14,16 @@ class Feature < ApplicationRecord
 		inclusion: { in: self.feature_types.keys() ,
 					 message: '%{value} is not a valid feature_type.' }
 
+	def feature_options_to_hash()
+		self.feature_options.reduce({}){ |h, fo| h["#{fo.id}"] = fo.as_json(); h }
+	end
+
 	def serializable_hash(options = nil)
 		if options.present?
 			super(options)
 		else
 			super({only:[:id, :feature_type],
-				include: [:feature_label, :feature_options]})
+				include: [:feature_label]}).merge(feature_options: feature_options_to_hash)
 		end
 	end
 end

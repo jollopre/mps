@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { RoutesHelper } from '../Routes';
@@ -7,30 +7,30 @@ import { RoutesHelper } from '../Routes';
 export default class OrderList extends Component {
 	render() {
 		const header = (
-			<Row>
-				<Col xs={2}><strong>#</strong></Col>
-				<Col xs={3}><strong>Created At</strong></Col>
-				<Col xs={3}><strong>Updated At</strong></Col>
-				<Col xs={2}><strong>Actions</strong></Col>
-			</Row>
+			<tr>
+				<th>#</th>
+				<th>Created At</th>
+				<th>Updated At</th>
+				<th>Actions</th>
+			</tr>
 		);
 		const body = this.props.list.map((value) => {
 			return (
-				<Row key={value.id}>
-					<Col xs={2}>{value.id}</Col>
-					<Col xs={3}>{value.created_at}</Col>
-					<Col xs={3}>{value.updated_at}</Col>	
-					<Col xs={2}>
+				<tr key={value.id}>
+					<td>{value.id}</td>
+					<td>{value.created_at}</td>
+					<td>{value.updated_at}</td>	
+					<td>
 						<Link to={RoutesHelper.order_path(`${value.id}`)}>Show</Link>
-					</Col>
-				</Row>
+					</td>
+				</tr>
 			);
 		});
 		return (
-			<div>
-				{header}
-				{body}
-			</div>
+			<Table responsive hover>
+				<thead>{header}</thead>
+				<tbody>{body}</tbody>
+			</Table>
 		);
 	}
 }

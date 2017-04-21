@@ -15,11 +15,11 @@ class OrderItemsController < ApplicationController
 		# TODO ActionDispatch::ParamsParser for when JSON is invalid
 		begin
 			params.require(:order_item).permit(:quantity, :product_id)
-			OrderItem.create!({ 
+			orderItem = OrderItem.create!({ 
 				quantity: params[:order_item][:quantity].nil? ? 1 : params[:order_item][:quantity],
 				order_id: params[:order_id],
 				product_id: params[:order_item][:product_id] })
-			head :no_content
+			head :created, location: order_item_path(orderItem)
 		rescue ActionController::ParameterMissing => e
 			render json: { detail: e.message }, status: :bad_request
 		rescue ActiveRecord::RecordInvalid => e
@@ -30,7 +30,9 @@ class OrderItemsController < ApplicationController
 	# GET /order_items/:id
 	def show
 		begin
-			order_item = OrderItem.find(params[:id])
+			order_item = OrderItem
+				.includes({ feature_values: :feature }) # Load the associated feature_values association
+				.find(params[:id])
 			render json: order_item.as_json, status: :ok
 		rescue ActiveRecord::RecordNotFound => e
 			render json: { detail: e.message }, status: :not_found
