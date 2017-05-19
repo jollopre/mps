@@ -42,10 +42,10 @@ populate_products([
 	'Gift Box',
 	'Tissue Paper',
 	'Ribbon',
-	'Labels',
-	'Garment Covers',
-	'Jewelery Boxes',
-	'Fabric Pouch'
+	'Labels'
+	#'Garment Covers',
+	#'Jewelery Boxes',
+	#'Fabric Pouch'
 ])
 
 populate_feature_labels([
@@ -87,7 +87,7 @@ populate_feature_labels([
 
 populate_features('Plastic Carrier Bag', [
 	{feature_label: 'Bag Style', feature_type: :option, feature_options: ['Bottom Gusset', 'Side Gusset', 'Block Bottom'] },
-	{feature_label: 'Handle Style', feature_type: :option, feature_options: ['Patch', 'Side Gusset', 'Block Bottom', 'Vest', 'Clip Close', 'TOT (Turnover Top)'] },
+	{feature_label: 'Handle Style', feature_type: :option, feature_options: ['Patch', 'Block Bottom', 'Flexiloop', 'Punched Out Handle (POH)', 'Vest', 'Clip Close', 'TOT (Turnover Top)'] },
 	{feature_label: 'Handle Colour', feature_type: :string },
 	{feature_label: 'Turnover Top', feature_type: :option, feature_options: ['Yes', 'No'] },
 	{feature_label: 'Material', feature_type: :option, feature_options: ['Hdpe', 'Ldpe'] },
@@ -104,7 +104,7 @@ populate_features('Plastic Carrier Bag', [
 ])
 populate_features('Kraft Paper Carrier Bag', [
 	{feature_label: 'Bag Style', feature_type: :option, feature_options: ['SOS (Self Opening Satchel', 'Unstrung'] },
-	{feature_label: 'Handle Style', feature_type: :option, feature_options: ['Twisted Paper', 'Rope', 'Sack'] },
+	{feature_label: 'Handle Style', feature_type: :option, feature_options: ['Twisted Paper', 'Rope', 'Sack', 'Flat Paper Tape'] },
 	{feature_label: 'Handle Colour', feature_type: :string },
 	{feature_label: 'Handle Material', feature_type: :string },
 	{feature_label: 'Turnover Top', feature_type: :option, feature_options: ['Yes', 'No'] },
@@ -137,7 +137,6 @@ populate_features('Luxury Paper Carrier Bag', [
 	{feature_label: '% Ink Coverage (out)', feature_type: :float },
 	{feature_label: 'Finish (out)', feature_type: :option, feature_options: ['Matt', 'Gloss Lamination'] },
 	{feature_label: 'Card Base', feature_type: :option, feature_options: ['Yes'] },
-	{feature_label: 'No. Printed Sides', feature_type: :integer },
 	{feature_label: 'Textured Embossed Finish', feature_type: :option, feature_options: ['Yes', 'No'] },
 	{feature_label: 'Tissue Paper Packing', feature_type: :option, feature_options: ['Yes', 'No'] },
 	{feature_label: 'Create Fold In Base', feature_type: :option, feature_options: ['Yes', 'No'] }
@@ -149,9 +148,10 @@ populate_features('Gift Box', [
 	{feature_label: 'Material', feature_type: :string },
 	{feature_label: 'Colour', feature_type: :string },
 	{feature_label: 'GSM', feature_type: :float },
-	{feature_label: 'Width', feature_type: :float },
+	{feature_label: 'Micron', feature_type: :float },
 	{feature_label: 'Length', feature_type: :float },
-	{feature_label: 'Depth', feature_type: :float },
+	{feature_label: 'Width', feature_type: :float },
+	{feature_label: 'Height', feature_type: :float },
 	{feature_label: 'No. Printed Colours (out)', feature_type: :integer },
 	{feature_label: 'No. Printed Colours (in)', feature_type: :integer },
 	{feature_label: '% Ink Coverage (out)', feature_type: :integer },
@@ -159,7 +159,6 @@ populate_features('Gift Box', [
 	{feature_label: 'Finish (out)', feature_type: :option, feature_options: ['Matt', 'Gloss Lamination'] },
 	{feature_label: 'Finish (in)', feature_type: :option, feature_options: ['Matt', 'Gloss Lamination', 'Gloss Sealer'] },
 	{feature_label: 'Insert', feature_type: :string, feature_options: [] },
-	{feature_label: 'No. Printed Sides', feature_type: :integer },
 	{feature_label: 'Textured Embossed Finish', feature_type: :option, feature_options: ['Yes', 'No'] },
 	{feature_label: 'Tissue Paper Packing', feature_type: :option, feature_options: ['Yes', 'No'] },
 	{feature_label: 'Foil', feature_type: :string }
@@ -178,9 +177,7 @@ populate_features('Ribbon', [
 	{feature_label: 'Colour', feature_type: :string },
 	{feature_label: 'Print', feature_type: :option, feature_options: [] },
 	{feature_label: 'No. Printed Colours (out)', feature_type: :integer },
-	{feature_label: 'Register Print', feature_type: :option, feature_options: ['Yes', 'No'] },
-	{feature_label: '% Ink Coverage (out)', feature_type: :float },
-	{feature_label: 'Packing (reams)', feature_type: :float }
+	{feature_label: 'Packing (rolls)', feature_type: :float }
 ])
 populate_features('Labels', [
 	{feature_label: 'Material', feature_type: :option, feature_options: ['Vinyl', 'Art Paper'] },
@@ -189,7 +186,7 @@ populate_features('Labels', [
 	{feature_label: 'No. Printed Colours (out)', feature_type: :integer },
 	{feature_label: '% Ink Coverage (out)', feature_type: :float },
 	{feature_label: 'Foils', feature_type: :option, feature_options: ['Yes', 'No'] },
-	{feature_label: 'Packing (reams)', feature_type: :float }
+	{feature_label: 'Packing (rolls)', feature_type: :float }
 ])
 
 populate_customers([
