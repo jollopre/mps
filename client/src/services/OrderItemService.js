@@ -13,7 +13,7 @@ export default class OrderItemService {
 		and an object such as { status: string, statusText: string } (if rejected)
 	*/
 	static create(order_id, product_id){
-		return Fetch.post(`/orders/${order_id}/order_items`,
+		return Fetch.post(`/api/orders/${order_id}/order_items`,
 			{ order_item: { product_id }})
 			.then((response) => {
 				if(response.headers.has('location')){
@@ -23,7 +23,10 @@ export default class OrderItemService {
 			});
 	}
 	static update(id, quantity){
-		return Fetch.put(`/order_items/${id}`,
+		return Fetch.put(`/api/order_items/${id}`,
 			{ order_item: { quantity } });
+	}
+	static export(id){
+		return `http://0.0.0.0:3000/api/order_items/${id}/export`;
 	}
 }

@@ -16,6 +16,25 @@ class FeatureValue < ApplicationRecord
 		end
 	end
 	
+	# Gets the value formatted according its feature type. This method is useful for pdf printing
+	def formatted_value
+		if self.value.present?
+			if self.feature.float?
+				return self.value.to_f
+			elsif self.feature.integer?
+				return self.value.to_i
+			elsif self.feature.option?
+				fo = self.feature.get_feature_option_for(self.value.to_i)
+				return fo.nil? ? nil : fo.name
+			elsif self.feature.string?
+				return self.value
+			else
+				return nil
+			end
+		end
+		return nil
+	end
+
 	protected
 		# Checks whether or not the value conforms to its feature_type
 		def value_conforms_to_feature_type
@@ -41,7 +60,7 @@ class FeatureValue < ApplicationRecord
 				end
 			end
 		end
-		# Converts the value to its feature_type
+		# Converts the value to its feature_type. This method is used to generate JSON object
 		def value_to_feature_type
 			if self.value.present?
 				if self.feature.float?

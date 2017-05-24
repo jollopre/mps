@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Table, Alert } from 'react-bootstrap';
 import ModalDialog from '../ModalDialog';
 import Edit from './Edit';
+import OrderItemService from '../../services/OrderItemService';
 
 export default class OrderItemList extends Component {
 	constructor(props) {
@@ -36,7 +37,14 @@ export default class OrderItemList extends Component {
 					<td>{value.quantity}</td>
 					<td>{value.product.name}</td>
 					<td>
-						<a href="#" onClick={(e) => { this.show(e,key); }}>Edit</a>
+						<ul className="list-inline">
+							<li>
+								<a href="#" onClick={(e) => { this.show(e,key); }}>Edit</a>
+							</li>
+							<li>
+								<a href={OrderItemService.export(value.id)} target="_blank">Pdf</a>
+							</li>
+						</ul>
 					</td>
 				</tr>
 			);

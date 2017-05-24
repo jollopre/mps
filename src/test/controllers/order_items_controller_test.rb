@@ -63,4 +63,16 @@ class OrderItemsControllerTest < ActionDispatch::IntegrationTest
   	put order_item_path(@order_item.id), params: {order_item: {quantity: 1000}}
   	assert_response :ok
   end
+  test 'should get not found at export action' do
+    get export_order_item_path(10000)
+    assert_response :not_found
+  end
+  test 'should get success at export action' do
+    get export_order_item_path(@order_item.id)
+    assert_response :ok
+  end
+  test 'should get pdf content type at export action' do
+    get export_order_item_path(@order_item.id)
+    assert_equal(Mime::Type.lookup_by_extension(:pdf), response.header['Content-type'])
+  end
 end

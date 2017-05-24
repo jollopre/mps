@@ -55,4 +55,22 @@ class OrderItemsController < ApplicationController
 			render json: { detail: e.message }, status: :bad_request
 		end
 	end
+
+	# GET /order_items/:id/export
+	def export
+		begin
+			# TODO Investigate WHY eager loading loads again feature_label since
+			# it is auto-loaded at default_scope products and also stated below
+			order_item = OrderItem
+				.includes({ feature_values: [
+					feature: [ 
+						:feature_options, :feature_label ]
+					]}) # Load the associated feature_values association
+				.find(params[:id])
+			oip = OrderItemPdf.new(order_item)
+			send_data(oip.render_pdf, filename: "order_item_#{params[:id]}.pdf", type: :pdf, status: :ok)
+		rescue ActiveRecord::RecordNotFound => e
+			render json: { detail: e.message }, status: :not_found
+ 		end	
+	end
 end

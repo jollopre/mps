@@ -26,4 +26,14 @@ class Feature < ApplicationRecord
 				include: [:feature_label]}).merge(feature_options: feature_options_to_hash)
 		end
 	end
+
+	# Returns a FeatureOption given its id or nil if does not exist
+	def get_feature_option_for(option_id)
+		index = self.feature_options.index { |fo| fo.id == option_id }
+		if !index.nil?
+			return self.feature_options[index]
+		else
+			return nil
+		end
+	end
 end
