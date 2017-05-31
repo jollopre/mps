@@ -15,15 +15,19 @@ class FeatureValue < ApplicationRecord
 			}).merge({:value => self.value_to_feature_type})
 		end
 	end
-	
-	# Gets the value formatted according its feature type. This method is useful for pdf printing
-	def formatted_value
+
+	# Converts the value to its feature_type. If string_formatted is true stringifies the value
+	# rather than returning its type
+	def value_to_feature_type(string_formatted = false)
 		if self.value.present?
 			if self.feature.float?
-				return self.value.to_f
+				return string_formatted ? self.value : self.value.to_f
 			elsif self.feature.integer?
-				return self.value.to_i
+				return string_formatted ? self.value : self.value.to_i
 			elsif self.feature.option?
+				if !string_formatted
+					return self.value.to_i
+				end
 				fo = self.feature.get_feature_option_for(self.value.to_i)
 				return fo.nil? ? nil : fo.name
 			elsif self.feature.string?
@@ -53,27 +57,13 @@ class FeatureValue < ApplicationRecord
 					end
 				elsif self.feature.option?
 					begin
-						FeatureOption.find_by!(id: self.value, feature_id: self.feature.id)
-					rescue ActiveRecord::RecordNotFound => e
+						if !self.feature.has_feature_option?(self.value.to_i)
+							errors.add(:value, "It does not exist a FeatureOption with id #{self.value}")
+						end
+					rescue ArgumentError => e
 						errors.add(:value, e.message)
-					end			
+					end		
 				end
 			end
-		end
-		# Converts the value to its feature_type. This method is used to generate JSON object
-		def value_to_feature_type
-			if self.value.present?
-				if self.feature.float?
-					return self.value.to_f
-				elsif self.feature.integer? ||
-					self.feature.option?
-					return self.value.to_i
-				elsif self.feature.string?
-					return self.value
-				else
-					return nil
-				end
-			end
-			return nil
 		end
 end

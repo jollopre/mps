@@ -1,13 +1,11 @@
 class OrderItemsController < ApplicationController
 	# GET /orders/:order_id/order_items
 	def index
-		order_items = OrderItem.includes(:product)
-						.where(order_id: params[:order_id])
-		render json: order_items.as_json({ only: [:id, :quantity],
-						include: {
-							product: { only: [:id, :name]}
-						}
-					}), status: :ok
+		order_items = OrderItem.includes([
+			:product,
+			feature_values: [ :feature ]
+			]).where({ order_id: params[:order_id] })
+		render json: order_items.as_json(), status: :ok
 	end
 
 	# POST /orders/:order_id/order_items
@@ -31,7 +29,7 @@ class OrderItemsController < ApplicationController
 	def show
 		begin
 			order_item = OrderItem
-				.includes({ feature_values: :feature }) # Load the associated feature_values association
+				.includes({ feature_values: :feature })
 				.find(params[:id])
 			render json: order_item.as_json, status: :ok
 		rescue ActiveRecord::RecordNotFound => e
@@ -44,7 +42,9 @@ class OrderItemsController < ApplicationController
 		# TODO ActionDispatch::ParamsParser for when JSON is invalid
 		begin
 			permitted = params.require(:order_item).permit(:quantity)
-			order_item = OrderItem.find(params[:id])
+			order_item = OrderItem
+				.includes({ feature_values: :feature })
+				.find(params[:id])
 			order_item.update_attributes!(permitted)
 			render json: order_item.as_json, status: :ok
 		rescue ActionController::ParameterMissing => e
@@ -59,13 +59,11 @@ class OrderItemsController < ApplicationController
 	# GET /order_items/:id/export
 	def export
 		begin
-			# TODO Investigate WHY eager loading loads again feature_label since
-			# it is auto-loaded at default_scope products and also stated below
 			order_item = OrderItem
-				.includes({ feature_values: [
-					feature: [ 
-						:feature_options, :feature_label ]
-					]}) # Load the associated feature_values association
+				.includes({
+					feature_values: {
+						feature: [ :feature_label, :feature_options ]
+					}})
 				.find(params[:id])
 			oip = OrderItemPdf.new(order_item)
 			send_data(oip.render_pdf, filename: "order_item_#{params[:id]}.pdf", type: :pdf, status: :ok)

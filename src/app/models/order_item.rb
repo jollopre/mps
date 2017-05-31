@@ -27,11 +27,12 @@ class OrderItem < ApplicationRecord
 	end
 
 	protected
+		# Creates a SQL query for inserting multiple rows simultaneously. The reason of using raw SQL query is due
+		# to the fact that ActiveRecord::Associations::CollectionProxy does not support bulk insert
 		def create_feature_values
-			features = self.product.features
-			features.each do |f|
-				self.feature_values << FeatureValue.new({order_item_id: self.id, feature_id: f.id, value: '' })
-			end
-			self.save
+			datetime = DateTime.now()
+			fv = self.product.features.map { |f| "('', #{f.id}, #{self.id}, '#{datetime}', '#{datetime}')" }.join(",")
+			ActiveRecord::Base.connection
+				.execute("INSERT INTO feature_values (value, feature_id, order_item_id, created_at, updated_at) VALUES #{fv}")
 		end
 end

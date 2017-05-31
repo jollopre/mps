@@ -26,6 +26,10 @@ class FeatureValuesControllerTest < ActionDispatch::IntegrationTest
 		assert_response :bad_request
 	end
 	test 'should get bad request for invalid data at update action (expect integer for option id)' do
+		put feature_value_path(@feature_value_option.id), params: {feature_value: {value: 'whatever'}}
+		assert_response :bad_request
+	end
+	test 'should get bad request for invalid data at update action (option id belongs to the feature that feature_value points at)' do
 		put feature_value_path(@feature_value_option.id), params: {feature_value: {value: @feature_option2.id}}
 		assert_response :bad_request
 	end

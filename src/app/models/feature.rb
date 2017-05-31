@@ -14,6 +14,10 @@ class Feature < ApplicationRecord
 		inclusion: { in: self.feature_types.keys() ,
 					 message: '%{value} is not a valid feature_type.' }
 
+	def has_feature_option?(option_id)
+		return self.feature_option_ids.include?(option_id)
+	end
+
 	def feature_options_to_hash()
 		self.feature_options.reduce({}){ |h, fo| h["#{fo.id}"] = fo.as_json(); h }
 	end
@@ -29,11 +33,6 @@ class Feature < ApplicationRecord
 
 	# Returns a FeatureOption given its id or nil if does not exist
 	def get_feature_option_for(option_id)
-		index = self.feature_options.index { |fo| fo.id == option_id }
-		if !index.nil?
-			return self.feature_options[index]
-		else
-			return nil
-		end
+		return self.feature_options.find { |fo| fo.id == option_id }
 	end
 end

@@ -17,21 +17,13 @@ class OrderItemPdf
 	end
 
 	def body
-		@order_item.features.each do |f|
-			fv = self.find_feature_value_for(f)
-			if !fv.nil?
-				text("#{f.feature_label.name}: #{fv.formatted_value()}")
-			end
+		@order_item.feature_values.each do |fv|
+			text("#{fv.feature.feature_label.name}: #{fv.value_to_feature_type(true)}")
 		end
 	end
 
 	def find_feature_value_for(feature)
-		index = @order_item.feature_values.index { |fv| fv.feature == feature }
-		if !index.nil?
-			return @order_item.feature_values[index]
-		else
-			return nil
-		end
+		return @order_item.feature_values.find { |fv| fv.feature == feature }
 	end
 
 	def render_pdf
