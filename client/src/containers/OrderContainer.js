@@ -6,7 +6,7 @@ import FeatureValueService from '../services/FeatureValueService';
 import OrderShow from '../components/OrderShow';
 import Create from '../components/OrderItem/Create';
 import List from '../components/OrderItem/List';
-import debounce from '../Utils';
+import Utils from '../Utils';
 import { Grid, Row, Col } from 'react-bootstrap';
 
 export default class OrderContainer extends Component {
@@ -14,8 +14,8 @@ export default class OrderContainer extends Component {
 		super(props);
 		this.state = { order: null, products:null };
 		this.addOrderItem = this.addOrderItem.bind(this);
-		this.onChangeFeatureValue = debounce(this.onChangeFeatureValue.bind(this), 1000);
-		this.onChangeOrderItemQuantity = debounce(this.onChangeOrderItemQuantity.bind(this), 1000);
+		this.onChangeFeatureValue = Utils.debounce(this.onChangeFeatureValue.bind(this), 1000);
+		this.onChangeOrderItemQuantity = Utils.debounce(this.onChangeOrderItemQuantity.bind(this), 1000);
 	}
 	addOrderItem(product_id) {
 		OrderItemService.create(this.state.order.id, product_id)
