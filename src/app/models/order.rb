@@ -13,7 +13,7 @@ class Order < ApplicationRecord
 			super({
 				except: [:customer_id],
 				include: [:customer]
-			}).merge(order_items: order_items_to_hash)
+			}).merge('order_items' => order_items_to_hash)
 		end
 	end
 end

@@ -14,7 +14,7 @@ class Product < ApplicationRecord
 		if options.present?
 			super(options)
 		else
-			super({ only: [:id, :name] }).merge(features: features_to_hash)
+			super({ only: [:id, :name] }).merge('features' => features_to_hash)
 		end
 	end
 end

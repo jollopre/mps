@@ -14,4 +14,17 @@ class ProductTest < ActiveSupport::TestCase
 	  		assert(h.has_key?("#{f.id}"))
 	  	end
 	end
+	test 'as_json returns every attribute specified at serializable_hash' do
+		product_hash = @p.as_json()
+		keys = product_hash.keys()
+		assert_includes(keys, 'id')
+		assert_includes(keys, 'name')
+		assert_includes(keys, 'features')
+	end
+	test 'as_json returns a hash for the feature key' do
+		product_hash = @p.as_json()
+		if product_hash.key?('features')
+			assert(product_hash['features'].is_a?(Hash))
+		end
+	end
 end

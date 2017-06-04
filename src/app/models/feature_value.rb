@@ -4,7 +4,7 @@ class FeatureValue < ApplicationRecord
 	belongs_to :feature
 
 	# Validations
-	validate :value_conforms_to_feature_type
+	validate :valid_value?
 
 	def serializable_hash(options=nil)
 		if options.present?
@@ -12,24 +12,18 @@ class FeatureValue < ApplicationRecord
 		else
 			super({
 				only: [:id, :feature_id, :order_item_id]
-			}).merge({:value => self.value_to_feature_type})
+			}).merge({ 'value' => self.value_to_feature_type })
 		end
 	end
 
-	# Converts the value to its feature_type. If string_formatted is true stringifies the value
-	# rather than returning its type
-	def value_to_feature_type(string_formatted = false)
+	# Converts the value to its feature_type.
+	def value_to_feature_type()
 		if self.value.present?
 			if self.feature.float?
-				return string_formatted ? self.value : self.value.to_f
-			elsif self.feature.integer?
-				return string_formatted ? self.value : self.value.to_i
-			elsif self.feature.option?
-				if !string_formatted
-					return self.value.to_i
-				end
-				fo = self.feature.get_feature_option_for(self.value.to_i)
-				return fo.nil? ? nil : fo.name
+				return self.value.to_f
+			elsif self.feature.integer? ||
+				self.feature.option?
+				return self.value.to_i
 			elsif self.feature.string?
 				return self.value
 			else
@@ -40,30 +34,38 @@ class FeatureValue < ApplicationRecord
 	end
 
 	protected
-		# Checks whether or not the value conforms to its feature_type
-		def value_conforms_to_feature_type
+		# Returns true for a value that conforms to its feature_type, otherwise false
+		# If false, this method adds an error message to the the array of errors for the attribute :value
+		def valid_value?
+			valid = true
 			if self.value.present?
 				if self.feature.float?
 					begin
 						Float(self.value)
 					rescue ArgumentError => e
 						errors.add(:value, e.message)
+						valid = false
 					end
 				elsif self.feature.integer?
 					begin
 						Integer(self.value)
 					rescue ArgumentError => e
 						errors.add(:value, e.message)
+						valid = false
 					end
 				elsif self.feature.option?
 					begin
-						if !self.feature.has_feature_option?(self.value.to_i)
+						v = Integer(self.value)
+						if !self.feature.has_feature_option?(v)
 							errors.add(:value, "It does not exist a FeatureOption with id #{self.value}")
+							valid = false
 						end
 					rescue ArgumentError => e
 						errors.add(:value, e.message)
+						valid = false
 					end		
 				end
 			end
+			return valid
 		end
 end
