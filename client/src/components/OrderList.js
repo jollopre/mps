@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Table, Alert } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { RoutesHelper } from '../Routes';
 import Utils from '../Utils.js';
 
 export default class OrderList extends Component {
@@ -22,7 +21,7 @@ export default class OrderList extends Component {
 					<td>{Utils.dateToHumanReadableString(value.created_at)}</td>
 					<td>{Utils.dateToHumanReadableString(value.updated_at)}</td>	
 					<td>
-						<Link to={RoutesHelper.order_path(`${value.id}`)}>Show</Link>
+						<Link to={`/orders/${value.id}`}>Show</Link>
 					</td>
 				</tr>
 			);

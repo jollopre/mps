@@ -16,5 +16,9 @@ Rails.application.routes.draw do
 
     # products
     resources :products, only: [:index, :show]
+
+    # users
+    post 'sign-in', to: 'users#sign_in'
+    delete 'sign-out', to: 'users#sign_out'
   end
 end

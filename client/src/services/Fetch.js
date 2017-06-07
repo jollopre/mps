@@ -1,11 +1,11 @@
+import { FetchHeaders } from './FetchHeaders';
+
 export default class Fetch {
 	static get(URL) {
 		return new Promise((resolve, reject) => {
 			fetch(URL, {
 				method: 'GET',
-				headers: {
-					'Accept-Charset': 'utf-8',
-				},
+				headers: FetchHeaders.entries(),
 			}).then((onFullfilled) => {
 				if(onFullfilled.ok) { // status in the range 200-299
 					resolve(onFullfilled.json());
@@ -23,10 +23,7 @@ export default class Fetch {
 		return new Promise((resolve, reject) => {
 			fetch(URL, {
 				method: 'POST',
-				headers: {
-					'Accept-Charset': 'utf-8',
-					'Content-Type': 'application/json',
-				},
+				headers: FetchHeaders.entries(),
 				body: JSON.stringify(body),
 			}).then((onFullfilled) => {
 				if(onFullfilled.ok) {
@@ -45,11 +42,26 @@ export default class Fetch {
 		return new Promise((resolve, reject) => {
 			fetch(URL, {
 				method: 'PUT',
-				headers: {
-					'Accept-Charset': 'utf-8',
-					'Content-Type': 'application/json',
-				},
+				headers: FetchHeaders.entries(),
 				body: JSON.stringify(body),
+			}).then((onFullfilled) => {
+				if(onFullfilled.ok) {
+					resolve(onFullfilled);
+				} else {
+					reject({ status: onFullfilled.status,
+						statusText: onFullfilled.statusText});
+				}
+			}, (onRejected) => {
+				reject({ status: onRejected.status,
+						statusText: onRejected.statusText});
+			});
+		});
+	}
+	static delete(URL){
+		return new Promise((resolve, reject) => {
+			fetch(URL, {
+				method: 'DELETE',
+				headers: FetchHeaders.entries(),
 			}).then((onFullfilled) => {
 				if(onFullfilled.ok) {
 					resolve(onFullfilled);

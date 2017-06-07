@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import OrderService from '../services/OrderService';
 import OrderItemService from '../services/OrderItemService';
 import ProductService from '../services/ProductService';
@@ -27,7 +28,7 @@ export default class OrderContainer extends Component {
 				this.setState({
 					order: Object.assign({}, this.state.order, { order_items })
 				});
-			}, error => console.log(error.statusText));
+			}, this.props.httpErrorHandler);
 	}
 	onChangeFeatureValue(order_item_id, id, value) {
 		FeatureValueService.update(id, value)
@@ -42,7 +43,7 @@ export default class OrderContainer extends Component {
 				this.setState({
 					order: Object.assign({}, this.state.order, { order_items })
 				});
-			}, error => console.log(error.statusText));
+			}, this.props.httpErrorHandler);
 	}
 	onChangeOrderItemQuantity(order_item_id, quantity) {
 		OrderItemService.update(order_item_id, quantity)
@@ -54,15 +55,15 @@ export default class OrderContainer extends Component {
 				this.setState({
 					order: Object.assign({}, this.state.order, { order_items })
 				});
-			}, error => console.log(error.statusText));
+			}, this.props.httpErrorHandler);
 	}
 	componentDidMount() {
 		OrderService.show(this.props.match.params.id)
 			.then(data => this.setState({ order: data }),
-				error => console.log(error.statusText));
+				this.props.httpErrorHandler);
 		ProductService.index()
 			.then(data => this.setState({ products: data}),
-				error => console.log(error.statusText));
+				this.props.httpErrorHandler);
 	}
 	componentWillUpdate(nextProps, nextState){
 		//console.log('state.order: %o', this.state.order);
@@ -98,3 +99,6 @@ export default class OrderContainer extends Component {
 		);
 	}
 }
+OrderContainer.propTypes = {
+	httpErrorHandler: PropTypes.func.isRequired,
+};

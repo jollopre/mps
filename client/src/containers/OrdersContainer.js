@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import OrderService from '../services/OrderService';
 import OrderAdd from '../components/OrderAdd';
 import OrderList from '../components/OrderList';
@@ -13,12 +14,12 @@ export default class OrdersContainer extends Component {
 	componentDidMount() {
 		OrderService.index().then(
 			data => this.setState({ list: data }),
-			error => console.log(error.statusText));
+			this.props.httpErrorHandler);
 	}
 	addOrder(){
 		OrderService.create().then((data) => {
 			this.setState({ list: this.state.list.concat(data)})
-		}, error => console.log(error.statusText));
+		}, this.props.httpErrorHandler);
 	}
 	render(){
 		return (
@@ -37,3 +38,6 @@ export default class OrdersContainer extends Component {
 		);
 	}
 }
+OrdersContainer.propTypes = {
+	httpErrorHandler: PropTypes.func.isRequired,
+};
