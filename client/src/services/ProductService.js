@@ -1,7 +1,7 @@
-import Fetch from './Fetch';
+import { FetchWrapper } from './FetchWrapper';
 
 export default class Products {
 	static index() {
-		return Fetch.get('/api/products');
+		return FetchWrapper.get('/api/products');
 	}
 }

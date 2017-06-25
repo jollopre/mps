@@ -62,6 +62,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 		post sign_in_path, params: { user: { email: @user.email, password: 'secret_password'} }
 		body_hash = JSON.parse(response.body)
 		delete sign_out_path, headers: { 'Authorization' => 'Token token='+body_hash['token'] }
-		assert_response :ok
+		assert_response :no_content
 	end
 end

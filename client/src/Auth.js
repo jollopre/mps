@@ -1,4 +1,4 @@
-import Fetch from './services/Fetch';
+import { FetchWrapper } from './services/FetchWrapper';
 import { FetchHeaders } from './services/FetchHeaders';
 
 export const Auth = (function(){
@@ -46,7 +46,7 @@ export const Auth = (function(){
 			return auth_token !== null;
 		},
 		signIn: function({ username = '', password = '' } = {}) {
-			return Fetch.post('/api/sign-in',
+			return FetchWrapper.post('/api/sign-in',
 				{ user: { email: username, password: password }})
 					.then((response) => {
 						return response.json();
@@ -58,7 +58,7 @@ export const Auth = (function(){
 					});
 		},
 		signOut: function() {
-			return Fetch.delete('/api/sign-out')
+			return FetchWrapper.delete('/api/sign-out')
 				.then(() => {
 					auth_token = null;
 					FetchHeaders.delete('Authorization');

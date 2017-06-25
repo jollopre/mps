@@ -30,7 +30,7 @@ class UsersController < ApplicationController
 		if current_user
 			result = current_user.invalidate_token()
 			if result
-				head :ok
+				head :no_content
 			else
 				render json: { detail: 'error destroying token' }, status: :internal_server_error
 			end

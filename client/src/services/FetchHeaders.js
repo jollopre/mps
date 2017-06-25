@@ -1,7 +1,8 @@
 export const FetchHeaders = (function(){
 	let headers = {
+		'Accept': 'application/json',	// For the response
 		'Accept-Charset': 'utf-8',
-		'Content-Type': 'application/json',
+		'Content-Type': 'application/json',	// Body of the request
 	};
 	return {
 		/*

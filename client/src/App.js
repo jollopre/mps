@@ -4,6 +4,7 @@ import OrdersContainer from './containers/OrdersContainer';
 import OrderContainer from './containers/OrderContainer';
 import SignIn from './containers/SignIn';
 import SignOut from './containers/SignOut';
+import ErrorStack from './containers/ErrorStack';
 import PrivateRoute from './components/PrivateRoute';
 import RouteWithProps from './components/RouteWithProps';
 import { Auth } from './Auth';
@@ -11,7 +12,7 @@ import { Auth } from './Auth';
 export default class App extends Component {
 	constructor(props){
 		super(props);
-		this.state = { isAuthenticated: Auth.isAuthenticated() };
+		this.state = { isAuthenticated: Auth.isAuthenticated(), error: null };
 		this.setIsAuthenticated = this.setIsAuthenticated.bind(this);
 		this.httpErrorHandler = this.httpErrorHandler.bind(this);
 	}
@@ -22,12 +23,15 @@ export default class App extends Component {
 		if(error.status === 401) {	// Unauthorized
 			if(this.state.isAuthenticated){
 				Auth.invalidateToken();
-				this.setState({ isAuthenticated: false });
+				this.setState({ isAuthenticated: false, error });
 			}
+		}
+		else{
+			this.setState({ error });
 		}
 	}
 	render() {
-		const { isAuthenticated } = this.state;
+		const { isAuthenticated, error } = this.state;
 		return (
 	  		<BrowserRouter>
 	  			<div>
@@ -41,6 +45,7 @@ export default class App extends Component {
 	  							null
 	  					}
 	  				</div>
+	  				<ErrorStack error={error} />
 	  				<Switch>
 		  				<PrivateRoute
 		  					path="/orders"

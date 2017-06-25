@@ -1,4 +1,4 @@
-import Fetch from './Fetch';
+import { FetchWrapper } from './FetchWrapper';
 
 export default class OrderItemService {
 	/*
@@ -13,17 +13,17 @@ export default class OrderItemService {
 		and an object such as { status: string, statusText: string } (if rejected)
 	*/
 	static create(order_id, product_id){
-		return Fetch.post(`/api/orders/${order_id}/order_items`,
+		return FetchWrapper.post(`/api/orders/${order_id}/order_items`,
 			{ order_item: { product_id }})
 			.then((response) => {
 				if(response.headers.has('location')){
 					const URL = response.headers.get('location');
-					return Fetch.get(URL);		
+					return FetchWrapper.get(URL);		
 				}	
 			});
 	}
 	static update(id, quantity){
-		return Fetch.put(`/api/order_items/${id}`,
+		return FetchWrapper.put(`/api/order_items/${id}`,
 			{ order_item: { quantity } });
 	}
 	static export(id){

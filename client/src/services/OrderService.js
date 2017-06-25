@@ -1,11 +1,11 @@
-import Fetch from './Fetch';
+import { FetchWrapper } from './FetchWrapper';
 
 export default class OrderService {
 	static index(customer_id = 1){
-		return Fetch.get('/api/orders');
+		return FetchWrapper.get('/api/orders');
 	}
 	static show(id=1) {
-		return Fetch.get('/api/orders/'+id);
+		return FetchWrapper.get('/api/orders/'+id);
 	}
 	/*
 		Create method is used to create a new Order object into the server. Since a POST
@@ -18,11 +18,11 @@ export default class OrderService {
 		and an object such as { status: string, statusText: string } (if rejected)
 	*/
 	static create(customer_id = 1) {
-		return Fetch.post('/api/orders', { order: { customer_id }})
+		return FetchWrapper.post('/api/orders', { order: { customer_id }})
 			.then((response) => {
 				if(response.headers.has('location')){
 					const URL = response.headers.get('location');
-					return Fetch.get(URL);		
+					return FetchWrapper.get(URL);		
 				}	
 			});
 	}

@@ -6,7 +6,6 @@ class UserTest < ActiveSupport::TestCase
 		@user = users(:user1)
 	end
 	test 'valid_password is true' do
-		puts @user.inspect
 		assert(@user.valid_password?('secret_password'))
 	end
 	test 'valid password is false' do
