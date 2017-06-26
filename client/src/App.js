@@ -5,6 +5,10 @@ import OrderContainer from './containers/OrderContainer';
 import SignIn from './containers/SignIn';
 import SignOut from './containers/SignOut';
 import ErrorStack from './containers/ErrorStack';
+import Header from './components/Header';
+import Customers from './components/Customers';
+import Suppliers from './components/Suppliers';
+import { Footer } from './components/Footer';
 import PrivateRoute from './components/PrivateRoute';
 import RouteWithProps from './components/RouteWithProps';
 import { Auth } from './Auth';
@@ -34,44 +38,59 @@ export default class App extends Component {
 		const { isAuthenticated, error } = this.state;
 		return (
 	  		<BrowserRouter>
-	  			<div>
-	  				<div className="pull-right">
-	  					{
-	  						isAuthenticated ? 
-	  							<SignOut 
-	  								callback={this.setIsAuthenticated}
-	  								httpErrorHandler={this.httpErrorHandler} 
-	  							/> : 
-	  							null
-	  					}
-	  				</div>
+	  			<div style={{position: 'relative', minHeight: '100%'}}>
+	  				{
+	  					isAuthenticated ?
+			  				<Header>
+			  					<SignOut 
+			  						callback={this.setIsAuthenticated}
+			  						httpErrorHandler={this.httpErrorHandler} 
+			  					/>
+			  				</Header> :
+			  				null
+	  				}
 	  				<ErrorStack error={error} />
-	  				<Switch>
-		  				<PrivateRoute
-		  					path="/orders"
-		  					exact
-		  					component={OrdersContainer}
-		  					httpErrorHandler={this.httpErrorHandler} 
-		  				/>
-		  				<PrivateRoute
-		  					path="/orders/:id"
-		  					exact
-		  					component={OrderContainer}
-		  					httpErrorHandler={this.httpErrorHandler}
-		  				/>
-		  				{
-		  					isAuthenticated ? 
-			  					null : 
-				  				<RouteWithProps 
-				  					path="/sign_in"
-				  					exact
-				  					component={SignIn}
-				  					callback={this.setIsAuthenticated}
-				  					httpErrorHandler={this.httpErrorHandler} 
-				  				/>
-		  				}
-		  				<Redirect from="/" to="/orders" />
-	  				</Switch>
+	  				<div style={{paddingBottom: '50px'}}>
+		  				<Switch>
+		  					<PrivateRoute
+		  						path="/customers"
+		  						exact
+		  						component={Customers}
+		  						httpErrorHandler={this.httpErrorHandler}
+		  					/>
+			  				<PrivateRoute
+			  					path="/orders"
+			  					exact
+			  					component={OrdersContainer}
+			  					httpErrorHandler={this.httpErrorHandler} 
+			  				/>
+			  				<PrivateRoute
+			  					path="/orders/:id"
+			  					exact
+			  					component={OrderContainer}
+			  					httpErrorHandler={this.httpErrorHandler}
+			  				/>
+			  				<PrivateRoute
+		  						path="/suppliers"
+		  						exact
+		  						component={Suppliers}
+		  						httpErrorHandler={this.httpErrorHandler}
+		  					/>
+			  				{
+			  					isAuthenticated ? 
+				  					null : 
+					  				<RouteWithProps 
+					  					path="/sign_in"
+					  					exact
+					  					component={SignIn}
+					  					callback={this.setIsAuthenticated}
+					  					httpErrorHandler={this.httpErrorHandler} 
+					  				/>
+			  				}
+			  				<Redirect from="/" to="/orders" />
+		  				</Switch>
+	  				</div>
+	  				<Footer />
 	  			</div>
 	  		</BrowserRouter>
   		);

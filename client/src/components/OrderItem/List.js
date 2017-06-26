@@ -42,7 +42,7 @@ export default class OrderItemList extends Component {
 								<a href="#" onClick={(e) => { this.show(e,key); }}>Edit</a>
 							</li>
 							<li>
-								<a href={OrderItemService.export(value.id)} target="_blank">Pdf</a>
+								<a href={OrderItemService.export(value.id)}>Pdf</a>
 							</li>
 						</ul>
 					</td>

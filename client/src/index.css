@@ -1,0 +1,13 @@
+html,body{
+	height: 100%;
+}
+#root{
+	height: 100%;
+}
+/* Overwrite for bootstrap*/
+.btn, .panel, .form-control, .modal-content, .dropdown-menu {
+	border-radius: 0;
+}
+.navbar-form {
+	padding-right: 0;
+}

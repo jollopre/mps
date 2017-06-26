@@ -22,7 +22,7 @@ export default class WarningMessage extends Component {
 		const { timeoutID } = this.state;
 		if(timeoutID !== null) {
 			return (
-				<Alert bsStyle="warning" onDismiss={this.onDismiss}>
+				<Alert bsStyle="warning" onDismiss={this.onDismiss} style={{textAlign: 'center'}}>
 					{`${message} at ${date.toString()}`}
 				</Alert>
 			);
