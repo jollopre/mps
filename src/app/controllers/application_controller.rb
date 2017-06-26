@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+	include ActionController::Helpers
 	include ActionController::HttpAuthentication::Token::ControllerMethods
 	before_action :require_login
 	helper_method :current_user
