@@ -11,7 +11,7 @@ export default class Header extends Component {
 				<Navbar.Header>
 					<Navbar.Brand>
 						<Link to="/" style={{ paddingTop: '2px'}}>
-							<img src={logo} />
+							<img src={logo} alt="MPS" />
 						</Link>
 					</Navbar.Brand>
 					<Navbar.Toggle />
