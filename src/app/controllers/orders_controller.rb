@@ -14,8 +14,12 @@ class OrdersController < ApplicationController
 
 	# GET /orders
 	def index
-		@orders = Order.all
-		render json: @orders.as_json({only: [:id, :created_at, :updated_at]}), status: :ok
+		if params[:customer_id]
+			orders = Order.where({customer_id: params[:customer_id]})
+		else
+			orders = Order.all
+		end
+		render json: orders.as_json({only: [:id, :created_at, :updated_at]}), status: :ok
 	end
 
 	# GET /orders/:id

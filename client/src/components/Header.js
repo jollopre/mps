@@ -20,7 +20,6 @@ export default class Header extends Component {
 					<Nav>
 						<ActiveNavItem eventKey={1} href="/customers">Customers</ActiveNavItem>
 						<ActiveNavItem eventKey={2} href="/orders">Orders</ActiveNavItem>
-						<ActiveNavItem eventKey={3} href="/suppliers">Suppliers</ActiveNavItem>
 					</Nav>
 					<Navbar.Form pullRight>
 						{this.props.children}

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Alert } from 'react-bootstrap';
+import { Table, Alert, Button } from 'react-bootstrap';
 import ModalDialog from '../ModalDialog';
 import Edit from './Edit';
-import OrderItemService from '../../services/OrderItemService';
 
 export default class OrderItemList extends Component {
 	constructor(props) {
@@ -13,24 +12,24 @@ export default class OrderItemList extends Component {
 		this.hide = this.hide.bind(this);
 	}
 	show(e, key) {
-		e.preventDefault();
 		this.setState({ selectedKey: key });
 	}
 	hide() {
 		this.setState({ selectedKey: null });
 	}
 	render() {
+		const { list, onChangeFeatureValue, onChangeOrderItemQuantity, exportPdf } = this.props;
 		const modalDialog = this.state.selectedKey !== null ?
 			(
 				<ModalDialog hide={this.hide}
 					title={`Edit Order Item ${this.state.selectedKey}`}>
-					<Edit orderItem={this.props.list[this.state.selectedKey]}
-						onChangeFeatureValue={this.props.onChangeFeatureValue}
-						onChangeOrderItemQuantity={this.props.onChangeOrderItemQuantity} />
+					<Edit orderItem={list[this.state.selectedKey]}
+						onChangeFeatureValue={onChangeFeatureValue}
+						onChangeOrderItemQuantity={onChangeOrderItemQuantity} />
 				</ModalDialog>
 			) : null;
-		const tableBody = Object.keys(this.props.list).map((key) => {
-			const value = this.props.list[key];
+		const tableBody = Object.keys(list).map((key) => {
+			const value = list[key];
 			return (
 				<tr key={key}>
 					<td>{value.id}</td>
@@ -39,10 +38,10 @@ export default class OrderItemList extends Component {
 					<td>
 						<ul className="list-inline">
 							<li>
-								<a href="#" onClick={(e) => { this.show(e,key); }}>Edit</a>
+								<Button bsStyle="link" onClick={(e) => { this.show(e,key); }}>Edit</Button>
 							</li>
 							<li>
-								<a href={OrderItemService.export(value.id)}>Pdf</a>
+								<Button bsStyle="link" onClick={(e) => { exportPdf(value.id); }}>Pdf</Button>
 							</li>
 						</ul>
 					</td>
@@ -72,7 +71,7 @@ export default class OrderItemList extends Component {
 		    	<strong>Eeeeey!</strong> There are no order items yet.
 		  	</Alert>
   		);
-  		const display = Object.keys(this.props.list).length === 0 ? dialog : table;
+  		const display = Object.keys(list).length === 0 ? dialog : table;
 		return display;
 	}
 }
@@ -81,4 +80,5 @@ OrderItemList.propTypes = {
 	list: PropTypes.object.isRequired,
 	onChangeFeatureValue: PropTypes.func.isRequired,
 	onChangeOrderItemQuantity: PropTypes.func.isRequired,
+	exportPdf: PropTypes.func.isRequired,
 } 

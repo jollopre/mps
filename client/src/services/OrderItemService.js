@@ -27,6 +27,9 @@ export default class OrderItemService {
 			{ order_item: { quantity } });
 	}
 	static export(id){
-		return `http://0.0.0.0:3000/api/order_items/${id}/export`;
+		return FetchWrapper.get(`/api/order_items/${id}/export`)
+			.then((data) => {
+				return URL.createObjectURL(data);
+			});
 	}
 }

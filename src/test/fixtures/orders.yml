@@ -13,4 +13,6 @@
 order1:
   customer: customer1
 order2:
-  customer: customer1 
+  customer: customer1
+order3:
+  customer: customer2 

@@ -17,6 +17,7 @@ export default class OrderContainer extends Component {
 		this.addOrderItem = this.addOrderItem.bind(this);
 		this.onChangeFeatureValue = Utils.debounce(this.onChangeFeatureValue.bind(this), 1000);
 		this.onChangeOrderItemQuantity = Utils.debounce(this.onChangeOrderItemQuantity.bind(this), 1000);
+		this.exportPdf = this.exportPdf.bind(this);
 	}
 	addOrderItem(product_id) {
 		OrderItemService.create(this.state.order.id, product_id)
@@ -29,6 +30,14 @@ export default class OrderContainer extends Component {
 					order: Object.assign({}, this.state.order, { order_items })
 				});
 			}, this.props.httpErrorHandler);
+	}
+	exportPdf(id) {
+		OrderItemService.export(id).then(URL => {
+			const link = document.createElement('a');
+            link.href=URL;
+            link.download=`order_item_${id}.pdf`
+            link.click();
+		}, this.props.httpErrorHandler);
 	}
 	onChangeFeatureValue(order_item_id, id, value) {
 		FeatureValueService.update(id, value)
@@ -77,7 +86,8 @@ export default class OrderContainer extends Component {
 		const ListDisplay = this.state.order !== null ?
 			(<List list={this.state.order.order_items}
 				onChangeFeatureValue={this.onChangeFeatureValue}
-				onChangeOrderItemQuantity={this.onChangeOrderItemQuantity} />) : null;
+				onChangeOrderItemQuantity={this.onChangeOrderItemQuantity}
+				exportPdf={this.exportPdf} />) : null;
 		return (
 			<Grid>
 				<Row>

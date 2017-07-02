@@ -1,7 +1,10 @@
 import { FetchWrapper } from './FetchWrapper';
 
 export default class OrderService {
-	static index(customer_id = 1){
+	static index(customerId){
+		if(customerId !== null) {
+			return FetchWrapper.get(`/api/orders?customer_id=${customerId}`);
+		}
 		return FetchWrapper.get('/api/orders');
 	}
 	static show(id=1) {
@@ -13,12 +16,12 @@ export default class OrderService {
 		with the given location header obtained from a fullfilled POST request. Note,
 		that these operations (i.e. POST and GET) are chained and transparent for the
 		caller of this function.
-		@customer_id Represents the id for a customer
+		@customerId Represents the id for a customer
 		Returns a promise object that contains an Order object (if fullfilled) or
 		and an object such as { status: string, statusText: string } (if rejected)
 	*/
-	static create(customer_id = 1) {
-		return FetchWrapper.post('/api/orders', { order: { customer_id }})
+	static create(customerId) {
+		return FetchWrapper.post('/api/orders', { order: { customer_id: customerId }})
 			.then((response) => {
 				if(response.headers.has('location')){
 					const URL = response.headers.get('location');
