@@ -18,7 +18,11 @@ class OrderItemPdf
 
 	def body
 		@order_item.feature_values.each do |fv|
-			text("#{fv.feature.feature_label.name}: #{fv.value_to_feature_type(true)}")
+			if fv.feature.option? && fv.value.present?
+				text("#{fv.feature.feature_label.name}: #{fv.feature.get_feature_option_for(fv.value.to_i)}")
+			else
+				text("#{fv.feature.feature_label.name}: #{fv.value_to_feature_type()}")
+			end
 		end
 	end
 
