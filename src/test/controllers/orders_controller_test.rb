@@ -27,6 +27,22 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
   		assert_response :ok
 	end
 
+	# GET /orders?customer_id
+	test 'should get success at index action for customer1' do
+		get orders_path({ customer_id: @customer.id }), headers: { 'Authorization' => 'Token token='+@user.token }
+  		assert_response :ok
+  		orders = JSON.parse(response.body)
+  		assert_equal(2, orders.length, "There is only two orders for the customer1")
+	end
+
+	# GET /orders?customer_id
+	test 'should get success at index action for customer2' do
+		get orders_path({ customer_id: customers(:customer2).id }), headers: { 'Authorization' => 'Token token='+@user.token }
+  		assert_response :ok
+  		orders = JSON.parse(response.body)
+  		assert_equal(1, orders.length, "There is only one order for the customer2")
+	end
+
 	# GET /orders/:id
 	test 'should get not found at show action' do
 		get order_path(10000), headers: { 'Authorization' => 'Token token='+@user.token }

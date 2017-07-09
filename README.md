@@ -2,50 +2,44 @@
 
 A tailored ruby on rails app.
 
-## Build 
+## Build docker images
 
 This application is composed of different micro-services controlled through docker containers. 
 
 ### Database
 
-Please, type the following commands to create a data volume for persisting data into a db and afterwards built the postgres image:
+Type below commands to create a data volume for persisting data into a db and afterwards built the postgres image:
 
 ```
 docker pull postgres:9.5.5
-docker volume create --name pgvol
+docker volume create --name mps_devel
 ```
 
 ### Application
 
-Please, type the following command to build a docker image with ruby, rails and any gem dependencies specified on src/Gemfile:
+Type the following command to build a docker image with ruby and all the gem dependencies needed for this code:
 
 ```
 docker build -t ubuntu-rails .
 ```
 
-## Run
+## Run docker containers
 
-It is crucial to follow below steps in order. 
-
-### Database
+Use the script provided within this repository (e.g. docker.sh) to run the containers:
 
 ```
-docker run -d --name postgres_container -p 5432:5432 -e POSTGRES_USER=mps_user -e POSTGRES_PASSWORD=secret_password -e POSTGRES_DB=mps_devel -v mps_devel:/var/lib/postgresql/data postgres:9.5.5
+bash docker.sh run
 ```
 
-Note, the first time you run the above mentioned command, you will need to ensure that POSGRES_USER has privileges to read/write on POSTGRES_DB. Please, visit the [link](https://www.postgresql.org/docs/9.5/static/sql-grant.html) for defining access privileges.
-To connect as the default user to the container type:
-```
-docker exec -it postgres_container psql -U postgres
-```
+## Stop/remove docker containers
 
-### Application
+Use the script provided within this repository (e.g. docker.sh) to stop and remove the containers:
 
 ```
-docker run --name rails_container -it --rm -p 3000:3000 -v "$PWD/src":/usr/src/app --link postgres_container:db ubuntu-rails:latest
+bash docker.sh stop-remove
 ```
 
-### Running every test
+## Running every test
 ```
 rails test -e test
 ```

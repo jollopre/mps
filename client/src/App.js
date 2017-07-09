@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
+import CustomersContainer from './containers/CustomersContainer';
 import OrdersContainer from './containers/OrdersContainer';
 import OrderContainer from './containers/OrderContainer';
 import SignIn from './containers/SignIn';
 import SignOut from './containers/SignOut';
 import ErrorStack from './containers/ErrorStack';
 import Header from './components/Header';
-import Customers from './components/Customers';
-import Suppliers from './components/Suppliers';
 import { Footer } from './components/Footer';
 import PrivateRoute from './components/PrivateRoute';
 import RouteWithProps from './components/RouteWithProps';
@@ -55,7 +54,7 @@ export default class App extends Component {
 		  					<PrivateRoute
 		  						path="/customers"
 		  						exact
-		  						component={Customers}
+		  						component={CustomersContainer}
 		  						httpErrorHandler={this.httpErrorHandler}
 		  					/>
 			  				<PrivateRoute
@@ -70,12 +69,6 @@ export default class App extends Component {
 			  					component={OrderContainer}
 			  					httpErrorHandler={this.httpErrorHandler}
 			  				/>
-			  				<PrivateRoute
-		  						path="/suppliers"
-		  						exact
-		  						component={Suppliers}
-		  						httpErrorHandler={this.httpErrorHandler}
-		  					/>
 			  				{
 			  					isAuthenticated ? 
 				  					null : 

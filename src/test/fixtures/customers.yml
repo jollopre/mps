@@ -11,3 +11,10 @@ customer1:
   email: someone@somewhere.com
   contact_name: Someone
   contact_surname: Surname
+
+customer2:
+  reference: REF2
+  telephone: 123456789
+  email: someone2@somewhere.com
+  contact_name: Someone2
+  contact_surname: Surname2

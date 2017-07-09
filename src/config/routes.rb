@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   scope '/api' do
+    # customers
+    resources :customers, only: [:index]
     # feature_values
     resources :feature_values, only: [:update]
     

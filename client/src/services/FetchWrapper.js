@@ -6,15 +6,30 @@ export const FetchWrapper = (function(){
 			fetchPromise.then((fetchResponse) => {
 				if(fetchResponse.ok){	// status in the range 200-299
 					if(fetchResponse.status === 200) {
-						fetchResponse.json().then((data) => {
-							resolve(data);
-						}, (error) => {
-							reject({
-								status: fetchResponse.status,
-								statusText: fetchResponse.statusText,
-								detail: error.message || 'unknown error',
+						const contentType = fetchResponse.headers.get('content-type');
+						let body = null;
+
+						if(contentType.includes('application/json')) {
+							body=fetchResponse.json();
+						}
+						else if(contentType.includes('application/pdf')) {
+							body=fetchResponse.blob();
+						}
+
+						if(body !== null){
+							body.then((data) => {
+								resolve(data);
+							}, (error) => {
+								reject({
+									status: fetchResponse.status,
+									statusText: fetchResponse.statusText,
+									detail: error.message || 'unknown error',
+								});
 							});
-						});
+						}
+						else {
+							resolve(fetchResponse);
+						}
 					}
 					else {
 						resolve(fetchResponse);
