@@ -69,7 +69,7 @@ RUN apt-get update \
 	postgresql-client \
 	&& rm -rf /var/lib/apt/lists/*
 WORKDIR /usr/src/app
-COPY src/Gemfile* ./
+COPY server/Gemfile* ./
 RUN bundle install \
     && apt-get purge -y --auto-remove ${BUILD_DEPS}
 VOLUME /usr/src/app

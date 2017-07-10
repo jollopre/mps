@@ -40,7 +40,7 @@ function run () {
 			--detach \
 			--name $MPS_WEB_CONTAINER_NAME \
 			--publish $MPS_WEB_PORT:3000 \
-			--volume "$CWD/src":/usr/src/app \
+			--volume "$CWD/server":/usr/src/app \
 			--link $MPS_DB_CONTAINER_NAME:db \
 			ubuntu-rails:latest
 		exit_status=$?
