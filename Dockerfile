@@ -18,7 +18,9 @@ RUN apt-get update \
 		libyaml-dev \
 		procps \
 		zlib1g-dev \
+		tzdata \
 	&& rm -rf /var/lib/apt/lists/*
+# tzdata as per issue https://github.com/docker-library/official-images/issues/2863
 
 ENV BUILD_DEPS '\
 		bison \

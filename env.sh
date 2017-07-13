@@ -1,0 +1,26 @@
+#!/bin/bash
+
+MPS_DB_IMAGE_NAME=postgres:9.5.5
+MPS_WEB_IMAGE_NAME=ubuntu-rails:latest
+MPS_DB_VOLUME=mps_volume
+MPS_DB_VOLUME_TEST=mps_volume_test
+
+MPS_DB_CONTAINER_NAME=mps_db_container
+MPS_DB_TEST_CONTAINER_NAME=mps_db_test_container
+MPS_WEB_CONTAINER_NAME=mps_web_container
+
+MPS_DB_USER=mps_user
+MPS_DB_PASSWORD=secret_password
+MPS_DB_NAME=mps_db
+MPS_DB_PORT=5432
+MPS_DB_TEST_PORT=5433
+
+MPS_WEB_PORT=3000
+
+# NETWORK
+MPS_NET_NAME=mps_net
+MPS_NET_SUBNET=172.16.0.0/29 # CIDR format
+MPS_NET_GATEWAY=172.16.0.1
+MPS_DB_IP=172.16.0.2
+MPS_WEB_IP=172.16.0.3
+MPS_DB_TEST_IP=172.16.0.4

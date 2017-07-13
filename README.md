@@ -1,45 +1,42 @@
 # Marshall Packaging System (MPS)
 
-A tailored ruby on rails app.
+A tailored ruby on rails app for Marshall Packaging, Ltd.
 
-## Build docker images
+## Set up
 
-This application is composed of different micro-services controlled through docker containers. 
+Utilise docker.sh script provided within the root directory to orchestrate the system locally. 
 
-### Database
-
-Type below commands to create a data volume for persisting data into a db and afterwards built the postgres image:
+### Build
 
 ```
-docker pull postgres:9.5.5
-docker volume create --name mps_devel
+	bash docker.sh build
 ```
 
-### Application
+which creates two docker images (rails and postgres), two volumes (for test and development database environments) and one network to communicate the containers.
 
-Type the following command to build a docker image with ruby and all the gem dependencies needed for this code:
-
-```
-docker build -t ubuntu-rails .
-```
-
-## Run docker containers
-
-Use the script provided within this repository (e.g. docker.sh) to run the containers:
+### Run
 
 ```
-bash docker.sh run
+	bash docker.sh run
 ```
 
-## Stop/remove docker containers
+which creates three containers (rails, db development and db test) and run them detached from console.
 
-Use the script provided within this repository (e.g. docker.sh) to stop and remove the containers:
+### Reload
+
+When changes are made into server code, it is recommended to reload the containers.
 
 ```
-bash docker.sh stop-remove
+	bash docker.sh stop-remove
+	bash docker.sh run
 ```
 
-## Running every test
+NOTE, above commands are not needed when changes are made at client code (e.g. React).
+
+## Testing
+
+Connect to the rails container (e.g. docker exec -it mps_web_container /bin/bash) and execute:
+
 ```
-rails test -e test
+	rails test -e test
 ```

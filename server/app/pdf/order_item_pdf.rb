@@ -17,12 +17,23 @@ class OrderItemPdf
 	end
 
 	def body
+		any_value=false
 		@order_item.feature_values.each do |fv|
 			if fv.feature.option? && fv.value.present?
-				text("#{fv.feature.feature_label.name}: #{fv.feature.get_feature_option_for(fv.value.to_i)}")
+				any_value ||= true
+				text("<b>#{fv.feature.feature_label.name}:</b> #{fv.feature.get_feature_option_for(fv.value.to_i)}",
+					:inline_format => true)
 			else
-				text("#{fv.feature.feature_label.name}: #{fv.value_to_feature_type()}")
+				r=fv.value_to_feature_type()
+				if r.present?
+					any_value ||= true
+					text("<b>#{fv.feature.feature_label.name}:</b> #{fv.value_to_feature_type()}",
+						:inline_format => true)
+				end
 			end
+		end
+		if !any_value
+			text("There are no values associated to this order item")
 		end
 	end
 
