@@ -20,8 +20,8 @@ class OrderTest < ActiveSupport::TestCase
 		keys = order_hash.keys()
 		assert_includes(keys, 'created_at')
 		assert_includes(keys, 'updated_at')
-		assert_includes(keys, 'customer')
-		assert_includes(keys, 'order_items')
+		assert_includes(keys, 'customer_id')
+		assert_includes(keys, 'order_item_ids')
 	end
 	test 'as_json returns a hash for the order_items key' do
 		order_hash = @o.as_json()

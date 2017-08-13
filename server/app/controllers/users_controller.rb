@@ -12,7 +12,7 @@ class UsersController < ApplicationController
 			if user.valid_password?(permitted[:password])
 				token = user.generate_token()
 				if token
-					render json: { token: token }, status: :created
+					render json: { token: token }, status: :ok
 				else
 					render json: { detail: 'error generating token' }, status: :internal_server_error
 				end

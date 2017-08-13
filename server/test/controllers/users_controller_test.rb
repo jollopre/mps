@@ -49,7 +49,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 	test 'should get success for a email/password valid' do
 		post sign_in_path, params: { user: { email: @user.email, password: 'secret_password' } }
 		body_hash = JSON.parse(response.body)
-		assert_response :created
+		assert_response :ok
 		refute_nil(body_hash['token'])
 	end
 	test 'should get unauthorized when trying to delete token' do

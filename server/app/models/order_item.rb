@@ -20,8 +20,7 @@ class OrderItem < ApplicationRecord
 			super(options)
 		else
 			super({
-					only: [:id, :quantity],
-					include: [:product]
+					only: [:id, :quantity, :order_id, :product_id],
 				}).merge(feature_values: feature_values_to_hash)
 		end
 	end

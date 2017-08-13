@@ -10,10 +10,7 @@ class Order < ApplicationRecord
 		if options.present?
 			super(options)
 		else
-			super({
-				except: [:customer_id],
-				include: [:customer]
-			}).merge('order_items' => order_items_to_hash)
+			super({}).merge('order_item_ids' => self.order_item_ids)
 		end
 	end
 end

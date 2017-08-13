@@ -1,10 +1,9 @@
 class OrderItemsController < ApplicationController
 	# GET /orders/:order_id/order_items
 	def index
-		order_items = OrderItem.includes([
-			:product,
-			feature_values: [ :feature ]
-			]).where({ order_id: params[:order_id] })
+		order_items = OrderItem
+			.includes({ feature_values: :feature })
+			.where({ order_id: params[:order_id] })
 		render json: order_items.as_json(), status: :ok
 	end
 

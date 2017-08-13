@@ -19,20 +19,14 @@ class OrdersController < ApplicationController
 		else
 			orders = Order.all
 		end
-		render json: orders.as_json({only: [:id, :created_at, :updated_at]}), status: :ok
+		render(json: orders.as_json, status: :ok)
 	end
 
 	# GET /orders/:id
 	def show
 		begin
-			order = Order
-				.includes({ order_items:
-					[:product, { feature_values: :feature }]
-					# Load the associated products and features and every feature_value's feature association
-					# since FeatureValue.serializable_hash() curates the value according to its feature type.
-				})
-				.find(params[:id])
-			render json: order.as_json()
+			order = Order.find(params[:id])
+			render(json: order.as_json, status: :ok)
 		rescue ActiveRecord::RecordNotFound => e
 			render json: { detail: e.message }, status: :not_found
 		end

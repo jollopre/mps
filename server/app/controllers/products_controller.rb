@@ -3,7 +3,7 @@ class ProductsController < ApplicationController
 	# GET /products
 	def index
 		products = Product.all
-		render json: products.as_json({only: [:id, :name]}), status: :ok
+		render json: products.as_json, status: :ok
 	end
 
 	# Returns a JSON object for a product
