@@ -30,16 +30,12 @@ export const user = (state = { isFetching: false, email:null, token: null }, act
 				isFetching: true,
 			};
 		case DELETE_SIGN_OUT.SUCCESS:
+		case DELETE_SIGN_OUT.ERROR:
 			UserLocalStorage.removeEntries();
 			return {
 				isFetching: false,
 				token: null,
 			};
-		case DELETE_SIGN_OUT.ERROR: 
-			return {
-				...state,
-				isFetching: false,
-			}
 		default:
 			return state;
 	}

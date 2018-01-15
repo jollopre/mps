@@ -44,7 +44,10 @@ export const orderItems = (state = { byId: {}, isFetching: false, objectURL: nul
 				isFetching: false,
 				objectURL: URL.createObjectURL(payload),
 			}
-		case CLEAR_EXPORT_ORDER_ITEM: 
+		case CLEAR_EXPORT_ORDER_ITEM:
+			if (state.objectURL) {
+				URL.revokeObjectURL(state.objectURL);
+			}
 			return {
 				...state,
 				objectURL: null

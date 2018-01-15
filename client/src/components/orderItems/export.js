@@ -10,28 +10,32 @@ class Export extends Component {
 		this.onClickHandler = this.onClickHandler.bind(this);
 	}
 	setRef(el) {
-		const { objectURL, clearExportOrderItem } = this.props;
-		if (el && objectURL) {
-			el.click();
-			clearExportOrderItem();
+		this.setState({ a: el });
+	}
+	componentWillReceiveProps(nextProps) {
+		const { id, objectURL, clearExportOrderItem } = this.props;
+		if (nextProps.objectURL && nextProps.objectURL !== objectURL) {
+			const link = document.createElement('a');
+  		link.href = nextProps.objectURL;
+  		link.download=`${id}.pdf`;
+  		document.body.appendChild(link);
+  		link.click();
+  		document.body.removeChild(link);
+  		setTimeout(() => { clearExportOrderItem(); }, 1000);
 		}
 	}
 	onClickHandler(e) {
-		const { id, objectURL, exporting } = this.props;
-		if (!objectURL) {
-			e.preventDefault();
-			exporting(id);
-		}
+		const { id, exporting } = this.props;
+		exporting(id);
 	}
 	render() {
-		const { objectURL } = this.props;
-		return (<a
-				href={objectURL ? objectURL : '#'}
+		return (
+			<button
+				type="button"
 				className="btn btn-success"
-				role="button"
-				ref={this.setRef}
-				onClick={this.onClickHandler}
-				target="_blank">Export</a>);
+				onClick={this.onClickHandler}>
+				Export
+			</button>)
 	}
 }
 
