@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import List from './list';
+import Pages from './pages';
 
 export default class Customers extends Component {
 	render() {
@@ -10,6 +11,11 @@ export default class Customers extends Component {
 				<div className="row">
 					<div className="col-xs-12">
 						<List list={list} />
+					</div>
+				</div>
+				<div className="row">
+					<div className="col-xs-12">
+						<Pages />
 					</div>
 				</div>
 			</div>

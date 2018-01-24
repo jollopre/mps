@@ -32,12 +32,12 @@ export const orders = (state = { byId: {}, isFetching: false}, action) => {
 				...state,
 				isFetching: false,
 			};
-		case GET_ORDERS.SUCCESS: 
-			return {	// Removes byId map entries whenever customer changes
+		case GET_ORDERS.SUCCESS:
+			return {
 				...state,
 				isFetching: false,
-				byId: arrayToMap(payload),
-				all: true,
+				meta: payload.meta,
+				byId: Object.assign({}, state.byId, arrayToMap(payload.data)),
 			};
 		case GET_ORDER.SUCCESS:
 			return {
@@ -49,6 +49,7 @@ export const orders = (state = { byId: {}, isFetching: false}, action) => {
 			return {
 				...state,
 				isFetching: false,
+				meta: Object.assign({}, state.meta, { count: state.meta.count + 1 }),
 				byId: Object.assign({}, state.byId, { [payload.id]: formatDates(payload) }),
 			};
 		default:

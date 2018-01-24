@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { postOrder } from '../../actions/orders';
+import { setPage, ORDERS } from '../../actions/pagination';
 
 class OrderAdd extends Component {
 	constructor(props) {
@@ -10,8 +11,9 @@ class OrderAdd extends Component {
 	}
 	submitHandler(e) {
 		e.preventDefault();
-		const { postOrder, customerId } = this.props;
-		postOrder(customerId);
+		const { postOrder, customerId, meta } = this.props;
+		postOrder({ customerId, meta });
+		setPage({ page: meta.page, resource: meta.resource });
 	}
 	render() {
 		return (
@@ -22,14 +24,20 @@ class OrderAdd extends Component {
 	}
 }
 const mapStateToProps = (state, ownProps) => {
+	const { orders, pagination } = state;
 	return {
 		customerId: ownProps.match.params.id,
+		meta: {
+			page: pagination.orders.currentPage,
+			per_page: orders.meta.per_page,
+			resource: ORDERS,
+		},
 	};
 };
 const mapDispatchToProps = (dispatch) => {
 	return {
-		postOrder: (customerId) => {
-			dispatch(postOrder(customerId));
+		postOrder: (params) => {
+			dispatch(postOrder(params));
 		},
 	};
 };

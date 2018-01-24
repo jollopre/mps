@@ -41,3 +41,18 @@ const match_from_location = (location, uri_pattern) => {
 export const order_order_item_match = (location) => {
 	return match_from_location(location, ORDER_ITEM_URI_PATTERN);
 };
+
+/* 
+ * Given an URL and a paramName, this methods attemps to get the value associated
+ * @param URL {String} - Represents an URL
+ * @param paramName {String} - Represents the query param to look for within the URL
+ * return {String} value associated to the queryParam, otherwise null
+*/
+export const getQueryParam = (URL, paramName) => {
+	const regExp = RegExp(paramName+'=(\\d+)');
+	const re = regExp.exec(URL);
+	if (re !== null) {
+		return re[1];
+	}
+	return null;
+};

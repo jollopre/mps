@@ -1,16 +1,18 @@
 import { API, asyncAction } from '../middlewares/apiMiddleware';
+import { ORDERS } from './pagination';
 
 export const GET_ORDERS = asyncAction('GET_ORDERS');
 export const GET_ORDER = asyncAction('GET_ORDER');
 export const POST_ORDER = asyncAction('POST_ORDER');
 
-export const getOrdersCreator = (customerId) => ({
+export const getOrdersCreator = ({ customerId, page = 1 } = {}) => ({
 	type: API,
 	payload: {
-		url: `/api/orders?customer_id=${customerId}`,
+		url: `/api/orders?customer_id=${customerId}&page=${page}`,
 		method: 'GET',
-		types: [GET_ORDERS.PENDING, GET_ORDERS.SUCCESS, GET_ORDERS.ERROR],
+		types: [GET_ORDERS.PENDING, GET_ORDERS.SUCCESS, GET_ORDERS.ERROR]
 	},
+	meta: { page, resource: ORDERS },
 });
 
 export const getOrderCreator = (id) => ({
@@ -22,7 +24,7 @@ export const getOrderCreator = (id) => ({
 	},
 });
 
-export const postOrderCreator = (customerId) => ({
+export const postOrderCreator = ({ customerId, meta = {}} = {}) => ({
 	type: API,
 	payload: {
 		url: '/api/orders',
@@ -30,16 +32,33 @@ export const postOrderCreator = (customerId) => ({
 		types: [POST_ORDER.PENDING, POST_ORDER.SUCCESS, POST_ORDER.ERROR],
 		body: { order: { customer_id: customerId }},
 	},
+	meta
 });
 
-const shouldGetOrdersRequest = (state) => !state.orders.all;
+/*
+ * Determines whether or not GET_CUSTOMERS request should be initiated.
+ * @param state {} - Redux application state
+ * @param params {} - The params object passed to getOrders action
+ * @returns true if orders pagination sub-state for the params.page passed is not defined or
+ * if the array of ids for that specific page is empty (look at src/reducers/pagination to
+ * better understand the sub-state structure) or if orders.byId object does not have an
+ * order object whose customer_id is equals to params.customerId
+*/
+const shouldGetOrdersRequest = (state, params) => {
+	const { customerId, page } = params;
+	const ordersPagination = state.pagination.orders;
+	const { orders } = state;
+	return !ordersPagination.pages[page] ||
+		ordersPagination.pages[page].ids === [] ||
+		ordersPagination.pages[page].ids.find(id => orders.byId[id].customer_id === customerId);
+};
 
 const shouldGetOrderRequest = (state, id) => state.orders.byId[id] === undefined;
 
-export const getOrders = (customerId) => {
+export const getOrders = (params = {}) => {
 	return (dispatch, getState) => {
-		if (shouldGetOrdersRequest(getState())) {
-			return dispatch(getOrdersCreator(customerId));
+		if (shouldGetOrdersRequest(getState(), params)) {
+			return dispatch(getOrdersCreator(params));
 		}
 		return Promise.resolve();		
 	};
@@ -54,8 +73,8 @@ export const getOrder = (id) => {
 	};
 };
 
-export const postOrder = (customerId) => {
+export const postOrder = (params) => {
 	return (dispatch) => {
-		return dispatch(postOrderCreator(customerId));
+		return dispatch(postOrderCreator(params));
 	};
 };

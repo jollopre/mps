@@ -5,7 +5,7 @@ html,body{
 	height: 100%;
 }
 /* Overwrite for bootstrap*/
-.btn, .panel, .form-control, .modal-content, .dropdown-menu {
+.btn, .panel, .form-control, .modal-content, .dropdown-menu, .pager li > a {
 	border-radius: 0;
 }
 .navbar-form {

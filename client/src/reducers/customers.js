@@ -20,7 +20,8 @@ export const customers = (state = { byId: {}, isFetching: false }, action) => {
 		case GET_CUSTOMERS.SUCCESS:
 			return {
 				...state,
-				byId: arrayToMap(payload),
+				meta: payload.meta,
+				byId: Object.assign({}, state.byId, arrayToMap(payload.data)),
 				isFetching: false
 			}
 		case GET_CUSTOMER.SUCCESS:

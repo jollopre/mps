@@ -8,6 +8,10 @@ class CustomersControllerTest < ActionDispatch::IntegrationTest
   test 'should get success at index action' do
     get customers_path, headers: { 'Authorization' => 'Token token='+@user.token }
     assert_response :ok
+    customers = ActiveSupport::JSON.decode(response.body)
+    assert_equal(2, customers['meta']['count'], 'There is only two customers')
+    assert_equal(Kaminari.config.default_per_page, customers['meta']['per_page'])
+    refute_nil(customers['data'])
   end
   test 'should get not found at show action' do
     get customer_path(10000), headers: { 'Authorization' => 'Token token='+@user.token }

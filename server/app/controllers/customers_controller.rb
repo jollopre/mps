@@ -1,8 +1,8 @@
 class CustomersController < ApplicationController
     def index
-      # TODO pagination
-      customers = Customer.all
-      render json: customers.as_json(), status: :ok
+      meta = { count: Customer.all.count, per_page: Kaminari.config.default_per_page }
+      customers = Customer.all.page(params[:page] || 1)
+      render(json: { meta: meta, data: customers.as_json }, status: :ok)
     end
     def show
       begin

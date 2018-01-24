@@ -29,9 +29,9 @@ ListItem.propTypes = {
 		id: PropTypes.number.isRequired,
 		reference: PropTypes.string.isRequired,
 		company_name: PropTypes.string.isRequired,
-		telephone: PropTypes.string.isRequired,
-		email: PropTypes.string.isRequired,
+		//telephone: PropTypes.string.isRequired,
+		//email: PropTypes.string.isRequired,
 		contact_name: PropTypes.string.isRequired,
-		contact_surname: PropTypes.string.isRequired,
+		//contact_surname: PropTypes.string.isRequired,
 	}).isRequired,
 };

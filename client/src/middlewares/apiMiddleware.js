@@ -1,15 +1,22 @@
 const authorization = token => ({ 'Authorization': `Token token=${token}` });
 
-const fetchWrapper = ({ url, method, body, token }) => {
-	return fetch(url, {
-		method,
-		headers: Object.assign(
-					{},
-					{ 'Accept': 'application/json' },
-					{ 'Accept-Charset': 'utf-8' },
-					{ 'Content-Type': 'application/json' },
-					authorization(token)),
-		body: body ? JSON.stringify(body) : undefined,
+const fetchWrapper = ({ url, method, body, token }, delay = 0) => {
+	const delayedFetch = () => {
+		return fetch(url, {
+			method,
+			headers: Object.assign(
+						{},
+						{ 'Accept': 'application/json' },
+						{ 'Accept-Charset': 'utf-8' },
+						{ 'Content-Type': 'application/json' },
+						authorization(token)),
+			body: body ? JSON.stringify(body) : undefined,
+		});
+	};
+	return new Promise((resolve) => {
+		setTimeout(resolve, delay);
+	}).then(() => {
+		return delayedFetch();
 	});
 };
 
@@ -36,10 +43,10 @@ export const apiMiddleware = ({ getState, dispatch }) => next => action => {
 		return next(action);
 	}
 	else {
-		const { payload } = action;
+		const { payload, meta } = action;
 		const onRejectionHandler = (onRejection) => {
 			// ERROR
-			dispatch({ type: payload.types[2], payload: { detail: onRejection }});
+			dispatch({ type: payload.types[2], payload: { detail: onRejection }, meta: meta || {} });
 		};
 		const onFulfillmentHandler = (onFulfillment) => {
 			if (onFulfillment.ok) {
@@ -53,7 +60,11 @@ export const apiMiddleware = ({ getState, dispatch }) => next => action => {
 						if (body) {
 							body.then((onFulfillment) => {
 								// SUCCESS
-								dispatch({ type: payload.types[1], payload: onFulfillment });
+								dispatch({
+									type: payload.types[1],
+									payload: onFulfillment,
+									meta: meta || {}
+								});
 							}).catch(onRejectionHandler);
 						}
 						break;
@@ -68,24 +79,29 @@ export const apiMiddleware = ({ getState, dispatch }) => next => action => {
 							}).then(onFulfillmentHandler).catch(onRejectionHandler);
 						} else {
 							// SUCCESS
-							dispatch({ type: payload.types[1], payload: null });
+							dispatch({ type: payload.types[1], payload: null, meta: meta || {} });
 						}
 						break;
 					// no_content
 					case 204:
 					default:
 						// SUCCESS
-						dispatch({ type: payload.types[1], payload: null });
+						dispatch({ type: payload.types[1], payload: null, meta: meta || {} });
 						break;
 				}
 			}
 			else { // ERROR
 				const { status, statusText } = onFulfillment;
-				dispatch({ type: payload.types[2], payload: { status, statusText }});
+				dispatch({ type: payload.types[2], payload: { status, statusText }, meta: meta || {} });
 			}
 		};
-		// PENDING
-		dispatch({ type: payload.types[0], payload: null });
+		// PENDING generates an action with type PENDING, null payload and meta object passed to the
+		// API action type that this middleware handles
+		dispatch({
+			type: payload.types[0],
+			payload: null,
+			meta: meta || {}
+		});
 		return fetchWrapper({
 			url: payload.url,
 			method: payload.method,
@@ -103,7 +119,8 @@ export const apiMiddleware = ({ getState, dispatch }) => next => action => {
 			method: GET | POST | PUT | DELETE,
 			body: // check value https://developer.mozilla.org/en-US/docs/Web/API/Body,
 			headers: A Headers object,
-			types: ['PENDING', 'SUCCESS', 'ERROR']
+			types: ['PENDING', 'SUCCESS', 'ERROR'],
+			meta: { page: Number} // Only if model has pagination
 		},
 	}
 	Spect output object

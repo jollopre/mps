@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import OrderNew from './orderNew';
 import OrderList from './orderList';
+import Pages from './pages';
+import Title from './title';
 
 export default class Orders extends Component {
 	render() {
@@ -9,7 +11,10 @@ export default class Orders extends Component {
 		return (
 			<div>
 				<div className="row">
-					<div className="col-xs-12">
+					<div className="col-xs-6">
+						<Title />
+					</div>
+					<div className="col-xs-6">
 	        	<div className="pull-right">
 	          	<OrderNew />
 	          </div>
@@ -20,10 +25,7 @@ export default class Orders extends Component {
 	        	{list.length > 0 ? <OrderList list={list} /> : null}
 	        </div>
 	        <div className="col-xs-12">
-	        	{list.length === 0 ? (
-	        		<p className="bg-info" style={{marginTop: '1em'}}>
-								<strong>Eeeeey!</strong> There are no orders yet.
-							</p>) : null}
+	        	<Pages />
 	        </div>
 	      </div>
       </div>
@@ -34,8 +36,4 @@ export default class Orders extends Component {
 Orders.propTypes = {
 	list: PropTypes.array.isRequired,
 };
-
-
-
-
 

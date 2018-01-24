@@ -8,6 +8,9 @@ gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.11.0'
 # Prawn pdf
 gem 'prawn', '~> 2.2.2'
+# Pagination for models
+gem 'kaminari-core', '~> 1.1.1'
+gem 'kaminari-activerecord', '~> 1.1.1'
 
 group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring

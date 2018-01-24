@@ -14,7 +14,6 @@ export const preLoadedState = () => {
 		orders: {
 			byId: {},
 			isFetching: false,
-			all: false,	// Flag to determine whether or not all the orders have been retrieved
 		},
 		orderItems: {
 			byId: {},
@@ -24,6 +23,16 @@ export const preLoadedState = () => {
 		products: {
 			byId: {},
 			isFetching: false,
+		},
+		pagination: {
+			orders: {
+				pages: {},
+				currentPage: 1,
+			},
+			customers: {
+				pages: {},
+				currentPage: 1,
+			},
 		},
 	};
 };

@@ -22,9 +22,11 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
 	end
 
 	# GET /orders
-	test 'should get success at index action' do
+	test 'should get bad request s at index action when customer_id is missing' do
 		get orders_path, headers: { 'Authorization' => 'Token token='+@user.token }
-  		assert_response :ok
+  	assert_response :bad_request
+  	error = ActiveSupport::JSON.decode(response.body)
+  	assert_equal(error['detail'], 'Mising parameter customer_id')
 	end
 
 	# GET /orders?customer_id
@@ -32,7 +34,9 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
 		get orders_path({ customer_id: @customer.id }), headers: { 'Authorization' => 'Token token='+@user.token }
   		assert_response :ok
   		orders = JSON.parse(response.body)
-  		assert_equal(2, orders.length, "There is only two orders for the customer1")
+  		assert_equal(2, orders['meta']['count'], "There is only two orders for the customer1")
+  		assert_equal(Kaminari.config.default_per_page, orders['meta']['per_page'])
+  		refute_nil(orders['data'])
 	end
 
 	# GET /orders?customer_id
@@ -40,7 +44,9 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
 		get orders_path({ customer_id: customers(:customer2).id }), headers: { 'Authorization' => 'Token token='+@user.token }
   		assert_response :ok
   		orders = JSON.parse(response.body)
-  		assert_equal(1, orders.length, "There is only one order for the customer2")
+  		assert_equal(1, orders['meta']['count'], "There is only one order for the customer2")
+  		assert_equal(Kaminari.config.default_per_page, orders['meta']['per_page'])
+  		refute_nil(orders['data'])
 	end
 
 	# GET /orders/:id

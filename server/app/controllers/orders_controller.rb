@@ -12,14 +12,16 @@ class OrdersController < ApplicationController
 		end
 	end
 
-	# GET /orders
+	# GET /orders?customer_id=foo&page=bar
 	def index
-		if params[:customer_id]
-			orders = Order.where({customer_id: params[:customer_id]})
+		if params[:customer_id].present?
+			query = Order.where({ customer_id: params[:customer_id] })
+			meta = { count: query.count, per_page: Kaminari.config.default_per_page }
+			orders = query.page(params[:page] || 1)
+			render(json: { meta: meta, data: orders.as_json }, status: :ok)
 		else
-			orders = Order.all
+			render(json: { detail: 'Mising parameter customer_id' }, status: :bad_request)
 		end
-		render(json: orders.as_json, status: :ok)
 	end
 
 	# GET /orders/:id
