@@ -1,70 +1,78 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
+import { Redirect, withRouter } from 'react-router-dom';
+import { CUSTOMERS_URI_PATTERN } from '../../routes';
+import queryString from 'query-string';
+import { searchCustomers } from '../../actions/customers';
+import { setPage, CUSTOMERS } from '../../actions/pagination';
 
 class Search extends Component {
     constructor() {
         super();
-        this.onSubmit = this.onSubmit.bind(this);
-        this.onChange = this.onChange.bind(this);
-        this.state = { customerSearch: '' };
+        this.state = { redirect: false, term: '' };
+        this.onSubmitHandler = this.onSubmitHandler.bind(this);
+        this.onKeyUpHandler = this.onKeyUpHandler.bind(this);
+        this.onChangeHandler = this.onChangeHandler.bind(this);
     }
-    onSubmit(e) {
-        if (e) {
-            e.preventDefault();
-        }
-        const { customerSearch } = this.state;
-        const { search } = this.props;
-        search(customerSearch || undefined);    // Controller component
-        search((this.customerSearch && this.customerSearch.value) || undefined);    // Uncontroller component
+    onSubmitHandler(e) {
+        if (e) { e.preventDefault(); }
+        this.setState({ redirect: true });
     }
-    onChange(e) {
-        this.setState({ customerSearch: e.target.value });
+    onKeyUpHandler(e) {
+        e.charCode === 13 && this.onSubmit();
     }
-    onKeyUp(e) {
-        if (e.charCode === 13) {
-            this.onSubmit();
+    onChangeHandler(e) {
+        this.setState({ redirect: false, term: e.target.value });
+    }
+    componentDidMount() {
+        const queryObject = queryString.parse(this.props.location.search);
+        if (queryObject.search !== undefined) {
+            this.setState({ term: queryObject.search });
         }
     }
     render() {
-        const { customerSearch } = this.state;
+        const { redirect, term } = this.state;
         return (
-            <form className="form-inline" onSubmit={this.onSubmit}>
-                <div className="form-group">
-                    <label className="sr-only" htmlFor="customerSearch">Type to filter customers</label>
-                    <input
-                        value={customerSearch}
-                        id="customerSearch"
-                        type="text"
-                        className="form-control"placeholder="Type to filter customers"
-                        onChange={this.onChange}
-                    />
-                    {/*
-                    <input
-                        ref={(input) => { this.customerSearch = input; }}
-                        id="customerSearch"
-                        type="text"
-                        className="form-control"
-                    />*/
-                    }
-                </div>
-                <button type="submit" className="btn btn-default">Search</button>
-            </form>
+            <div>
+                <form onSubmit={this.onSubmitHandler}>
+                    <div className="input-group">
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Search customers"
+                            value={term}
+                            onChange={this.onChangeHandler}
+                            onKeyUp={this.onKeyUpHandler} 
+                        />
+                        <div className="input-group-btn">
+                            <button className="btn btn-default" type="submit">
+                                <span className="glyphicon glyphicon-search"></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                {redirect && (<Redirect to={{ pathname: CUSTOMERS_URI_PATTERN, search: `?search=${term}` }} />)}
+            </div>
         );
+    }
+    componentDidUpdate() {
+        const { redirect, term } = this.state;
+        const { searchCustomers, setPage } = this.props;
+        if (redirect) {
+            searchCustomers({ term });
+            setPage({ resource: CUSTOMERS });
+        }
     }
 }
 
-const dispatchMapToProps = dispatch => {
+const dispatchToProps = (dispatch) => {
     return {
-        search: (string) => {
-            console.log(string);
-        }
+        searchCustomers: (params) => {
+            dispatch(searchCustomers(params));
+        },
+        setPage: (params) => {
+            dispatch(setPage(params));
+        },
     };
-};
-
-Search.propTypes = {
-    search: PropTypes.func.isRequired,
-};
-
-export default connect(null, dispatchMapToProps)(Search);
+}
+export default withRouter(connect(null, dispatchToProps)(Search));

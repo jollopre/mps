@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { GET_ORDERS, POST_ORDER } from '../actions/orders';
-import { GET_CUSTOMERS } from '../actions/customers';
+import { GET_CUSTOMERS, SEARCH_CUSTOMERS } from '../actions/customers';
 import {
 	SET_PAGE,
 	ORDERS,
@@ -26,6 +26,7 @@ const reducerFactory = () => {
 			case GET_CUSTOMERS.PENDING:
 			case GET_ORDERS.ERROR:
 			case GET_CUSTOMERS.ERROR:
+			case SEARCH_CUSTOMERS.ERROR:
 				return {
 					...state,
 					[meta.page] : { 
@@ -35,6 +36,7 @@ const reducerFactory = () => {
 			};
 			case GET_ORDERS.SUCCESS:
 			case GET_CUSTOMERS.SUCCESS:
+			case SEARCH_CUSTOMERS.SUCCESS:
 				return {
 					...state,
 					[meta.page] : {

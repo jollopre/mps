@@ -17,8 +17,9 @@ const shouldGetCustomerRequest = (state, id) => state.customers.byId[id] === und
 
 export const GET_CUSTOMERS = asyncAction('GET_CUSTOMERS');
 export const GET_CUSTOMER = asyncAction('GET_CUSTOMER');
+export const SEARCH_CUSTOMERS = asyncAction('SEARCH_CUSTOMERS');
 
-export const getCustomersCreator = ({ page = 1 } = {}) => ({
+const getCustomersCreator = ({ page = 1 } = {}) => ({
 	type: API,
 	payload: {
 		url: `/api/customers?page=${page}`,
@@ -28,13 +29,23 @@ export const getCustomersCreator = ({ page = 1 } = {}) => ({
 	meta: { page, resource: CUSTOMERS },
 });
 
-export const getCustomerCreator = (id) => ({
+const getCustomerCreator = (id) => ({
 	type: API,
 	payload: {
 		url: `/api/customers/${id}`,
 		method: 'GET',
 		types: [GET_CUSTOMER.PENDING, GET_CUSTOMER.SUCCESS, GET_CUSTOMER.ERROR],
 	}
+});
+
+const searchCustomersCreator = ({ term = '', page = 1 } = {}) => ({
+	type: API,
+	payload: {
+		url: `/api/customers/search/${term}?page=${page}`,
+		method: 'GET',
+		types: [SEARCH_CUSTOMERS.PENDING, SEARCH_CUSTOMERS.SUCCESS, SEARCH_CUSTOMERS.ERROR],
+	},
+	meta: { page, resource: CUSTOMERS },
 });
 
 export const getCustomers = (params = {}) => {
@@ -54,3 +65,10 @@ export const getCustomer = (id) => {
 		return Promise.resolve();
 	}
 };
+
+export const searchCustomers = (params = {}) => {
+	return (dispatch) => {
+		return dispatch(searchCustomersCreator(params));
+	};
+}
+

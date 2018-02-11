@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   scope '/api' do
     # customers
-    resources :customers, only: [:index, :show]
+    resources :customers, only: [:index, :show] do
+        collection do
+            get 'search/:term', action: :search
+        end
+    end
     # feature_values
     resources :feature_values, only: [:update]
     

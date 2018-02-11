@@ -1,6 +1,7 @@
 import {
 	GET_CUSTOMERS,
-	GET_CUSTOMER
+	GET_CUSTOMER,
+	SEARCH_CUSTOMERS
 } from '../actions/customers';
 
 const arrayToMap = (array) => array.reduce((acc, value) => {
@@ -13,11 +14,13 @@ export const customers = (state = { byId: {}, isFetching: false }, action) => {
 	switch (type) {
 		case GET_CUSTOMERS.PENDING:
 		case GET_CUSTOMER.PENDING:
+		case SEARCH_CUSTOMERS.PENDING:
 			return {
 				...state,
 				isFetching: true
 			};
 		case GET_CUSTOMERS.SUCCESS:
+		case SEARCH_CUSTOMERS.SUCCESS:
 			return {
 				...state,
 				meta: payload.meta,
@@ -32,6 +35,7 @@ export const customers = (state = { byId: {}, isFetching: false }, action) => {
 			};
 		case GET_CUSTOMERS.ERROR:
 		case GET_CUSTOMER.ERROR:
+		case SEARCH_CUSTOMERS.ERROR: 
 			return {
 				...state,
 				isFetching: false

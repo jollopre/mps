@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getCustomers } from '../../actions/customers';
+import { withRouter } from 'react-router-dom';
+import queryString from 'query-string';
+import { getCustomers, searchCustomers } from '../../actions/customers';
 import { setPage, CUSTOMERS } from '../../actions/pagination';
 import Pagination from '../pagination';
 
@@ -10,8 +12,12 @@ class Pages extends Component {
 		this.onPageChangeHandler = this.onPageChangeHandler.bind(this);
 	}
 	onPageChangeHandler(currentPage) {
-		const { getCustomers, setPage } = this.props;
-		getCustomers({ page: currentPage });
+		const { getCustomers, searchCustomers, setPage, term } = this.props;
+		if (term) {
+			searchCustomers({ term, page: currentPage });
+		} else {
+			getCustomers({ page: currentPage });
+		}
 		setPage({ page: currentPage, resource: CUSTOMERS });
 	}
 	render() {
@@ -28,9 +34,11 @@ class Pages extends Component {
 
 const mapStateToProps = (state, ownProps) => {
 	const { customers, pagination } = state;
+	const queryObject = queryString.parse(ownProps.location.search);
 	return {
 		meta: customers.meta,
-		initialPage: pagination.customers.currentPage
+		initialPage: pagination.customers.currentPage,
+		term: queryObject.search,
 	};
 };
 
@@ -39,10 +47,13 @@ const mapDispatchToProps = (dispatch) => {
 		getCustomers: (params) => {
 			dispatch(getCustomers(params));
 		},
+		searchCustomers: (params) => {
+			dispatch(searchCustomers(params));
+		},
 		setPage: (params) => {
 			dispatch(setPage(params));
 		},
  	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Pages);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Pages));
