@@ -24,15 +24,6 @@ class Pages extends Component {
 				onPageChange={this.onPageChangeHandler} />
 		);
 	}
-	componentWillUnmount() {
-		// Following code it's commented since we want to preserve
-		// the customers currentPage in case she clickes Back to Orders
-		// when viewing a specific order
-		/*
-		const { setPage } = this.props;
-		setPage({ resource: CUSTOMERS }); // resets currentPage to its default value
-		*/
-	}
 }
 
 const mapStateToProps = (state, ownProps) => {

@@ -13,6 +13,7 @@ const shouldGetCustomersRequest = (state, params) => {
 	const customersPagination = state.pagination.customers;
 	return !customersPagination.pages[page] || customersPagination.pages[page].ids === [];
 };
+const shouldGetCustomerRequest = (state, id) => state.customers.byId[id] === undefined;
 
 export const GET_CUSTOMERS = asyncAction('GET_CUSTOMERS');
 export const GET_CUSTOMER = asyncAction('GET_CUSTOMER');
@@ -46,7 +47,10 @@ export const getCustomers = (params = {}) => {
 };
 
 export const getCustomer = (id) => {
-	return (dispatch) => {
-		return dispatch(getCustomerCreator(id));
+	return (dispatch, getState) => {
+		if (shouldGetCustomerRequest(getState(), id)) {
+			return dispatch(getCustomerCreator(id));
+		}
+		return Promise.resolve();
 	}
 };

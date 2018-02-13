@@ -28,10 +28,6 @@ class Pages extends Component {
 		}
 		return null;
 	}
-	componentWillUnmount() {
-		const { setPage } = this.props;
-		setPage({ resource: ORDERS }); // resets currentPage to its default value
-	}
 }
 
 const mapStateToProps = (state, ownProps) => {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getCustomers } from '../actions/customers';
 import Customers from '../components/customers';
+import { setPage, CUSTOMERS } from '../actions/pagination';
 
 class CustomersContainer extends Component {
     componentDidMount() {
@@ -17,6 +18,10 @@ class CustomersContainer extends Component {
             return (<Customers list={customers} />);
         }
         return null;    // isFetching is false and customers is null 
+    }
+    componentWillUnmount() {
+        const { setPage } = this.props;
+        setPage({ resource: CUSTOMERS });
     }
 }
 const mapStateToProps = (state) => {
@@ -37,6 +42,9 @@ const dispatchToProps = (dispatch) => {
     return {
         getCustomers: () => {
             dispatch(getCustomers());
+        },
+        setPage: (params) => {
+            dispatch(setPage(params));
         },
     }
 }

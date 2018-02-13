@@ -23,7 +23,6 @@ export default class App extends Component {
 	  				<Header>
 			  			<SignOut />
 			  		</Header>
-	  				{ /*<ErrorStack error={error} /> */}
 	  				<div className="container" style={{paddingBottom: '50px'}}>
 		  				<Switch>
 		  					<PrivateRoute

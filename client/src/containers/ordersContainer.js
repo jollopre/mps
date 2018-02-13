@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getOrders } from '../actions/orders';
 import Orders from '../components/orders';
+import { setPage, ORDERS } from '../actions/pagination';
 
 class OrdersContainer extends Component {
 	componentDidMount() {
@@ -11,13 +12,17 @@ class OrdersContainer extends Component {
 	render(){
 		const { orders, isFetching } = this.props;
         if (isFetching) {
-    	   return (<p>Fetching orders...</p>);
+            return (<p>Fetching orders...</p>);
         }
         else if (orders) {
             return (<Orders list={orders} />);
         }
         return null;    // isFetching is false and orders is null 
 	}
+    componentWillUnmount() {
+        const { setPage } = this.props;
+        setPage({ resource: ORDERS });
+    }
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -40,6 +45,9 @@ const mapDispatchToProps = (dispatch) => {
 		getOrders: (params) => {
 			dispatch(getOrders(params));
 		},
+        setPage: (params) => {
+            dispatch(setPage(params));
+        },
 	};
 };
 
