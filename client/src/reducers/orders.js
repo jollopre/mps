@@ -6,8 +6,8 @@ import { Format } from '../utils/format';
 
 const formatDates = (order) => ({
 	...order,
-	created_at: Format.dateToHumanReadable(order.created_at),
-	updated_at: Format.dateToHumanReadable(order.updated_at),
+	created_at: Format.db(order.created_at),
+	updated_at: Format.db(order.updated_at),
 });
 
 const arrayToMap = (array) => array.reduce((acc, value) => {
