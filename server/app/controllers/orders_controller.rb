@@ -14,13 +14,14 @@ class OrdersController < ApplicationController
 
 	# GET /orders?customer_id=foo&page=bar
 	def index
-		if params[:customer_id].present?
+		begin
+			params.require(:customer_id)
 			query = Order.where({ customer_id: params[:customer_id] })
 			meta = { count: query.count, per_page: Kaminari.config.default_per_page }
 			orders = query.page(params[:page] || 1)
 			render(json: { meta: meta, data: orders.as_json }, status: :ok)
-		else
-			render(json: { detail: 'Mising parameter customer_id' }, status: :bad_request)
+		rescue ActionController::ParameterMissing => e
+			render json: { detail: e.message }, status: :bad_request 
 		end
 	end
 
@@ -33,9 +34,25 @@ class OrdersController < ApplicationController
 			render json: { detail: e.message }, status: :not_found
 		end
 	end
+
+	# GET /orders/search/:term?customer_id=foo&page=bar
+	def search
+		begin
+			params.require(:customer_id)
+			query = Order.search(params[:term]).where(customer_id: params[:customer_id])
+			meta = { count: query.count, per_page: Kaminari.config.default_per_page }
+			orders = query.page(params[:page] || 1)
+			render(json: { meta: meta, data: orders.as_json }, status: :ok)
+		rescue ActionController::ParameterMissing => e
+			render json: { detail: e.message }, status: :bad_request 
+		end
+	end
+
 	private
 		def order_params
-			# require raises ParameterMissing if :order does not exist
-			params.require(:order).permit(:customer_id)
+			# require raises ParameterMissing if :order or order[:customer_id] do not exist
+			params.require(:order).permit(:customer_id).tap do |order_params|
+    		order_params.require(:customer_id)
+  		end
 		end
 end

@@ -26,7 +26,7 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
 		get orders_path, headers: { 'Authorization' => 'Token token='+@user.token }
   	assert_response :bad_request
   	error = ActiveSupport::JSON.decode(response.body)
-  	assert_equal(error['detail'], 'Mising parameter customer_id')
+  	assert_equal(error['detail'], 'param is missing or the value is empty: customer_id')
 	end
 
 	# GET /orders?customer_id

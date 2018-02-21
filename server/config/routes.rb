@@ -11,6 +11,9 @@ Rails.application.routes.draw do
     
     # orders
     resources :orders, only: [:create, :index, :show] do
+        collection do
+            get 'search/:term', action: :search
+        end
     	# order_items shadow nesting
     	resources :order_items, only: [:index, :create]
     end

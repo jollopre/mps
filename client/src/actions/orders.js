@@ -4,6 +4,7 @@ import { ORDERS } from './pagination';
 export const GET_ORDERS = asyncAction('GET_ORDERS');
 export const GET_ORDER = asyncAction('GET_ORDER');
 export const POST_ORDER = asyncAction('POST_ORDER');
+export const SEARCH_ORDERS = asyncAction('SEARCH_ORDERS');
 
 export const getOrdersCreator = ({ customerId, page = 1 } = {}) => ({
 	type: API,
@@ -33,6 +34,16 @@ export const postOrderCreator = ({ customerId, meta = {}} = {}) => ({
 		body: { order: { customer_id: customerId }},
 	},
 	meta
+});
+
+const searchOrdersCreator = ({ customerId = null, term = '', page = 1 } = {}) => ({
+	type: API,
+	payload: {
+		url: `/api/orders/search/${term}?customer_id=${customerId}&page=${page}`,
+		method: 'GET',
+		types: [SEARCH_ORDERS.PENDING, SEARCH_ORDERS.SUCCESS, SEARCH_ORDERS.ERROR],
+	},
+	meta: { page, resource: ORDERS },
 });
 
 /*
@@ -78,3 +89,9 @@ export const postOrder = (params) => {
 		return dispatch(postOrderCreator(params));
 	};
 };
+
+export const searchOrders = (params = {}) => {
+	return (dispatch) => {
+		return dispatch(searchOrdersCreator(params));
+	};
+}

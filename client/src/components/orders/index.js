@@ -4,6 +4,7 @@ import OrderNew from './orderNew';
 import OrderList from './orderList';
 import Pages from './pages';
 import Title from './title';
+import Search from './search';
 
 export default class Orders extends Component {
 	render() {
@@ -19,6 +20,11 @@ export default class Orders extends Component {
 	          	<OrderNew />
 	          </div>
 	        </div>
+	      </div>
+	      <div className="row">
+	      	<div className="col-xs-6 col-xs-offset-3">
+	      		<Search />
+	      	</div>
 	      </div>
 	      <div className="row">
 	      	<div className="col-xs-12">

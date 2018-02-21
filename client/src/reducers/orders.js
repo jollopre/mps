@@ -1,7 +1,8 @@
 import { 
 	GET_ORDERS,
 	GET_ORDER,
-	POST_ORDER } from '../actions/orders';
+	POST_ORDER,
+	SEARCH_ORDERS } from '../actions/orders';
 import { Format } from '../utils/format';
 
 const formatDates = (order) => ({
@@ -21,6 +22,7 @@ export const orders = (state = { byId: {}, isFetching: false}, action) => {
 		case GET_ORDERS.PENDING:
 		case GET_ORDER.PENDING:
 		case POST_ORDER.PENDING:
+		case SEARCH_ORDERS.PENDING:
 			return {
 				...state,
 				isFetching: true,
@@ -28,11 +30,13 @@ export const orders = (state = { byId: {}, isFetching: false}, action) => {
 		case GET_ORDERS.ERROR:
 		case GET_ORDER.ERROR:
 		case POST_ORDER.ERROR:
+		case SEARCH_ORDERS.ERROR:
 			return {
 				...state,
 				isFetching: false,
 			};
 		case GET_ORDERS.SUCCESS:
+		case SEARCH_ORDERS.SUCCESS:
 			return {
 				...state,
 				isFetching: false,

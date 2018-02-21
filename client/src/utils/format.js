@@ -16,7 +16,7 @@ export const Format = {
 			return nbr < 10 ? `0${nbr}` : nbr;
 		}
 		const date = new Date(iso8601);
-		return `${date.getUTCFullYear()}-${prependZero(date.getUTCMonth(), true)}-${date.getUTCDate()} \
+		return `${date.getUTCFullYear()}-${prependZero(date.getUTCMonth(), true)}-${prependZero(date.getUTCDate())} \
 			${prependZero(date.getUTCHours())}:${prependZero(date.getUTCMinutes())}:${prependZero(date.getUTCSeconds())}`;
 	}
 };

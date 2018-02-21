@@ -1,6 +1,12 @@
 class Order < ApplicationRecord
+	include ByDateTime
+
 	belongs_to :customer
 	has_many :order_items
+
+	scope :search, ->(term) {
+		by_created_at(term).or(by_updated_at(term))
+	}
 
 	def order_items_to_hash()
 		self.order_items.reduce({}) { |h, oi| h["#{oi.id}"] = oi.as_json(); h }
