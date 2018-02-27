@@ -21,7 +21,6 @@ class SignIn extends Component {
 		};
 		this.usernameChanged = this.usernameChanged.bind(this);
 		this.passwordChanged = this.passwordChanged.bind(this);
-		this.onKeyPressHandler = this.onKeyPressHandler.bind(this);
 		this.signInHandler = this.signInHandler.bind(this);
 	}
 	usernameChanged(e){
@@ -37,10 +36,6 @@ class SignIn extends Component {
 			password: value,
 			validationStatePassword: value !== '' ? true : false
 		});
-	}
-	onKeyPressHandler(e){
-		if(e.charCode === 13) // Enter key
-			this.signInHandler();
 	}
 	signInHandler(e){
 		if (e) {
@@ -88,7 +83,6 @@ class SignIn extends Component {
 						placeholder="Email address"
 						value={username}
 						onChange={this.usernameChanged}
-						onKeyPress={this.onKeyPressHandler}
 						aria-describedby="helpBlockUsername" />
 					<span
 						id="helpBlockUsername"
@@ -106,8 +100,7 @@ class SignIn extends Component {
 						className="form-control"
 						placeholder="Password"
 						value={password}
-						onChange={this.passwordChanged}
-						onKeyPress={this.onKeyPressHandler} />
+						onChange={this.passwordChanged} />
 					<span
 						id="helpBlockPassword"
 						className="help-block"

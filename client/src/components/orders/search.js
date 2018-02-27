@@ -11,7 +11,6 @@ class Search extends Component {
         super();
         this.state = { redirect: false, term: '', tips: false };
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
-        this.onKeyUpHandler = this.onKeyUpHandler.bind(this);
         this.onChangeHandler = this.onChangeHandler.bind(this);
         this.onChangeHandlerForTips = this.onChangeHandlerForTips.bind(this);
     }
@@ -19,14 +18,10 @@ class Search extends Component {
         if (e) { e.preventDefault(); }
         this.setState({ redirect: true });
     }
-    onKeyUpHandler(e) {
-        e.charCode === 13 && this.onSubmit();
-    }
     onChangeHandler(e) {
         this.setState({ redirect: false, term: e.target.value });
     }
     onChangeHandlerForTips() {
-        console.log('onClickTips');
         this.setState((prevState) => {
             return { tips: !prevState.tips }; 
         });
@@ -50,7 +45,6 @@ class Search extends Component {
                             placeholder="Search orders"
                             value={term}
                             onChange={this.onChangeHandler}
-                            onKeyUp={this.onKeyUpHandler} 
                         />
                         <div className="input-group-btn">
                             <button className="btn btn-default" type="submit">

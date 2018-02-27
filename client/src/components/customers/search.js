@@ -11,15 +11,11 @@ class Search extends Component {
         super();
         this.state = { redirect: false, term: '' };
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
-        this.onKeyUpHandler = this.onKeyUpHandler.bind(this);
         this.onChangeHandler = this.onChangeHandler.bind(this);
     }
     onSubmitHandler(e) {
         if (e) { e.preventDefault(); }
         this.setState({ redirect: true });
-    }
-    onKeyUpHandler(e) {
-        e.charCode === 13 && this.onSubmit();
     }
     onChangeHandler(e) {
         this.setState({ redirect: false, term: e.target.value });
@@ -42,7 +38,6 @@ class Search extends Component {
                             placeholder="Search customers"
                             value={term}
                             onChange={this.onChangeHandler}
-                            onKeyUp={this.onKeyUpHandler} 
                         />
                         <div className="input-group-btn">
                             <button className="btn btn-default" type="submit">
