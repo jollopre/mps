@@ -1,0 +1,20 @@
+Improvements:
+- customersContainer and ordersContainer always dispatch API call through componentDidMount (since the page is not
+	passed and the respective creators does not add param page by default). If explicitly passed, it is needed to dispatch setPage action wisely otherwise the render function is not called (e.g. customersContainer render the page2, the user clicks the Link Customers from menu and it is not redirected back to page1 automatically. Same behaviour happens for ordersContainer).
+- payload.meta coming from server should be moved to within pagination sub-state
+
+Issue 33:
+	-	Create test for customers#search controller
+	- Search for something and after press Customers NavLink again and page does not get reload without the search term. I suspect is componentWillReceiveProps makes the trick since clicking the logo re-loads the customerContainer.
+Issue 34
+	- Create test for orders#search controller
+	- Create test for Order.search scope method
+
+Issue 29:
+	- Prevent look for empty string
+	- Add company_name to the search term
+
+Issue 18:
+	- Provide nice messages when there is no data after requesting a resource (e.g. search for orders, etc)
+	- Add quantity into export order_item
+

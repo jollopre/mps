@@ -35,6 +35,12 @@ def populate_customers(values)
 	end
 end
 
+def populate_users(values)
+	values.each do |value|
+		User.create(value)
+	end 
+end
+
 populate_products([
 	'Plastic Carrier Bag',
 	'Kraft Paper Carrier Bag',
@@ -195,27 +201,5 @@ populate_customers([
 		contact_name: 'Someone', contact_surname: ''}
 ])
 
-=begin
-populate_features('', [
-	{feature_label: '', feature_type: '', feature_options: [] },
-	{feature_label: '', feature_type: '', feature_options: [] },
-	{feature_label: '', feature_type: '', feature_options: [] },
-	{feature_label: '', feature_type: '', feature_options: [] },
-	{feature_label: '', feature_type: '', feature_options: [] },
-	{feature_label: '', feature_type: '', feature_options: [] },
-	{feature_label: '', feature_type: '', feature_options: [] },
-	{feature_label: '', feature_type: '', feature_options: [] },
-	{feature_label: '', feature_type: '', feature_options: [] },
-	{feature_label: '', feature_type: '', feature_options: [] },
-	{feature_label: '', feature_type: '', feature_options: [] },
-	{feature_label: '', feature_type: '', feature_options: [] },
-	{feature_label: '', feature_type: '', feature_options: [] },
-	{feature_label: '', feature_type: '', feature_options: [] },
-	{feature_label: '', feature_type: '', feature_options: [] },
-	{feature_label: '', feature_type: '', feature_options: [] },
-	{feature_label: '', feature_type: '', feature_options: [] },
-	{feature_label: '', feature_type: '', feature_options: [] },
-	{feature_label: '', feature_type: '', feature_options: [] },
-	{feature_label: '', feature_type: '', feature_options: [] }
-])
-=end
+populate_users([{ name: "User name", surname: "User surname", email: "user@somewhere.com",
+	password: "secret_password" }])

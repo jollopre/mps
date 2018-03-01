@@ -1,0 +1,40 @@
+version: '3'
+services:
+  api:
+    build: ./server/
+    image: mps/api
+    volumes:
+      - ./server:/usr/src/app
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./db.env
+    depends_on:
+      - db
+      - db_test
+  ui:
+    build: ./client/
+    image: mps/ui
+    volumes:
+      - ./client:/usr/src/app
+      - ui_volume:/usr/src/app/node_modules
+    ports:
+      - "8080:3000"
+    depends_on:
+      - api
+  db:
+    image: postgres:9.5.5
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+    env_file:
+      - ./db.env
+  db_test:
+    image: postgres:9.5.5
+    volumes:
+      - db_test_volume:/var/lib/postgresql/data
+    env_file:
+      - ./db.env
+volumes:
+  db_volume:
+  db_test_volume:
+  ui_volume:
