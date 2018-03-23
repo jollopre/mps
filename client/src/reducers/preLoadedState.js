@@ -11,7 +11,7 @@ export const preLoadedState = () => {
 			byId: {},
 			isFetching: false,
 		},
-		orders: {
+		quotations: {
 			byId: {},
 			isFetching: false,
 		},
@@ -25,7 +25,7 @@ export const preLoadedState = () => {
 			isFetching: false,
 		},
 		pagination: {
-			orders: {
+			quotations: {
 				pages: {},
 				currentPage: 1,
 			},

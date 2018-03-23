@@ -1,5 +1,5 @@
 class Customer < ApplicationRecord
-	has_many :orders
+	has_many :quotations
 
 	scope :search, ->(term) {
 		# Using heredoc

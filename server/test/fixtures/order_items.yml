@@ -12,10 +12,10 @@
 
 order_item1:
   product: product1
-  order: order1
+  quotation: quotation1
   quantity: 2
 
 order_item2:
   product: product2
-  order: order2
+  quotation: quotation2
   quantity: 3

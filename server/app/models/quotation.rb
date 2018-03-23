@@ -1,4 +1,4 @@
-class Order < ApplicationRecord
+class Quotation < ApplicationRecord
 	include ByDateTime
 
 	belongs_to :customer

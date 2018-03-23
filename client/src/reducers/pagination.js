@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import { GET_ORDERS, POST_ORDER, SEARCH_ORDERS } from '../actions/orders';
+import { GET_QUOTATIONS, POST_QUOTATION, SEARCH_QUOTATIONS } from '../actions/quotations';
 import { GET_CUSTOMERS, SEARCH_CUSTOMERS } from '../actions/customers';
 import {
 	SET_PAGE,
-	ORDERS,
+	QUOTATIONS,
 	CUSTOMERS } from '../actions/pagination';
 
 // Factory reducer to create a paginable reducer for resource actions (GET, POST, DELETE).
@@ -22,12 +22,12 @@ const reducerFactory = () => {
 	const pages = (state = {}, action) => {
 		const { type, payload, meta } = action;
 		switch (type) {
-			case GET_ORDERS.PENDING:
+			case GET_QUOTATIONS.PENDING:
 			case GET_CUSTOMERS.PENDING:
-			case GET_ORDERS.ERROR:
+			case GET_QUOTATIONS.ERROR:
 			case GET_CUSTOMERS.ERROR:
 			case SEARCH_CUSTOMERS.ERROR:
-			case SEARCH_ORDERS.ERROR:
+			case SEARCH_QUOTATIONS.ERROR:
 				return {
 					...state,
 					[meta.page] : { 
@@ -35,10 +35,10 @@ const reducerFactory = () => {
 						isFetching: true,
 				}
 			};
-			case GET_ORDERS.SUCCESS:
+			case GET_QUOTATIONS.SUCCESS:
 			case GET_CUSTOMERS.SUCCESS:
 			case SEARCH_CUSTOMERS.SUCCESS:
-			case SEARCH_ORDERS.SUCCESS:
+			case SEARCH_QUOTATIONS.SUCCESS:
 				return {
 					...state,
 					[meta.page] : {
@@ -46,7 +46,7 @@ const reducerFactory = () => {
 						fetching: false,
 					}
 				};
-			case POST_ORDER.SUCCESS:
+			case POST_QUOTATION.SUCCESS:
 				if (state[meta.page] && state[meta.page].ids.length < meta.per_page) {
 					return {
 						...state,
@@ -71,18 +71,18 @@ const reducerFactory = () => {
 	});
 }
 
-const orders = reducerFactory();
+const quotations = reducerFactory();
 const customers = reducerFactory();
 
-export const pagination = (state = { orders: {}, customers: {}}, action) => {
+export const pagination = (state = { quotations: {}, customers: {}}, action) => {
 	const { meta } = action;
 	if (meta) {
 		const { resource } = meta;
 		switch (resource) {
-			case ORDERS:
+			case QUOTATIONS:
 				return {
 					...state, 
-					orders: orders(state.orders, action)
+					quotations: quotations(state.quotations, action)
 				};
 			case CUSTOMERS:
 				return {

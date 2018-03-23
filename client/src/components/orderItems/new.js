@@ -15,8 +15,8 @@ class New extends Component {
     getProducts();
   }
   onClickHandler(eventKey) {
-    const { orderId, postOrderItem } = this.props;
-    postOrderItem({ orderId: orderId, productId: eventKey });
+    const { quotationId, postOrderItem } = this.props;
+    postOrderItem({ quotationId, productId: eventKey });
   }
   _menuItems(products) {
     return products.map((value, i) => {
@@ -52,14 +52,14 @@ const mapDispatchToProps = (dispatch) => {
     getProducts: () => {
       dispatch(getProducts());
     },
-    postOrderItem: ({ orderId, productId }) => {
-      dispatch(postOrderItem({ orderId, productId }));
+    postOrderItem: ({ quotationId, productId }) => {
+      dispatch(postOrderItem({ quotationId, productId }));
     },
   }
 };
 
 New.propTypes = {
-  orderId: PropTypes.number.isRequired,
+  quotationId: PropTypes.number.isRequired,
   products: PropTypes.array.isRequired,
 };
 

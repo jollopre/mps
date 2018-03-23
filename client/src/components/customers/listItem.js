@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { orders_path } from '../../routes';
+import { quotations_path } from '../../routes';
 
 export default class ListItem extends Component {
 	render() {
@@ -15,8 +15,8 @@ export default class ListItem extends Component {
 				<td>{item.contact_name}</td>
 				<td>{item.contact_surname}</td>
 				<td>
-					<Link to={orders_path({ id: item.id })}>
-						Orders
+					<Link to={quotations_path({ id: item.id })}>
+						Quotations
 					</Link>
 				</td>
 			</tr>

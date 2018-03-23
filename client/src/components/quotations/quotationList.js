@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import OrderListItem from './orderListItem';
+import QuotationListItem from './quotationListItem';
 
-export default class OrderList extends Component {
+export default class QuotationList extends Component {
 	render() {
 		const { list } = this.props;
 		return (
@@ -17,7 +17,7 @@ export default class OrderList extends Component {
 						</tr>
 					</thead>
 					<tbody>
-						{list.map(order => (<OrderListItem key={order.id} order={order} />))}
+						{list.map(quotation => (<QuotationListItem key={quotation.id} quotation={quotation} />))}
 					</tbody>
 				</table>
 			</div>
@@ -25,6 +25,6 @@ export default class OrderList extends Component {
 	}
 }
 
-OrderList.propTypes = {
+QuotationList.propTypes = {
 	list: PropTypes.array.isRequired,
 };

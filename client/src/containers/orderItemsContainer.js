@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route, withRouter } from 'react-router';
 import { getOrderItems } from '../actions/orderItems';
-import { ORDER_ITEM_URI_PATTERN, order_order_item_match } from '../routes';
+import { ORDER_ITEM_URI_PATTERN, quotation_order_item_match } from '../routes';
 import List from '../components/orderItems/list';
 import OrderItemContainer from './orderItemContainer';
 
@@ -42,7 +42,7 @@ const mapStateToProps = (state, ownProps) => {
 	const arrayOrderItems = Object.keys(orderItems.byId).reduce((acc, id) => {
 		return acc.concat(orderItems.byId[id])
 	}, []);
-	const match = order_order_item_match(location.pathname) || ownProps.match;
+	const match = quotation_order_item_match(location.pathname) || ownProps.match;
 	return {
 		orderItems: arrayOrderItems,
 		products: arrayOrderItems.reduce((acc, value) => {
@@ -57,8 +57,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		getOrderItems: (orderId) => {
-			dispatch(getOrderItems(orderId));
+		getOrderItems: (quotationId) => {
+			dispatch(getOrderItems(quotationId));
 		},
 	}
 };

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
-import { orders_path } from '../../routes';
+import { quotations_path } from '../../routes';
 import queryString from 'query-string';
-import { searchOrders } from '../../actions/orders';
-import { setPage, ORDERS } from '../../actions/pagination';
+import { searchQuotations } from '../../actions/quotations';
+import { setPage, QUOTATIONS } from '../../actions/pagination';
 
 class Search extends Component {
     constructor() {
@@ -42,7 +42,7 @@ class Search extends Component {
                         <input
                             type="text"
                             className="form-control"
-                            placeholder="Search orders"
+                            placeholder="Search quotations"
                             value={term}
                             onChange={this.onChangeHandler}
                         />
@@ -72,25 +72,25 @@ class Search extends Component {
                     </div>)}
                 {redirect &&
                     (<Redirect
-                        to={{ pathname: orders_path({ id: customerId }),
+                        to={{ pathname: quotations_path({ id: customerId }),
                             search: `?search=${term}` }} />)}
             </div>
         );
     }
     componentDidUpdate() {
         const { redirect, term } = this.state;
-        const { searchOrders, setPage, match } = this.props;    // TODO get customerId from props instead
+        const { searchQuotations, setPage, match } = this.props;    // TODO get customerId from props instead
         if (redirect) {
-            searchOrders({ customerId: match.params.id, term });
-            setPage({ resource: ORDERS });
+            searchQuotations({ customerId: match.params.id, term });
+            setPage({ resource: QUOTATIONS });
         }
     }
 }
 
 const dispatchToProps = (dispatch) => {
     return {
-        searchOrders: (params) => {
-            dispatch(searchOrders(params));
+        searchQuotations: (params) => {
+            dispatch(searchQuotations(params));
         },
         setPage: (params) => {
             dispatch(setPage(params));

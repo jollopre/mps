@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import queryString from 'query-string';
-import { getOrders, searchOrders } from '../../actions/orders';
-import { setPage, ORDERS } from '../../actions/pagination';
+import { getQuotations, searchQuotations } from '../../actions/quotations';
+import { setPage, QUOTATIONS } from '../../actions/pagination';
 import Pagination from '../pagination';
 
 class Pages extends Component {
@@ -12,13 +12,13 @@ class Pages extends Component {
 		this.onPageChangeHandler = this.onPageChangeHandler.bind(this);
 	}
 	onPageChangeHandler(currentPage) {
-		const { customerId, getOrders, searchOrders, setPage, term } = this.props;
+		const { customerId, getQuotations, searchQuotations, setPage, term } = this.props;
 		if (term) {
-			searchOrders({ customerId, term, page: currentPage });
+			searchQuotations({ customerId, term, page: currentPage });
 		} else {
-			getOrders({ customerId, page: currentPage });
+			getQuotations({ customerId, page: currentPage });
 		}
-		setPage({ page: currentPage, resource: ORDERS });
+		setPage({ page: currentPage, resource: QUOTATIONS });
 	}
 	render() {
 		const { meta, initialPage } = this.props;
@@ -36,23 +36,23 @@ class Pages extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-	const { orders, pagination } = state;
+	const { quotations, pagination } = state;
 	const queryObject = queryString.parse(ownProps.location.search);
 	return {
-		meta: orders.meta,
+		meta: quotations.meta,
 		customerId: ownProps.match.params.id,
-		initialPage: pagination.orders.currentPage,
+		initialPage: pagination.quotations.currentPage,
 		term: queryObject.search,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		getOrders: (params) => {
-			dispatch(getOrders(params));
+		getQuotations: (params) => {
+			dispatch(getQuotations(params));
 		},
-		searchOrders: (params) => {
-			dispatch(searchOrders(params));
+		searchQuotations: (params) => {
+			dispatch(searchQuotations(params));
 		},
 		setPage: (params) => {
 			dispatch(setPage(params));

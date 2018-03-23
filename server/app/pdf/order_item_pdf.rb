@@ -9,7 +9,7 @@ class OrderItemPdf
 		stroke_horizontal_rule
 		pad(5) {
 			font_size(24) { text("Order Item: #{@order_item.id}") };
-			font_size(24) { text("Order: #{@order_item.order.id}") };
+			font_size(24) { text("Quotation: #{@order_item.quotation.id}") };
 			font_size(24) { text("Product: #{@order_item.product.name}") }
 		}
 		stroke_horizontal_rule

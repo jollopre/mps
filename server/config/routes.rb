@@ -9,8 +9,8 @@ Rails.application.routes.draw do
     # feature_values
     resources :feature_values, only: [:update]
     
-    # orders
-    resources :orders, only: [:create, :index, :show] do
+    # quotations
+    resources :quotations, only: [:create, :index, :show] do
         collection do
             get 'search/:term', action: :search
         end

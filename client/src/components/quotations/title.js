@@ -12,7 +12,7 @@ class Title extends Component {
 	render() {
 		const { customer } = this.props;
 		return (
-			<h2>{`${customer.reference ? customer.reference : '...'}'s Orders`}</h2>
+			<h2>{`${customer.reference ? customer.reference : '...'}'s Quotations`}</h2>
 		);
 	}
 }

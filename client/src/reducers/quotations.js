@@ -1,14 +1,14 @@
 import { 
-	GET_ORDERS,
-	GET_ORDER,
-	POST_ORDER,
-	SEARCH_ORDERS } from '../actions/orders';
+	GET_QUOTATIONS,
+	GET_QUOTATION,
+	POST_QUOTATION,
+	SEARCH_QUOTATIONS } from '../actions/quotations';
 import { Format } from '../utils/format';
 
-const formatDates = (order) => ({
-	...order,
-	created_at: Format.db(order.created_at),
-	updated_at: Format.db(order.updated_at),
+const formatDates = (quotation) => ({
+	...quotation,
+	created_at: Format.db(quotation.created_at),
+	updated_at: Format.db(quotation.updated_at),
 });
 
 const arrayToMap = (array) => array.reduce((acc, value) => {
@@ -16,40 +16,40 @@ const arrayToMap = (array) => array.reduce((acc, value) => {
 	return acc;
 }, {});
 
-export const orders = (state = { byId: {}, isFetching: false}, action) => {
+export const quotations = (state = { byId: {}, isFetching: false}, action) => {
 	const { type, payload } = action;
 	switch(type){
-		case GET_ORDERS.PENDING:
-		case GET_ORDER.PENDING:
-		case POST_ORDER.PENDING:
-		case SEARCH_ORDERS.PENDING:
+		case GET_QUOTATIONS.PENDING:
+		case GET_QUOTATION.PENDING:
+		case POST_QUOTATION.PENDING:
+		case SEARCH_QUOTATIONS.PENDING:
 			return {
 				...state,
 				isFetching: true,
 			};
-		case GET_ORDERS.ERROR:
-		case GET_ORDER.ERROR:
-		case POST_ORDER.ERROR:
-		case SEARCH_ORDERS.ERROR:
+		case GET_QUOTATIONS.ERROR:
+		case GET_QUOTATION.ERROR:
+		case POST_QUOTATION.ERROR:
+		case SEARCH_QUOTATIONS.ERROR:
 			return {
 				...state,
 				isFetching: false,
 			};
-		case GET_ORDERS.SUCCESS:
-		case SEARCH_ORDERS.SUCCESS:
+		case GET_QUOTATIONS.SUCCESS:
+		case SEARCH_QUOTATIONS.SUCCESS:
 			return {
 				...state,
 				isFetching: false,
 				meta: payload.meta,
 				byId: Object.assign({}, state.byId, arrayToMap(payload.data)),
 			};
-		case GET_ORDER.SUCCESS:
+		case GET_QUOTATION.SUCCESS:
 			return {
 				...state,
 				isFetching: false,
 				byId: Object.assign({}, state.byId, { [payload.id]: formatDates(payload) }),
 			};
-		case POST_ORDER.SUCCESS:
+		case POST_QUOTATION.SUCCESS:
 			return {
 				...state,
 				isFetching: false,

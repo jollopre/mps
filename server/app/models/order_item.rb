@@ -1,6 +1,6 @@
 class OrderItem < ApplicationRecord
 	# Associations
-	belongs_to :order
+	belongs_to :quotation
 	belongs_to :product
 	has_many :feature_values
 	has_many :features, through: :feature_values
@@ -20,7 +20,7 @@ class OrderItem < ApplicationRecord
 			super(options)
 		else
 			super({
-					only: [:id, :quantity, :order_id, :product_id],
+					only: [:id, :quantity, :quotation_id, :product_id],
 				}).merge(feature_values: feature_values_to_hash)
 		end
 	end

@@ -2,38 +2,38 @@ require 'test_helper'
 
 class OrderItemsControllerTest < ActionDispatch::IntegrationTest
   setup do
-  	# Following instance variables are created according to the values stored in fixtures orders.yml, etc ...
-  	@order = orders(:order1)
+  	# Following instance variables are created according to the values stored in fixtures quotations.yml, etc ...
+  	@quotation = quotations(:quotation1)
   	@product = products(:product1)
   	@order_item = order_items(:order_item1)
     @user = users(:user1)
   end
 
-  # GET /orders/:order_id/order_items
+  # GET /quotations/:quotation_id/order_items
   test 'should get success at index action' do
-  	get order_order_items_path(@order.id), headers: { 'Authorization' => 'Token token='+@user.token }
+  	get quotation_order_items_path(@quotation.id), headers: { 'Authorization' => 'Token token='+@user.token }
   	assert_response :ok
   end
 
-  # POST /orders/:order_id/order_items
+  # POST /quotations/:quotation_id/order_items
   test 'should get bad request for missing parameters at create action' do
-  	post order_order_items_path(@order.id), params: {order_item: {}}, headers: { 'Authorization' => 'Token token='+@user.token }
+  	post quotation_order_items_path(@quotation.id), params: {order_item: {}}, headers: { 'Authorization' => 'Token token='+@user.token }
   	assert_response :bad_request
   end
   test 'should get bad request for invalid data at create action (quantity as float)' do
-  	post order_order_items_path(@order.id), params: {order_item: {product_id: @product.id, quantity: 1.2}}, headers: { 'Authorization' => 'Token token='+@user.token }
+  	post quotation_order_items_path(@quotation.id), params: {order_item: {product_id: @product.id, quantity: 1.2}}, headers: { 'Authorization' => 'Token token='+@user.token }
   	assert_response :bad_request
   end
   test 'should get bad request for invalid data at create action (quantity as string)' do
-  	post order_order_items_path(@order.id), params: {order_item: {product_id: @product.id, quantity: 'aaa'}}, headers: { 'Authorization' => 'Token token='+@user.token }
+  	post quotation_order_items_path(@quotation.id), params: {order_item: {product_id: @product.id, quantity: 'aaa'}}, headers: { 'Authorization' => 'Token token='+@user.token }
   	assert_response :bad_request
   end
   test 'should get created for valid data at create action (quantity param missed)' do
-  	post order_order_items_path(@order.id), params: {order_item: {product_id: @product.id}}, headers: { 'Authorization' => 'Token token='+@user.token }
+  	post quotation_order_items_path(@quotation.id), params: {order_item: {product_id: @product.id}}, headers: { 'Authorization' => 'Token token='+@user.token }
   	assert_response :created
   end
   test 'should get created for valid data at create action (quantity param as integer)' do
-  	post order_order_items_path(@order.id), params: {order_item: {product_id: @product.id, quantity: 2}}, headers: { 'Authorization' => 'Token token='+@user.token }
+  	post quotation_order_items_path(@quotation.id), params: {order_item: {product_id: @product.id, quantity: 2}}, headers: { 'Authorization' => 'Token token='+@user.token }
   	assert_response :created
   end
 

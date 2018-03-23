@@ -6,10 +6,10 @@ export const PUT_ORDER_ITEM = asyncAction('PUT_ORDER_ITEM');
 export const GET_EXPORT_ORDER_ITEM = asyncAction('GET_EXPORT_ORDER_ITEM');
 export const CLEAR_EXPORT_ORDER_ITEM = 'CLEAR_EXPORT_ORDER_ITEM';
 
-const getOrderItemsCreator = (orderId) => ({
+const getOrderItemsCreator = (quotationId) => ({
 	type: API,
 	payload: {
-		url: `/api/orders/${orderId}/order_items`,
+		url: `/api/quotations/${quotationId}/order_items`,
 		method: 'GET',
 		types: [GET_ORDER_ITEMS.PENDING, GET_ORDER_ITEMS.SUCCESS, GET_ORDER_ITEMS.ERROR],
 	}
@@ -34,28 +34,28 @@ const putOrderItemCreator = (orderItemId, quantity) => ({
 	}
 });
 
-const postOrderItemCreator = ({ orderId = null, productId = null, quantity = 1 } = {}) => ({
+const postOrderItemCreator = ({ quotationId = null, productId = null, quantity = 1 } = {}) => ({
 	type: API,
 	payload: {
-		url: `/api/orders/${orderId}/order_items`,
+		url: `/api/quotations/${quotationId}/order_items`,
 		method: 'POST',
 		types: [POST_ORDER_ITEM.PENDING, POST_ORDER_ITEM.SUCCESS, POST_ORDER_ITEM.ERROR],
-		body: { order_item: { order_id: orderId, product_id: productId, quantity } },
+		body: { order_item: { quotation_id: quotationId, product_id: productId, quantity } },
 	}
 });
 
-const shouldGetOrderItemsRequest = (state, orderId) => {
+const shouldGetOrderItemsRequest = (state, quotationId) => {
 	const keys = state.orderItems.byId;
 	if (keys.length > 0) {
-		return Number(orderId) !== state.orderItems.byId[keys[0]].order_id;
+		return Number(quotationId) !== state.orderItems.byId[keys[0]].quotation_id;
 	}
 	return true;
 }
 
-export const getOrderItems = (orderId) => {
+export const getOrderItems = (quotationId) => {
 	return (dispatch, getState) => {
-		if (shouldGetOrderItemsRequest(getState(), orderId)) {
-			return dispatch(getOrderItemsCreator(orderId));
+		if (shouldGetOrderItemsRequest(getState(), quotationId)) {
+			return dispatch(getOrderItemsCreator(quotationId));
 		}
 		return Promise.resolve();
 	};
@@ -77,9 +77,9 @@ export const putOrderItem = (orderItemId, quantity) => {
 	};
 };
 
-export const postOrderItem = ({ orderId, productId, quantity }) => {
+export const postOrderItem = ({ quotationId, productId, quantity }) => {
 	return (dispatch) => {
-		return dispatch(postOrderItemCreator({ orderId, productId, quantity }));
+		return dispatch(postOrderItemCreator({ quotationId, productId, quantity }));
 	};
 };
 

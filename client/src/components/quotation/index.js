@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import OrderShow from '../orders/orderShow';
+import QuotationShow from '../quotations/quotationShow';
 import CustomerShow from '../customers/customerShow';
 import New from '../orderItems/new';
 import OrderItemsContainer from '../../containers/orderItemsContainer';
-import { orders_path } from '../../routes';
+import { quotations_path } from '../../routes';
 
-export default class Order extends Component {
+export default class Quotation extends Component {
 	render() {
-		const { order, customer } = this.props;
+		const { quotation, customer } = this.props;
 		return (
 			<div>
 				<div className="row">
 					<div className="col-xs-12">
 						<div className="pull-right" style={{ marginBottom: '10px' }}>
 							<Link
-								to={orders_path({ id: customer.id })}
+								to={quotations_path({ id: customer.id })}
 								className="btn btn-default"
 								role="button">
-								Back to Orders
+								Back to Quotations
 							</Link>
 						</div>
 					</div>
@@ -28,11 +28,11 @@ export default class Order extends Component {
 					<div className="col-xs-12">
 						<div className="panel panel-success">
 						  <div className="panel-heading">
-						    <h3 className="panel-title">{`Order ${order.id}`}</h3>
+						    <h3 className="panel-title">{`Quotation ${quotation.id}`}</h3>
 						  </div>
 						  <div className="panel-body">
 						    <div className="pull-left">
-						    	<OrderShow order={order} />
+						    	<QuotationShow quotation={quotation} />
 						    </div>
 						    <div className="pull-right">
 						    	<CustomerShow customer={customer} />
@@ -40,7 +40,7 @@ export default class Order extends Component {
 						    <div className="row">
 									<div className="col-xs-12">
 										<div className="pull-right">
-											{<New orderId={order.id} />}
+											{<New quotationId={quotation.id} />}
 										</div>
 									</div>
 								</div>
@@ -58,7 +58,7 @@ export default class Order extends Component {
 	}
 }
 
-Order.PropTypes = {
-	order: PropTypes.object.isRequired,
+Quotation.PropTypes = {
+	quotation: PropTypes.object.isRequired,
 	customer: PropTypes.object.isRequired,
 };

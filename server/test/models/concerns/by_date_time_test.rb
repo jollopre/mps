@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ByDateTest < ActiveSupport::TestCase
 	setup do
-		@by_date_time = Order	# Concern methods are included in the Order model so far
+		@by_date_time = Quotation	# Concern methods are included in the Quotation model so far
 	end
 
 	test 'strpdatetime raises ArgumentError for wrong number of arguments' do

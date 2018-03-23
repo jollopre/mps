@@ -1,20 +1,20 @@
 class OrderItemsController < ApplicationController
-	# GET /orders/:order_id/order_items
+	# GET /quotations/:quotation_id/order_items
 	def index
 		order_items = OrderItem
 			.includes({ feature_values: :feature })
-			.where({ order_id: params[:order_id] })
+			.where({ quotation_id: params[:quotation_id] })
 		render json: order_items.as_json(), status: :ok
 	end
 
-	# POST /orders/:order_id/order_items
+	# POST /quotations/:quotation_id/order_items
 	def create
 		# TODO ActionDispatch::ParamsParser for when JSON is invalid
 		begin
 			params.require(:order_item).permit(:quantity, :product_id)
 			orderItem = OrderItem.create!({ 
 				quantity: params[:order_item][:quantity].nil? ? 1 : params[:order_item][:quantity],
-				order_id: params[:order_id],
+				quotation_id: params[:quotation_id],
 				product_id: params[:order_item][:product_id] })
 			head :created, location: order_item_path(orderItem)
 		rescue ActionController::ParameterMissing => e

@@ -10,9 +10,9 @@
 #two: {}
 # column: value
 
-order1:
+quotation1:
   customer: customer1
-order2:
+quotation2:
   customer: customer1
-order3:
+quotation3:
   customer: customer2 
