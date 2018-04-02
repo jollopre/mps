@@ -10,12 +10,12 @@
 #two: {}
 # column: value
 
-order_item1:
+enquiry1:
   product: product1
   quotation: quotation1
   quantity: 2
 
-order_item2:
+enquiry2:
   product: product2
   quotation: quotation2
   quantity: 3

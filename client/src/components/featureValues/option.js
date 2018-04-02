@@ -41,7 +41,7 @@ class Option extends Component {
 			// action to change the value was deferred
 			this.action();	
 		}
-		// This permits swaping JUST the typeahead selected value for a featureValue whenever the orderItem changes
+		// This permits swaping JUST the typeahead selected value for a featureValue whenever the enquiry changes
 		if (nextProps.featureValue.value !== this.state.value) {
 			this.setState({ value: nextProps.featureValue.value ? [feature.feature_options[nextProps.featureValue.value]] : [] });
 		}

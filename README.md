@@ -46,7 +46,6 @@ If you want to test the code, there are already unit and functional test in plac
 Once you finish using the system, you can stop and remove the containers safely by running:
 
 ```
-	docker-compose stop
-	docker-compose rm -f
+	docker-compose rm -sf
 ```
 Remember that any data generated after using the system is not ephemeral thanks to the docker volume mounted for the postgres container running.

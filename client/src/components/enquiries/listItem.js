@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { quotation_order_item_path } from '../../routes';
+import { quotation_enquiry_path } from '../../routes';
 
 export default class ListItem extends Component {
 	render() {
-		const { orderItem, product, active } = this.props;
+		const { enquiry, product, active } = this.props;
 		return (
-			<Link to={quotation_order_item_path({
-				id: orderItem.quotation_id,
-				order_item_id: orderItem.id })}
-				className={`list-group-item ${active === orderItem.id ? 'active' : ''}`}>
+			<Link to={quotation_enquiry_path({
+				id: enquiry.quotation_id,
+				enquiry_id: enquiry.id })}
+				className={`list-group-item ${active === enquiry.id ? 'active' : ''}`}>
 				<span className="badge">
-					{orderItem.quantity}
+					{enquiry.quantity}
 				</span>
 				{product.name}
 			</Link>
@@ -21,7 +21,7 @@ export default class ListItem extends Component {
 }
 
 ListItem.propTypes = {
-	orderItem: PropTypes.object.isRequired,
+	enquiry: PropTypes.object.isRequired,
 	product: PropTypes.object.isRequired,
 	active: PropTypes.number.isRequired,
 };

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import QuotationShow from '../quotations/quotationShow';
 import CustomerShow from '../customers/customerShow';
-import New from '../orderItems/new';
-import OrderItemsContainer from '../../containers/orderItemsContainer';
+import New from '../enquiries/new';
+import EnquiriesContainer from '../../containers/enquiriesContainer';
 import { quotations_path } from '../../routes';
 
 export default class Quotation extends Component {
@@ -46,7 +46,7 @@ export default class Quotation extends Component {
 								</div>
 								<div className="row">
 									<div className="col-xs-12">
-										{<OrderItemsContainer />}
+										{<EnquiriesContainer />}
 									</div>
 								</div>
 						  </div>

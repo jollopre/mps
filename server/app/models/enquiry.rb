@@ -1,4 +1,4 @@
-class OrderItem < ApplicationRecord
+class Enquiry < ApplicationRecord
 	# Associations
 	belongs_to :quotation
 	belongs_to :product
@@ -32,6 +32,6 @@ class OrderItem < ApplicationRecord
 			datetime = DateTime.now()
 			fv = self.product.features.map { |f| "('', #{f.id}, #{self.id}, '#{datetime}', '#{datetime}')" }.join(",")
 			ActiveRecord::Base.connection
-				.execute("INSERT INTO feature_values (value, feature_id, order_item_id, created_at, updated_at) VALUES #{fv}")
+				.execute("INSERT INTO feature_values (value, feature_id, enquiry_id, created_at, updated_at) VALUES #{fv}")
 		end
 end

@@ -7,9 +7,9 @@ import Option from '../featureValues/option';
 
 export default class Edit extends Component {
 	featureComponents() {
-		const { orderItem, product } = this.props;
-		return Object.keys(orderItem.feature_values).map((id) => {
-			const fv = orderItem.feature_values[id];
+		const { enquiry, product } = this.props;
+		return Object.keys(enquiry.feature_values).map((id) => {
+			const fv = enquiry.feature_values[id];
 			const feature = product.features[fv.feature_id];
 			if (feature.feature_type === "float" ||
 				feature.feature_type === "integer" ||
@@ -23,19 +23,19 @@ export default class Edit extends Component {
 		});
 	}
 	render() {
-		const { orderItem } = this.props;
+		const { enquiry } = this.props;
 		return (
 			<div>
 				<div className="row">
 					<div className="col-xs-12">
 						<div className="pull-left">
-							<Export id={orderItem.id} />
+							<Export id={enquiry.id} />
 						</div>
 					</div>
 				</div>
 				<div className="row">
 					<div className="col-xs-12">
-						{<Quantity id={orderItem.id} value={orderItem.quantity} />}
+						{<Quantity id={enquiry.id} value={enquiry.quantity} />}
 					</div>
 					<div className="col-xs-12">
 						{this.featureComponents()}
@@ -47,6 +47,6 @@ export default class Edit extends Component {
 }
 
 Edit.PropTypes = {
-	orderItem: PropTypes.object.isRequired,
+	enquiry: PropTypes.object.isRequired,
 	product: PropTypes.object.isRequired,
 };

@@ -4,21 +4,21 @@ import ListItem from './listItem';
 
 export default class List extends Component {
 	render() {
-		const { orderItems, products, orderItemIdActive } = this.props;
+		const { enquiries, products, enquiryIdActive } = this.props;
 		return (
 			<div className="list-group">
-				{orderItems.map(o => (<ListItem
+				{enquiries.map(o => (<ListItem
 					key={o.id}
-					orderItem={o}
+					enquiry={o}
 					product={products[o.product_id]}
-					active={orderItemIdActive} />))}
+					active={enquiryIdActive} />))}
 			</div>
 		);
 	}
 }
 
 List.PropTypes = {
-	orderItems: PropTypes.array.isRequired,
+	enquiries: PropTypes.array.isRequired,
 	products: PropTypes.object.isRequired,
-	orderItemIdActive: PropTypes.number.isRequired,
+	enquiryIdActive: PropTypes.number.isRequired,
 };

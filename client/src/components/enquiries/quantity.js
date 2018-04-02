@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { debounce } from '../../utils/debounce';
-import { putOrderItem } from '../../actions/orderItems';
+import { putEnquiry } from '../../actions/enquiries';
 
 class Quantity extends Component {
 	constructor(props) {
@@ -12,9 +12,9 @@ class Quantity extends Component {
 		this.state = { value: this.props.value };
 	}
 	action() {
-		const { id, putOrderItem } = this.props;
+		const { id, putEnquiry } = this.props;
 		if (this.state.value > 0) {
-			putOrderItem(id, this.state.value*1);
+			putEnquiry(id, this.state.value*1);
 		}
 	}
 	onChangeHandler(e) {
@@ -53,8 +53,8 @@ class Quantity extends Component {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		putOrderItem: (id, quantity) => {
-			dispatch(putOrderItem(id, quantity));
+		putEnquiry: (id, quantity) => {
+			dispatch(putEnquiry(id, quantity));
 		},
 	};
 };

@@ -1,16 +1,16 @@
-class OrderItemPdf
+class EnquiryPdf
 	include Prawn::View
 
-	def initialize(order_item)
-		@order_item = order_item
+	def initialize(enquiry)
+		@enquiry = enquiry
 	end
 
 	def header
 		stroke_horizontal_rule
 		pad(5) {
-			font_size(24) { text("Order Item: #{@order_item.id}") };
-			font_size(24) { text("Quotation: #{@order_item.quotation.id}") };
-			font_size(24) { text("Product: #{@order_item.product.name}") }
+			font_size(24) { text("Order Item: #{@enquiry.id}") };
+			font_size(24) { text("Quotation: #{@enquiry.quotation.id}") };
+			font_size(24) { text("Product: #{@enquiry.product.name}") }
 		}
 		stroke_horizontal_rule
 		move_down(10)
@@ -18,7 +18,7 @@ class OrderItemPdf
 
 	def body
 		any_value=false
-		@order_item.feature_values.each do |fv|
+		@enquiry.feature_values.each do |fv|
 			if fv.feature.option? && fv.value.present?
 				any_value ||= true
 				text("<b>#{fv.feature.feature_label.name}:</b> #{fv.feature.get_feature_option_for(fv.value.to_i)}",
@@ -38,7 +38,7 @@ class OrderItemPdf
 	end
 
 	def find_feature_value_for(feature)
-		return @order_item.feature_values.find { |fv| fv.feature == feature }
+		return @enquiry.feature_values.find { |fv| fv.feature == feature }
 	end
 
 	def render_pdf

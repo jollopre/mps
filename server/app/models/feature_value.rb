@@ -1,6 +1,6 @@
 class FeatureValue < ApplicationRecord
 	# Associations
-	belongs_to :order_item
+	belongs_to :enquiry
 	belongs_to :feature
 
 	# Validations
@@ -11,7 +11,7 @@ class FeatureValue < ApplicationRecord
 			super(options)
 		else
 			super({
-				only: [:id, :feature_id, :order_item_id]
+				only: [:id, :feature_id, :enquiry_id]
 			}).merge({ 'value' => self.value_to_feature_type })
 		end
 	end

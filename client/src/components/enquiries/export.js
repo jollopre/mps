@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getExportOrderItem, clearExportOrderItem } from '../../actions/orderItems';
+import { getExportEnquiry, clearExportEnquiry } from '../../actions/enquiries';
 
 class Export extends Component {
 	constructor() {
@@ -13,7 +13,7 @@ class Export extends Component {
 		this.setState({ a: el });
 	}
 	componentWillReceiveProps(nextProps) {
-		const { id, objectURL, clearExportOrderItem } = this.props;
+		const { id, objectURL, clearExportEnquiry } = this.props;
 		if (nextProps.objectURL && nextProps.objectURL !== objectURL) {
 			const link = document.createElement('a');
   		link.href = nextProps.objectURL;
@@ -21,7 +21,7 @@ class Export extends Component {
   		document.body.appendChild(link);
   		link.click();
   		document.body.removeChild(link);
-  		setTimeout(() => { clearExportOrderItem(); }, 1000);
+  		setTimeout(() => { clearExportEnquiry(); }, 1000);
 		}
 	}
 	onClickHandler(e) {
@@ -40,18 +40,18 @@ class Export extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-	const { orderItems } = state;
+	const { enquiries } = state;
 	return {
-		objectURL: orderItems.objectURL
+		objectURL: enquiries.objectURL
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		exporting: (id) => {
-			dispatch(getExportOrderItem(id));
+			dispatch(getExportEnquiry(id));
 		},
-		clearExportOrderItem: () => dispatch(clearExportOrderItem()),
+		clearExportEnquiry: () => dispatch(clearExportEnquiry()),
 	};
 };
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180323003411) do
+ActiveRecord::Schema.define(version: 20180402232612) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,16 @@ ActiveRecord::Schema.define(version: 20180323003411) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["reference"], name: "index_customers_on_reference"
+  end
+
+  create_table "enquiries", id: :serial, force: :cascade do |t|
+    t.integer "quantity", default: 1
+    t.integer "quotation_id"
+    t.integer "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_enquiries_on_product_id"
+    t.index ["quotation_id"], name: "index_enquiries_on_quotation_id"
   end
 
   create_table "feature_labels", id: :serial, force: :cascade do |t|
@@ -46,11 +56,11 @@ ActiveRecord::Schema.define(version: 20180323003411) do
   create_table "feature_values", id: :serial, force: :cascade do |t|
     t.string "value"
     t.integer "feature_id"
-    t.integer "order_item_id"
+    t.integer "enquiry_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["enquiry_id"], name: "index_feature_values_on_enquiry_id"
     t.index ["feature_id"], name: "index_feature_values_on_feature_id"
-    t.index ["order_item_id"], name: "index_feature_values_on_order_item_id"
   end
 
   create_table "features", id: :serial, force: :cascade do |t|
@@ -62,16 +72,6 @@ ActiveRecord::Schema.define(version: 20180323003411) do
     t.index ["feature_label_id"], name: "index_features_on_feature_label_id"
     t.index ["feature_type"], name: "index_features_on_feature_type"
     t.index ["product_id"], name: "index_features_on_product_id"
-  end
-
-  create_table "order_items", id: :serial, force: :cascade do |t|
-    t.integer "quantity", default: 1
-    t.integer "quotation_id"
-    t.integer "product_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["product_id"], name: "index_order_items_on_product_id"
-    t.index ["quotation_id"], name: "index_order_items_on_quotation_id"
   end
 
   create_table "products", id: :serial, force: :cascade do |t|
@@ -100,12 +100,12 @@ ActiveRecord::Schema.define(version: 20180323003411) do
     t.index ["token"], name: "index_users_on_token"
   end
 
+  add_foreign_key "enquiries", "products"
+  add_foreign_key "enquiries", "quotations"
   add_foreign_key "feature_options", "features"
+  add_foreign_key "feature_values", "enquiries"
   add_foreign_key "feature_values", "features"
-  add_foreign_key "feature_values", "order_items"
   add_foreign_key "features", "feature_labels"
   add_foreign_key "features", "products"
-  add_foreign_key "order_items", "products"
-  add_foreign_key "order_items", "quotations"
   add_foreign_key "quotations", "customers"
 end

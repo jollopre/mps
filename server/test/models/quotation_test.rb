@@ -5,13 +5,13 @@ class QuotationTest < ActiveSupport::TestCase
 		@q = quotations(:quotation1)
 	end
 
-	test 'should return a hash for order_items_to_hash' do
-		h = @q.order_items_to_hash()
+	test 'should return a hash for enquiries_to_hash' do
+		h = @q.enquiries_to_hash()
 		assert(h.is_a?(Hash))
 	end
-	test 'every order_item id exists as key for order_items_to_hash' do
-		h = @q.order_items_to_hash()
-		@q.order_items.each do |oi|
+	test 'every enquiry id exists as key for enquiries_to_hash' do
+		h = @q.enquiries_to_hash()
+		@q.enquiries.each do |oi|
 			assert(h.has_key?("#{oi.id}"))
 		end
 	end
@@ -21,12 +21,12 @@ class QuotationTest < ActiveSupport::TestCase
 		assert_includes(keys, 'created_at')
 		assert_includes(keys, 'updated_at')
 		assert_includes(keys, 'customer_id')
-		assert_includes(keys, 'order_item_ids')
+		assert_includes(keys, 'enquiry_ids')
 	end
-	test 'as_json returns a hash for the order_items key' do
+	test 'as_json returns a hash for the enquiries key' do
 		quotation_hash = @q.as_json()
-		if quotation_hash.key?('order_items')
-			assert(quotation_hash['order_items'].is_a?(Hash))
+		if quotation_hash.key?('enquiries')
+			assert(quotation_hash['enquiries'].is_a?(Hash))
 		end
 	end
 end

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { getProducts } from '../../actions/products';
-import { postOrderItem } from '../../actions/orderItems';
+import { postEnquiry } from '../../actions/enquiries';
 
 class New extends Component {
   constructor(props){
@@ -15,8 +15,8 @@ class New extends Component {
     getProducts();
   }
   onClickHandler(eventKey) {
-    const { quotationId, postOrderItem } = this.props;
-    postOrderItem({ quotationId, productId: eventKey });
+    const { quotationId, postEnquiry } = this.props;
+    postEnquiry({ quotationId, productId: eventKey });
   }
   _menuItems(products) {
     return products.map((value, i) => {
@@ -30,7 +30,7 @@ class New extends Component {
     return (
       <DropdownButton
         bsStyle="success"
-        title="New Order Item"
+        title="New Enquiry"
         id="dropdown-products">
           {this._menuItems(products)}
       </DropdownButton>
@@ -52,8 +52,8 @@ const mapDispatchToProps = (dispatch) => {
     getProducts: () => {
       dispatch(getProducts());
     },
-    postOrderItem: ({ quotationId, productId }) => {
-      dispatch(postOrderItem({ quotationId, productId }));
+    postEnquiry: ({ quotationId, productId }) => {
+      dispatch(postEnquiry({ quotationId, productId }));
     },
   }
 };

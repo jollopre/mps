@@ -1,8 +1,8 @@
 require 'test_helper'
 
-class OrderItemTest < ActiveSupport::TestCase
+class EnquiryTest < ActiveSupport::TestCase
 	setup do
-		@oi = order_items(:order_item1)
+		@oi = enquiries(:enquiry1)
 	end
 	test 'should return a hash for feature_values_to_hash' do
 		h = @oi.feature_values_to_hash()

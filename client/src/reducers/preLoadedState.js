@@ -15,7 +15,7 @@ export const preLoadedState = () => {
 			byId: {},
 			isFetching: false,
 		},
-		orderItems: {
+		enquiries: {
 			byId: {},
 			isFetching: false,
 			objectURL: null, // Represents the URL of the latest pdf exported

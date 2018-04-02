@@ -8,6 +8,6 @@ RUN npm install
 
 VOLUME /usr/src/app
 
-EXPOSE 8080
+EXPOSE 3000
 
 CMD ["npm", "start"]

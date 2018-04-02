@@ -14,12 +14,12 @@ Rails.application.routes.draw do
         collection do
             get 'search/:term', action: :search
         end
-    	# order_items shadow nesting
-    	resources :order_items, only: [:index, :create]
+    	# enquiries shadow nesting
+    	resources :enquiries, only: [:index, :create]
     end
 
-    # order_items actions that do not need hierarchy
-    resources :order_items, only: [:show, :update] do
+    # enquiries actions that do not need hierarchy
+    resources :enquiries, only: [:show, :update] do
       get 'export', on: :member
     end
 

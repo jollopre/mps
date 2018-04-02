@@ -14,7 +14,7 @@ class FeatureValueTest < ActiveSupport::TestCase
 		keys = fv_hash.keys()
 		assert_includes(keys, 'id')
 		assert_includes(keys, 'feature_id')
-		assert_includes(keys, 'order_item_id')
+		assert_includes(keys, 'enquiry_id')
 		assert_includes(keys, 'value')
 	end
 	test 'value_to_feature_type conform to its feature_type' do

@@ -3,7 +3,7 @@ import { matchPath } from 'react-router';
 export const CUSTOMERS_URI_PATTERN = '/customers';
 export const QUOTATIONS_URI_PATTERN = '/customers/:id/quotations';
 export const QUOTATION_URI_PATTERN = '/quotations/:id';
-export const ORDER_ITEM_URI_PATTERN = `${QUOTATION_URI_PATTERN}/order_items/:order_item_id`;
+export const ENQUIRY_URI_PATTERN = `${QUOTATION_URI_PATTERN}/enquiries/:enquiry_id`;
 export const SIGN_IN_URI_PATTERN = '/sign_in';
 
 export const quotations_path = ({ id }) => {
@@ -14,9 +14,9 @@ export const quotation_path = ({ id } = {}) => {
 	return QUOTATION_URI_PATTERN.replace(/:id/, id);
 };
 
-export const quotation_order_item_path = ({ id, order_item_id } = {}) => {
-	return ORDER_ITEM_URI_PATTERN.replace(/([^:]+)(:id)([^:]+)(:order_item_id)/, (match, p1, p2, p3, p4) => {
-		return `${p1}${id}${p3}${order_item_id}`;
+export const quotation_enquiry_path = ({ id, enquiry_id } = {}) => {
+	return ENQUIRY_URI_PATTERN.replace(/([^:]+)(:id)([^:]+)(:enquiry_id)/, (match, p1, p2, p3, p4) => {
+		return `${p1}${id}${p3}${enquiry_id}`;
 	});
 };
 
@@ -26,7 +26,7 @@ export const quotation_order_item_path = ({ id, order_item_id } = {}) => {
  * for when parent Route wants to access to params only available
  * in child matched
  * @param location {String} - Represents where the app is now
- * @param uri_pattern {String} - One of the constants defined above (e.g. ORDER_ITEM_URI_PATTERN)
+ * @param uri_pattern {String} - One of the constants defined above (e.g. ENQUIRY_URI_PATTERN)
  * return match object if location matches uri_pattern, otherwise null
 */
 
@@ -38,8 +38,8 @@ const match_from_location = (location, uri_pattern) => {
 	});
 };
 
-export const quotation_order_item_match = (location) => {
-	return match_from_location(location, ORDER_ITEM_URI_PATTERN);
+export const quotation_enquiry_match = (location) => {
+	return match_from_location(location, ENQUIRY_URI_PATTERN);
 };
 
 /* 
