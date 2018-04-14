@@ -24,13 +24,13 @@ const getExportEnquiryCreator = (enquiryId) => ({
 	}
 });
 
-const putEnquiryCreator = (enquiryId, quantity) => ({
+const putEnquiryCreator = (enquiryId, params) => ({
 	type: API,
 	payload: {
 		url: `/api/enquiries/${enquiryId}`,
 		method: 'PUT',
 		types: [PUT_ENQUIRY.PENDING, PUT_ENQUIRY.SUCCESS, PUT_ENQUIRY.ERROR],
-		body: { enquiry: { quantity }},
+		body: { enquiry: params },
 	}
 });
 
@@ -71,9 +71,9 @@ export const clearExportEnquiry = () => ({
 	type: CLEAR_EXPORT_ENQUIRY
 });
 
-export const putEnquiry = (enquiryId, quantity) => {
+export const putEnquiry = (enquiryId, params = {}) => {
 	return (dispatch) => {
-		return dispatch(putEnquiryCreator(enquiryId, quantity));
+		return dispatch(putEnquiryCreator(enquiryId, params));
 	};
 };
 

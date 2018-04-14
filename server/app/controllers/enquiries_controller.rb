@@ -40,7 +40,7 @@ class EnquiriesController < ApplicationController
 	def update
 		# TODO ActionDispatch::ParamsParser for when JSON is invalid
 		begin
-			permitted = params.require(:enquiry).permit(:quantity)
+			permitted = params.require(:enquiry).permit(:quantity, :quantity2, :quantity3)
 			enquiry = Enquiry
 				.includes({ feature_values: :feature })
 				.find(params[:id])

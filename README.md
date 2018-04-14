@@ -35,10 +35,11 @@ Since the API and UI code, accessible through server and client folders, are vol
 
 ## Testing
 
-If you want to test the code, there are already unit and functional test in place for the api. Please, connect to the rails api using its associated name (e.g. mps_api_1) to execute the tests as follows:
+If you want to test the code, there are already unit and functional test in place for the api. Please, type the following command to
+execute the tests in place:
 
 ```
-	docker-compose run api bash after-start-postgres.sh rails test -e test
+	docker-compose run api bash after-start-postgres.sh rails test RAILS_ENV=test
 ```
 
 ## Shutdown

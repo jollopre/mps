@@ -7,4 +7,8 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+  def auth_header
+  	@user = users(:user1)
+  	return { 'Authorization' => 'Token token='+@user.token }
+  end
 end

@@ -3,6 +3,15 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { quotation_enquiry_path } from '../../routes';
 
+export const QuantityBadge = ({ quantity }) => {
+	if (quantity > 0) {
+		return (
+				<span className="badge">
+					{quantity}
+				</span>);
+	}
+	return null;
+}
 export default class ListItem extends Component {
 	render() {
 		const { enquiry, product, active } = this.props;
@@ -11,10 +20,20 @@ export default class ListItem extends Component {
 				id: enquiry.quotation_id,
 				enquiry_id: enquiry.id })}
 				className={`list-group-item ${active === enquiry.id ? 'active' : ''}`}>
-				<span className="badge">
-					{enquiry.quantity}
-				</span>
-				{product.name}
+				<ul className="list-inline">
+					<li>
+						{product.name}
+					</li>
+					<li>
+						<QuantityBadge quantity={enquiry.quantity} />
+					</li>
+					<li>
+						<QuantityBadge quantity={enquiry.quantity2} />
+					</li>
+					<li>
+						<QuantityBadge quantity={enquiry.quantity3} />
+					</li>
+				</ul>
 			</Link>
 		); 
 	}

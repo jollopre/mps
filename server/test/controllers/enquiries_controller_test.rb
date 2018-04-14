@@ -60,10 +60,25 @@ class EnquiriesControllerTest < ActionDispatch::IntegrationTest
   	put enquiry_path(@enquiry.id), params: {enquiry: {quantity: 'aaa'}}, headers: { 'Authorization' => 'Token token='+@user.token }
   	assert_response :bad_request
   end
+  test 'should get bad request for a quantity less than zero' do
+    put enquiry_path(@enquiry.id), params: {enquiry: { quantity: -1 }}, headers: { 'Authorization' => 'Token token='+@user.token }
+    assert_response(:bad_request)
+    put enquiry_path(@enquiry.id), params: {enquiry: { quantity2: -1 }}, headers: { 'Authorization' => 'Token token='+@user.token }
+    assert_response(:bad_request)
+    put enquiry_path(@enquiry.id), params: {enquiry: { quantity3: -1 }}, headers: { 'Authorization' => 'Token token='+@user.token }
+    assert_response(:bad_request)
+  end
   test 'should get success at update action' do
   	put enquiry_path(@enquiry.id), params: {enquiry: {quantity: 1000}}, headers: { 'Authorization' => 'Token token='+@user.token }
   	assert_response :ok
+    put enquiry_path(@enquiry.id), params: {enquiry: {quantity2: 1000}}, headers: { 'Authorization' => 'Token token='+@user.token }
+    assert_response :ok
+    put enquiry_path(@enquiry.id), params: {enquiry: {quantity3: 1000}}, headers: { 'Authorization' => 'Token token='+@user.token }
+    assert_response :ok
+    put enquiry_path(@enquiry.id), params: {enquiry: { quantity: 1000, quantity2: 1000, quantity3: 1000 }}, headers: { 'Authorization' => 'Token token='+@user.token }
+    assert_response :ok
   end
+  # GET /api/enquiries/:id/export
   test 'should get not found at export action' do
     get export_enquiry_path(10000), headers: { 'Authorization' => 'Token token='+@user.token }
     assert_response :not_found

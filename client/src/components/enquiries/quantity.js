@@ -12,9 +12,9 @@ class Quantity extends Component {
 		this.state = { value: this.props.value };
 	}
 	action() {
-		const { id, putEnquiry } = this.props;
-		if (this.state.value > 0) {
-			putEnquiry(id, this.state.value*1);
+		const { id, name, putEnquiry } = this.props;
+		if (this.state.value >= 0) {
+			putEnquiry(id, { [name]: this.state.value*1 } );
 		}
 	}
 	onChangeHandler(e) {
@@ -53,14 +53,15 @@ class Quantity extends Component {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		putEnquiry: (id, quantity) => {
-			dispatch(putEnquiry(id, quantity));
+		putEnquiry: (id, params) => {
+			dispatch(putEnquiry(id, params));
 		},
 	};
 };
 
 Quantity.propTypes = {
 	id: PropTypes.number.isRequired,
+	name: PropTypes.string.isRequired,
 	value: PropTypes.number.isRequired,
 };
 

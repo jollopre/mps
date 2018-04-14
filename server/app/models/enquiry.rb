@@ -6,7 +6,9 @@ class Enquiry < ApplicationRecord
 	has_many :features, through: :feature_values
 
 	# Validations
-	validates :quantity, numericality: { only_integer: true }
+	validates :quantity, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+	validates :quantity2, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+	validates :quantity3, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 	
 	# Callbacks
 	after_create :create_feature_values
@@ -20,7 +22,7 @@ class Enquiry < ApplicationRecord
 			super(options)
 		else
 			super({
-					only: [:id, :quantity, :quotation_id, :product_id],
+					only: [:id, :quantity, :quantity2, :quantity3, :quotation_id, :product_id],
 				}).merge(feature_values: feature_values_to_hash)
 		end
 	end

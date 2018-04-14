@@ -34,8 +34,14 @@ export default class Edit extends Component {
 					</div>
 				</div>
 				<div className="row">
-					<div className="col-xs-12">
-						{<Quantity id={enquiry.id} value={enquiry.quantity} />}
+					<div className="col-xs-4">
+						{<Quantity id={enquiry.id} name={'quantity'} value={enquiry.quantity} />}
+					</div>
+					<div className="col-xs-4">
+						{<Quantity id={enquiry.id} name={'quantity2'} value={enquiry.quantity2} />}
+					</div>
+					<div className="col-xs-4">
+						{<Quantity id={enquiry.id} name={'quantity3'} value={enquiry.quantity3} />}
 					</div>
 					<div className="col-xs-12">
 						{this.featureComponents()}
