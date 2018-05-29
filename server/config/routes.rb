@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     end
     # feature_values
     resources :feature_values, only: [:update]
-    
+
     # quotations
     resources :quotations, only: [:create, :index, :show] do
         collection do
@@ -25,6 +25,16 @@ Rails.application.routes.draw do
 
     # products
     resources :products, only: [:index, :show]
+
+    # suppliers
+    resources :suppliers, only: [:index]
+
+    # composed_emails
+    resources :composed_emails, only: [:create, :show, :update] do
+      member do
+        post 'send_email'
+      end
+    end
 
     # users
     post 'sign-in', to: 'users#sign_in'

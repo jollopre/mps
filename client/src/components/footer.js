@@ -17,10 +17,11 @@ export const Footer = function(){
 		<div style={style}>
 			<ul className="list-inline">
 				<li>
-					&copy; {new Date().getFullYear()} <a 
+					&copy; {new Date().getFullYear()} <a
 					className="text-warning"
 					href="http://marshallpackaging.com"
-					target="_blank">
+					target="_blank"
+          rel="noopener noreferrer">
 						Marshall Packaging Ltd
 					</a>
 				</li>
@@ -29,7 +30,8 @@ export const Footer = function(){
 					<a
 					className="text-warning"
 					href="https://github.com/jollopre"
-					target="_blank">
+					target="_blank"
+          rel="noopener noreferrer">
 						Powered by jollopre
 					</a>
 				</li>

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import QuotationShow from '../quotations/quotationShow';
 import CustomerShow from '../customers/customerShow';
 import New from '../enquiries/new';
+import Compose from '../enquiries/compose';
 import EnquiriesContainer from '../../containers/enquiriesContainer';
 import { quotations_path } from '../../routes';
 
@@ -39,9 +40,13 @@ export default class Quotation extends Component {
 						    </div>
 						    <div className="row">
 									<div className="col-xs-12">
+                    <div className="pull-left">
+                      {<Compose />}
+                    </div>
 										<div className="pull-right">
 											{<New quotationId={quotation.id} />}
 										</div>
+                    <div className="clearfix" />
 									</div>
 								</div>
 								<div className="row">

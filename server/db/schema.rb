@@ -10,10 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180414211758) do
+ActiveRecord::Schema.define(version: 20180518102703) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "composed_emails", force: :cascade do |t|
+    t.string "subject"
+    t.text "body"
+    t.binary "attachment"
+    t.datetime "delivered_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "composed_emails_enquiries", id: false, force: :cascade do |t|
+    t.bigint "composed_email_id"
+    t.bigint "enquiry_id"
+    t.index ["composed_email_id"], name: "index_composed_emails_enquiries_on_composed_email_id"
+    t.index ["enquiry_id"], name: "index_composed_emails_enquiries_on_enquiry_id"
+  end
+
+  create_table "composed_emails_suppliers", id: false, force: :cascade do |t|
+    t.bigint "composed_email_id"
+    t.bigint "supplier_id"
+    t.index ["composed_email_id"], name: "index_composed_emails_suppliers_on_composed_email_id"
+    t.index ["supplier_id"], name: "index_composed_emails_suppliers_on_supplier_id"
+  end
 
   create_table "customers", id: :serial, force: :cascade do |t|
     t.string "reference"
@@ -87,6 +110,17 @@ ActiveRecord::Schema.define(version: 20180414211758) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["customer_id"], name: "index_quotations_on_customer_id"
+  end
+
+  create_table "suppliers", force: :cascade do |t|
+    t.string "reference"
+    t.string "company_name"
+    t.string "contact"
+    t.string "email"
+    t.string "telephone"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reference"], name: "index_suppliers_on_reference"
   end
 
   create_table "users", id: :serial, force: :cascade do |t|

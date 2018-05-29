@@ -4,6 +4,7 @@ class Enquiry < ApplicationRecord
 	belongs_to :product
 	has_many :feature_values
 	has_many :features, through: :feature_values
+	has_and_belongs_to_many :composed_emails
 
 	# Validations
 	validates :quantity, numericality: { only_integer: true, greater_than_or_equal_to: 0 }

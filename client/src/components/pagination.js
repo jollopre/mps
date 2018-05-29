@@ -33,11 +33,12 @@ export default class Pagination extends Component {
 			  <ul className="pager">
 			    <li
 			    	className={ currentPage === 1 ? 'disabled' : ''}>
-			    		<a href="#" onClick={this.previous}>Previous</a>
+			    		<button className="btn btn-success" onClick={this.previous}>Previous</button>
 			    </li>
+          <li>&nbsp;</li>
 			    <li
 			    	className={ pages === 0 || currentPage === pages ? 'disabled' : ''}>
-			    		<a href="#" onClick={this.next}>Next</a>
+			    		<button className="btn btn-success" onClick={this.next}>Next</button>
 			    </li>
 			  </ul>
 			</nav>

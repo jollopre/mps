@@ -17,4 +17,3 @@ Issue 29:
 Issue 18:
 	- Provide nice messages when there is no data after requesting a resource (e.g. search for orders, etc)
 	- Add quantity into export order_item
-

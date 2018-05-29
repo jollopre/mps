@@ -25,9 +25,9 @@ const responseHandler = ({ contentType, body }) => {
 		return body.json();
 	} else if (contentType.includes('application/pdf')) {
 		return body.blob();
-	} else { 
-		return null; 
-	}					
+	} else {
+		return null;
+	}
 };
 
 export const API = 'API';
@@ -65,7 +65,7 @@ export const apiMiddleware = ({ getState, dispatch }) => next => action => {
 									payload: onFulfillment,
 									meta: meta || {}
 								});
-							}).catch(onRejectionHandler);
+							});
 						}
 						break;
 					// created
@@ -110,7 +110,7 @@ export const apiMiddleware = ({ getState, dispatch }) => next => action => {
 		}).then(onFulfillmentHandler).catch(onRejectionHandler);
 	}
 };
-/*  
+/*
 	Spec input object
 	{
 		type: 'API',

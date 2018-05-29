@@ -39,6 +39,7 @@ class EnquiriesContainer extends Component {
 
 const mapStateToProps = (state, ownProps) => {
 	const { enquiries, products } = state;
+  const { location } = ownProps;
 	const arrayEnquiries = Object.keys(enquiries.byId).reduce((acc, id) => {
 		return acc.concat(enquiries.byId[id])
 	}, []);

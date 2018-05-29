@@ -4,13 +4,17 @@ import { customers } from './customers';
 import { quotations } from './quotations';
 import { enquiries } from './enquiries';
 import { products } from './products';
+import { suppliers } from './suppliers';
 import { pagination } from './pagination';
+import { ui } from './ui';
 
 export const rootReducer = combineReducers({
-	customers,
-	quotations,
-	enquiries,
+  customers,
+  enquiries,
+  pagination,
   products,
-	user,
-	pagination
+  quotations,
+  suppliers,
+  ui,
+  user
 });
