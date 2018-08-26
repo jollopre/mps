@@ -226,15 +226,15 @@ populate_users([{
 
 populate_suppliers([
   {
-    reference: 'REF1',
-    company_name: 'REF Company',
+    reference: 'SUPPLIER1',
+    company_name: 'SUPPLIER1 Company',
     contact: 'Sindy',
     email: 'sindy_entes@ref.com',
     telephone: ''
   },
   {
-    reference: 'REF2',
-    company_name: 'REF2 Company',
+    reference: 'SUPPLIER2',
+    company_name: 'SUPPLIER2 Company',
     contact: 'Aitor',
     email: 'aitor_menta@ref2.com',
     telephone: ''
