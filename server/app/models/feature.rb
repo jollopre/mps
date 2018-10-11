@@ -1,4 +1,5 @@
 class Feature < ApplicationRecord
+  # Relations
   belongs_to :product
   belongs_to :feature_label
   has_many :feature_options
@@ -8,7 +9,7 @@ class Feature < ApplicationRecord
 
   # Validations
   validates :feature_type, inclusion: {
-    in: self.feature_types.keys() ,
+    in: self.feature_types.keys(),
     message: '%{value} is not a valid feature_type.'
   }
 

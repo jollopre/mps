@@ -65,6 +65,6 @@ class FeatureValue < ApplicationRecord
         end
       end
     end
-    return valid
+    valid
   end
 end

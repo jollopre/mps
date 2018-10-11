@@ -19,7 +19,7 @@ Rails.application.routes.draw do
     end
 
     # enquiries actions that do not need hierarchy
-    resources :enquiries, only: [:show, :update] do
+    resources :enquiries, only: [:show, :update, :destroy] do
       get 'export', on: :member
     end
 

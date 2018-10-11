@@ -90,7 +90,6 @@ class EnquiryTemplate
       transparent(0.5){ stroke_bounds }
       grid([0,4],[3,11]).bounding_box do
         enquiry_pairs.each do |pair|
-          puts pair.inspect
           pad_top(10) do
             text("<b>#{pair[:label]}</b>: #{pair[:value]}", inline_format: true)
           end

@@ -57,16 +57,22 @@ class EnquiriesController < ApplicationController
 
   # GET /enquiries/:id/export
   def export
-    begin
-      enquiry = Enquiry
-        .includes({
-        feature_values: {
-          feature: [ :feature_label, :feature_options ]
-        }}).find(params[:id])
-        et = EnquiryTemplate.new(enquiry)
-        send_data(et.render, filename: "enquiry_#{params[:id]}.pdf", type: :pdf, status: :ok)
-    rescue ActiveRecord::RecordNotFound => e
-      render json: { detail: e.message }, status: :not_found
-    end
+    enquiry = Enquiry
+      .includes({
+      feature_values: {
+        feature: [ :feature_label, :feature_options ]
+      }}).find(params[:id])
+    et = EnquiryTemplate.new(enquiry)
+    send_data(et.render, filename: "enquiry_#{params[:id]}.pdf", type: :pdf, status: :ok)
+  rescue ActiveRecord::RecordNotFound => e
+    render json: { detail: e.message }, status: :not_found
+  end
+
+  def destroy
+    id = params[:id]
+    enquiry = Enquiry.destroy(id)
+    render json: { id: enquiry.id }.to_json, status: :ok
+  rescue ActiveRecord::RecordNotFound => e
+    render(json: { detail: e.message }, status: :not_found)
   end
 end
