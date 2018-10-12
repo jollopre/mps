@@ -7,68 +7,88 @@ import { CUSTOMERS } from './pagination';
  * @returns true if customer pagination sub-state for the params.page passed is not defined or
  * if the array of ids for that specific page is empty (look at src/reducers/pagination to
  * better understand the sub-state structure)
-*/
+ */
 const shouldGetCustomersRequest = (state, params) => {
-	const { page } = params;
-	const customersPagination = state.pagination.customers;
-	return !customersPagination.pages[page] || customersPagination.pages[page].ids === [];
+  const { page } = params;
+  const customersPagination = state.pagination.customers;
+  return !customersPagination.pages[page] || customersPagination.pages[page].ids === [];
 };
 const shouldGetCustomerRequest = (state, id) => state.customers.byId[id] === undefined;
 
 export const GET_CUSTOMERS = asyncAction('GET_CUSTOMERS');
 export const GET_CUSTOMER = asyncAction('GET_CUSTOMER');
 export const SEARCH_CUSTOMERS = asyncAction('SEARCH_CUSTOMERS');
+export const PUT_CUSTOMER = asyncAction('PUT_CUSTOMER');
 
 const getCustomersCreator = ({ page = 1 } = {}) => ({
-	type: API,
-	payload: {
-		url: `/api/customers?page=${page}`,
-		method: 'GET',
-		types: [GET_CUSTOMERS.PENDING, GET_CUSTOMERS.SUCCESS, GET_CUSTOMERS.ERROR]
-	},
-	meta: { page, resource: CUSTOMERS },
+  type: API,
+  payload: {
+    url: `/api/customers?page=${page}`,
+    method: 'GET',
+    types: [GET_CUSTOMERS.PENDING, GET_CUSTOMERS.SUCCESS, GET_CUSTOMERS.ERROR]
+  },
+  meta: { page, resource: CUSTOMERS },
 });
 
 const getCustomerCreator = (id) => ({
-	type: API,
-	payload: {
-		url: `/api/customers/${id}`,
-		method: 'GET',
-		types: [GET_CUSTOMER.PENDING, GET_CUSTOMER.SUCCESS, GET_CUSTOMER.ERROR],
-	}
+  type: API,
+  payload: {
+    url: `/api/customers/${id}`,
+    method: 'GET',
+    types: [GET_CUSTOMER.PENDING, GET_CUSTOMER.SUCCESS, GET_CUSTOMER.ERROR],
+  }
 });
 
 const searchCustomersCreator = ({ term = '', page = 1 } = {}) => ({
-	type: API,
-	payload: {
-		url: `/api/customers/search/${term}?page=${page}`,
-		method: 'GET',
-		types: [SEARCH_CUSTOMERS.PENDING, SEARCH_CUSTOMERS.SUCCESS, SEARCH_CUSTOMERS.ERROR],
-	},
-	meta: { page, resource: CUSTOMERS },
+  type: API,
+  payload: {
+    url: `/api/customers/search/${term}?page=${page}`,
+    method: 'GET',
+    types: [SEARCH_CUSTOMERS.PENDING, SEARCH_CUSTOMERS.SUCCESS, SEARCH_CUSTOMERS.ERROR],
+  },
+  meta: { page, resource: CUSTOMERS },
+});
+
+export const putCustomerCreator = (id, params = {}) => ({
+  type: API,
+  payload: {
+    url: `/api/customers/${id}`,
+    method: 'PUT',
+    body: params,
+    types: [
+      PUT_CUSTOMER.PENDING,
+      PUT_CUSTOMER.SUCCESS,
+      PUT_CUSTOMER.ERROR
+    ]
+  }
 });
 
 export const getCustomers = (params = {}) => {
-	return (dispatch, getState) => {
-		if (shouldGetCustomersRequest(getState(), params)) {
-			return dispatch(getCustomersCreator(params));
-		}
-		return Promise.resolve();		
-	}
+  return (dispatch, getState) => {
+    if (shouldGetCustomersRequest(getState(), params)) {
+      return dispatch(getCustomersCreator(params));
+    }
+    return Promise.resolve();
+  }
 };
 
 export const getCustomer = (id) => {
-	return (dispatch, getState) => {
-		if (shouldGetCustomerRequest(getState(), id)) {
-			return dispatch(getCustomerCreator(id));
-		}
-		return Promise.resolve();
-	}
+  return (dispatch, getState) => {
+    if (shouldGetCustomerRequest(getState(), id)) {
+      return dispatch(getCustomerCreator(id));
+    }
+    return Promise.resolve();
+  }
 };
 
 export const searchCustomers = (params = {}) => {
-	return (dispatch) => {
-		return dispatch(searchCustomersCreator(params));
-	};
+  return (dispatch) => {
+    return dispatch(searchCustomersCreator(params));
+  };
 }
 
+export const putCustomer = (id, params = {}) => {
+  return (dispatch) => {
+    return dispatch(putCustomerCreator(id, params));
+  };
+}
