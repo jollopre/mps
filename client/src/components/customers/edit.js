@@ -6,7 +6,6 @@ import { customersPath } from '../../routes';
 
 export default class Edit extends Component {
   update = (param) => {
-    console.log(param);
     const { putCustomer, customer } = this.props;
     putCustomer(customer.id, param);
   }
