@@ -115,7 +115,7 @@ class EnquiryTemplate
       if value.present?
         pair = { label: fv.feature.feature_label.name }
         if fv.feature.option?
-          pair.merge!({ value: fv.feature.get_feature_option_for(value.to_i).name })
+          pair.merge!({ value: fv.feature.find_feature_option_by_id(value.to_i).name })
         else
           pair.merge!({ value: value })
         end

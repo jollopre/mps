@@ -1,5 +1,5 @@
 class Feature < ApplicationRecord
-  # Relations
+
   belongs_to :product
   belongs_to :feature_label
   has_many :feature_options
@@ -7,21 +7,15 @@ class Feature < ApplicationRecord
 
   enum feature_type: [:float, :integer, :option, :string]
 
-  # Validations
-  validates :feature_type, inclusion: {
-    in: self.feature_types.keys(),
-    message: '%{value} is not a valid feature_type.'
-  }
-
-  def has_feature_option?(option_id)
-    return self.feature_option_ids.include?(option_id)
+  def feature_option_id?(id)
+    feature_option_ids.include?(id)
   end
 
-  def get_feature_option_for(option_id)
-    return self.feature_options.find { |fo| fo.id == option_id }
+  def find_feature_option_by_id(id)
+    return self.feature_options.find { |fo| fo.id == id }
   end
 
-  def serializable_hash(options = nil)
+  def as_json(options = nil)
     if options.present?
       super(options)
     else

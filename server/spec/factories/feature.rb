@@ -1,4 +1,5 @@
 FactoryBot.define do 
+  factory :feature
   factory :width, class: Feature do
     feature_type { Feature.feature_types[:float] }
     association :product, factory: :plastic_carrier_bag

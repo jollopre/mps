@@ -1,22 +1,58 @@
 require 'rails_helper'
-require 'support/as_json_spec'
 
 RSpec.describe Customer do
-  describe '#serializable_hash' do
-    it 'returns default serialization' do
-      customer = create(:customer, email: 'ref1@somewhere.com')
-
-      result = customer.as_json
-
-      expect(result).to include('reference', 'company_name', 'address', 'telephone', 'email', 'contact_name', 'contact_surname')
+  describe '.validates_format_of' do
+    context 'when email does not match the regex' do
+      it 'raises ActiveRecord::RecordInvalid' do
+        customers = [
+          build(:customer, email: nil),
+          build(:customer, email: ''),
+          build(:customer, email: '@somewhere.com'),
+          build(:customer, email: 'a@'),
+          build(:customer, email: 'a@.com'),
+          build(:customer, email: 'a@somewhere'),
+          build(:customer, email: 'a@somewhere.'),
+          build(:customer, email: 'a@somewhere.com.'),
+          build(:customer, email: 'a@somewhere.a')
+        ]
+        customers.each do |customer|
+          expect do
+            customer.validate!
+          end.to raise_error(ActiveRecord::RecordInvalid, /Email is invalid/)
+        end
+      end
     end
 
-    it 'returns serialization according to options passed' do
-      customer = create(:customer, email: 'ref1@somewhere.com')
+    context 'when email matches the regex' do
+      it 'does not raise any error' do
+        customer = build(:customer, email: 'user@somewhere.com')
 
-      result = customer.as_json(only: :email)
+        expect do
+          customer.validate!
+        end.not_to raise_error
+      end
+    end
+  end
 
-      expect(result).to eq({ 'email' => 'ref1@somewhere.com' })
+  describe '#as_json' do
+    let(:customer) do
+      build(:customer, email: 'user@somewhere.com')
+    end
+
+    context 'when options are passed' do
+      it 'returns a hash' do
+        result = customer.as_json(only: :email)
+
+        expect(result).to eq({ 'email' => 'user@somewhere.com' })
+      end
+    end
+
+    context 'when NO options are passed' do
+      it 'excludes created_at and updated_at' do
+        result = customer.as_json
+
+        expect(result).not_to include('created_at', 'updated_at')
+      end
     end
   end
 end

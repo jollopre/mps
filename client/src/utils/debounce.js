@@ -1,10 +1,9 @@
 export const debounce = (func, wait) => {
   let timeout = null;
   const r = () => {
-    const args = arguments;
     const later = () => {
       timeout = null;
-      func.apply(this, args);
+      func.apply(this, []);
     }
     clearTimeout(timeout);
     timeout = setTimeout(later, wait || 200);

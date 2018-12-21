@@ -1,70 +1,49 @@
 class FeatureValue < ApplicationRecord
-  # Associations
   belongs_to :enquiry
   belongs_to :feature
 
-  # Validations
-  validate :valid_value?
+  validate :must_be_valid_type_for_value
 
-  def serializable_hash(options=nil)
+  DEFAULT_VALUE = "''".freeze
+  BULK_INSERT_DEFAULT_VALUE_QUERY = lambda do |features, enquiry|
+    now = DateTime.now
+    values = features.map do |feature|
+      "(#{DEFAULT_VALUE}, #{feature.id}, #{enquiry.id}, '#{now}', '#{now}')"
+    end.join(',')
+    insert_statement = "INSERT INTO feature_values (value, feature_id, enquiry_id, created_at, updated_at) VALUES #{values}"
+    ActiveRecord::Base.connection.execute(insert_statement) if values.present?
+  end.freeze
+
+  def as_json(options=nil)
     if options.present?
       super(options)
     else
       super({
         only: [:id, :feature_id, :enquiry_id]
-      }).merge({ 'value' => self.value_to_feature_type })
+      }).merge({ 'value' => deserialize_value })
     end
   end
 
-  # Converts the value to its feature_type.
-  def value_to_feature_type
-    if self.value.present?
-      if self.feature.float?
-        return self.value.to_f
-      elsif self.feature.integer? || self.feature.option?
-        return self.value.to_i
-      elsif self.feature.string?
-        return self.value
-      else
-        return nil
-      end
-    end
-    return nil
+  private
+
+  def deserialize_value
+    return unless value.present?
+    feature = self.feature
+    return value.to_i if feature.integer? || feature.option?
+    return value.to_f if feature.float?
+    value
   end
 
-  protected
-  # Returns true for a value that conforms to its feature_type, otherwise false
-  # If false, this method adds an error message to the the array of errors for the attribute :value
-  def valid_value?
-    valid = true
-    if self.value.present?
-      if self.feature.float?
-        begin
-          Float(self.value)
-        rescue ArgumentError => e
-          errors.add(:value, e.message)
-          valid = false
-        end
-      elsif self.feature.integer?
-        begin
-          Integer(self.value)
-        rescue ArgumentError => e
-          errors.add(:value, e.message)
-          valid = false
-        end
-      elsif self.feature.option?
-        begin
-          v = Integer(self.value)
-          if !self.feature.has_feature_option?(v)
-            errors.add(:value, "It does not exist a FeatureOption with id #{self.value}")
-            valid = false
-          end
-        rescue ArgumentError => e
-          errors.add(:value, e.message)
-          valid = false
-        end
-      end
+  def must_be_valid_type_for_value
+    return unless value.present?
+    return Float(value) if feature.float?
+    return Integer(value) if feature.integer?
+    if feature.option?
+      coerced = Integer(value)
+      errors.add(:value, 'Value is not included in the feature_option_ids for feature') unless feature.feature_option_id?(coerced)
     end
-    valid
+  rescue ArgumentError
+    feature_type = feature.feature_type
+    errors.add(:value, "Value invalid value for #{feature_type} feature")
   end
 end

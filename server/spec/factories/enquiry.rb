@@ -1,4 +1,5 @@
 FactoryBot.define do
+  factory :enquiry
   factory :enquiry1, class: Enquiry do
     quantity { 2 } 
     association :product, factory: :plastic_carrier_bag

@@ -1,87 +1,95 @@
 require 'rails_helper'
-require 'support/as_json_spec'
 
 RSpec.describe ComposedEmail do
-  fixtures :composed_emails
-  fixtures :enquiries
-  fixtures :suppliers
+  let(:composed_email) do
+    build(:composed_email)
+  end
 
-  describe 'validates_presence_of' do
-    it 'raises RecordInvalid when subject is not present' do
-      composed_email = ComposedEmail.new(body: 'foo')
-      expect{
-	composed_email.validate!
-      }.to raise_error(ActiveRecord::RecordInvalid) do |error|
-	  expect(error.message).to include('Subject can\'t be blank')
-	end
-    end
-    it 'raises RecordInvalid when body is not present' do
-      composed_email = ComposedEmail.new(subject: 'foo')
-        expect{
+  describe '.validates' do
+    context 'when subject is not present' do
+      it 'raises ActiveRecord::RecordInvalid' do
+        composed_email.subject = nil
+
+        expect do
           composed_email.validate!
-	}.to raise_error(ActiveRecord::RecordInvalid) do |error|
-	  expect(error.message).to include('Body can\'t be blank')
-        end
-    end
-    it 'raises RecordInvalid when enquiries is not present' do
-      composed_email = ComposedEmail.new(body: 'foo', subject: 'bar')
-      composed_email.suppliers << suppliers(:supplier1)
-      expect do
-        composed_email.validate!
-      end.to raise_error(ActiveRecord::RecordInvalid) do |error|
-        expect(error.message).to include('Enquiries can\'t be blank')
-      end
-    end
-    it 'raises RecordInvalid when suppliers is not present' do
-      composed_email = ComposedEmail.new(body: 'foo', subject: 'bar')
-      composed_email.enquiries << enquiries(:enquiry1)
-      expect do
-        composed_email.validate!
-      end.to raise_error(ActiveRecord::RecordInvalid) do |error|
-        expect(error.message).to include('Suppliers can\'t be blank')
+        end.to raise_error(ActiveRecord::RecordInvalid, /Subject can't be blank/)
       end
     end
 
-    it 'not raises any error when subject, body, enquiries and suppliers are present' do
-      composed_email = ComposedEmail.new(subject: 'foo', body: 'bar')
-      enquiry = enquiries(:enquiry1)
-      composed_email.enquiries << enquiries(:enquiry1)
-      composed_email.suppliers << suppliers(:supplier1)
-      expect do
-	      composed_email.validate!
-      end.to_not raise_error
+    context 'when email is not present' do
+      it 'raises ActiveRecord::RecordInvalid' do
+        composed_email.body = nil
+
+        expect do
+          composed_email.validate!
+        end.to raise_error(ActiveRecord::RecordInvalid, /Body can't be blank/)
+      end
+    end
+
+    context 'when enquiries are not present' do
+      it 'raises ActiveRecord::RecordInvalid' do
+        composed_email.enquiries = []
+
+        expect do 
+          composed_email.validate!
+        end.to raise_error(ActiveRecord::RecordInvalid, /Enquiries can't be blank/)
+      end
+    end
+
+    context 'when suppliers are not present' do
+      it 'raises ActiveRecord::RecordInvalid' do
+        composed_email.suppliers = []
+
+        expect do 
+          composed_email.validate!
+        end.to raise_error(ActiveRecord::RecordInvalid, /Suppliers can't be blank/)
+      end
     end
   end
+
   describe '#send_email' do
-    it 'raises RuntimeError' do
-      composed_email = ComposedEmail.new(subject: 'foo', body: 'bar')
-      composed_email.delivered_at = Time.now
-      composed_email.enquiries << enquiries(:enquiry1)
-      composed_email.suppliers << suppliers(:supplier1)
-      expect do
-        composed_email.send_email!
-      end.to raise_error(RuntimeError) do |error|
-        expect(error.message).to eq('Email has been already delivered')
+    context 'when delivered_at is present' do
+      it 'raises RuntimeError' do
+        composed_email.delivered_at = Time.now
+        expect do
+          composed_email.send_email!
+        end.to raise_error(RuntimeError, /Email has been already delivered/)
       end
     end
-    it "sends email" do
-      composed_email = ComposedEmail.new(subject: 'foo', body: 'bar')
-      composed_email.enquiries << enquiries(:enquiry1)
-      composed_email.suppliers << suppliers(:supplier1)
-      message_delivery = double(:message_delivery, deliver_now: 'delivers an email')
-      allow(EnquiriesMailer).to receive(:as_attachment).with(composed_email).and_return(message_delivery)
 
-      composed_email.send_email!
+    context 'when delivered_at is NOT present' do
+      it "sends email" do
+        message_delivery = double(:message_delivery, deliver_now: nil)
+        allow(EnquiriesMailer).to receive(:as_attachment).with(composed_email).and_return(message_delivery)
 
-      expect(message_delivery).to have_received(:deliver_now)
+        composed_email.send_email!
+
+        expect(message_delivery).to have_received(:deliver_now)
+      end
     end
   end
-  context 'when no arguments are passed' do
-    subject { composed_emails(:composed_email1).as_json() }
-    it_behaves_like '#as_json', ['id','subject', 'body', 'attachment', 'delivered_at','enquiry_ids', 'supplier_ids']
-  end
-  context 'when arguments are passed' do
-    subject { composed_emails(:composed_email1).as_json(only: :subject) }
-    it_behaves_like '#as_json', ['subject']
+
+  describe '#as_json' do
+    context 'when options are passed' do
+      it 'returns a hash' do
+        result = composed_email.as_json(only: :subject)
+
+        expect(result).to eq({ 'subject' => 'a_subject' })
+      end
+    end
+
+    context 'when NO options are passed' do
+      it 'excludes created_at and updated_at' do
+        result = composed_email.as_json
+
+        expect(result).not_to include('created_at', 'updated_at')
+      end
+
+      it 'includes enquiry_ids and supplier_ids' do
+        result = composed_email.as_json
+
+        expect(result).to include('enquiry_ids', 'supplier_ids')
+      end
+    end
   end
 end

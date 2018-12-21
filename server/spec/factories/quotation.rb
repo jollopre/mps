@@ -1,4 +1,5 @@
 FactoryBot.define do
+  factory :quotation
   factory :quotation1, class: Quotation do
     association :customer, factory: :ref1
   end
