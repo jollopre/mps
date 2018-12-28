@@ -12,14 +12,17 @@ RSpec.describe '/api/composed_emails', type: :request do
         post '/api/composed_emails', headers: authentication_header
 
         expect(response).to have_http_status(:bad_request)
-        expect(response_detail).to eq('param is missing or the value is empty: composed_email')
+        pending
       end
     end
 
-    it 'returns bad request when the record is invalid' do
-      post composed_emails_path, params: { composed_email: { foo: 'bar' } }, headers: authentication_header
-      expect(response).to have_http_status(:bad_request)
-      expect(response_detail).to include('Validation failed: Subject can\'t be blank, Body can\'t be blank')
+    context 'when the record is invalid' do
+      it 'returns a bad_request' do
+        post composed_emails_path, params: { composed_email: { foo: 'bar' } }, headers: authentication_header
+
+        expect(response).to have_http_status(:bad_request)
+        expect(parsed_response['errors']).to all(include('status' => 400))
+      end
     end
 
     it 'returns not found when any association does not exist' do

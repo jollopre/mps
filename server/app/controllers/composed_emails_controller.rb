@@ -6,7 +6,8 @@ class ComposedEmailsController < ApplicationController
     rescue ActionController::ParameterMissing => e
       render json: { detail: e.message }, status: :bad_request
     rescue ActiveRecord::RecordInvalid => e
-      render json: { detail: e.message }, status: :bad_request
+      errors = ErrorsService.do(ErrorsService::ErrorsAdapter::RecordInvalid.new(e))
+      render json: errors, status: :bad_request
     rescue ActiveRecord::RecordNotFound => e
       render json: { detail: e.message }, status: :not_found
     end
