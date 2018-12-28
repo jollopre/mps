@@ -1,7 +1,7 @@
 require 'rails_helper'
-require './app/services/errors_service/errors_adapter/record_invalid'
+require './app/services/errors_service/adapters/record_invalid'
 
-RSpec.describe ErrorsService::ErrorsAdapter::RecordInvalid do
+RSpec.describe ErrorsService::Adapters::RecordInvalid do
   RecordClass = Class.new do
     extend ActiveModel::Naming
     extend ActiveModel::Translation
@@ -18,22 +18,25 @@ RSpec.describe ErrorsService::ErrorsAdapter::RecordInvalid do
     end
   end
 
+  let(:record_invalid) do
+    record = RecordClass.new
+    record.errors.add(:attribute1, :presence, message: 'must be present')
+    ActiveRecord::RecordInvalid.new(record)
+  end
+
   describe '#errors' do
-    let(:record_invalid) do
-      record = RecordClass.new
-      record.errors.add(:attribute1, :presence, message: 'must be present')
-      ActiveRecord::RecordInvalid.new(record)
-    end
     it 'returns the errors messages within an array' do
       adapter = described_class.new(record_invalid)
 
       expect(adapter.errors).to eq(['Attribute1 must be present'])
     end
+  end
 
+  describe '#status' do
     it 'returns the status associated to these errors' do
       adapter = described_class.new(record_invalid)
 
-      expect(adapter.status).to eq(400)
+      expect(adapter.status).to eq(422)
     end
   end
 end

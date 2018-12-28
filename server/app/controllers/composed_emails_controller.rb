@@ -1,16 +1,7 @@
 class ComposedEmailsController < ApplicationController
   def create
-    begin
-      composed_email = ComposedEmail.create!(permitted_params)
-      head :created, location: composed_email_path(composed_email)
-    rescue ActionController::ParameterMissing => e
-      render json: { detail: e.message }, status: :bad_request
-    rescue ActiveRecord::RecordInvalid => e
-      errors = ErrorsService.do(ErrorsService::ErrorsAdapter::RecordInvalid.new(e))
-      render json: errors, status: :bad_request
-    rescue ActiveRecord::RecordNotFound => e
-      render json: { detail: e.message }, status: :not_found
-    end
+    composed_email = ComposedEmail.create!(permitted_params)
+    head :created, location: composed_email_path(composed_email)
   end
 
   def update
@@ -28,12 +19,8 @@ class ComposedEmailsController < ApplicationController
   end
 
   def show
-    begin
-      composed_email = ComposedEmail.find(params[:id])
-      render json: composed_email.as_json, status: :ok
-    rescue ActiveRecord::RecordNotFound => e
-      render json: { detail: e.message }, status: :not_found
-    end
+    composed_email = ComposedEmail.find(params[:id])
+    render json: composed_email.as_json, status: :ok
   end
 
   def send_email
@@ -52,7 +39,8 @@ class ComposedEmailsController < ApplicationController
   end
 
   private
-    def permitted_params
-      return params.require(:composed_email).permit(:subject, :body, :enquiry_ids => [], :supplier_ids => [])
-    end
+
+  def permitted_params
+    params.require(:composed_email).permit(:subject, :body, :enquiry_ids => [], :supplier_ids => [])
+  end
 end

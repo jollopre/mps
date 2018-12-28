@@ -1,10 +1,11 @@
-require_relative '../errors_adapter'
+require_relative './adapter'
 
 class ErrorsService
-  module ErrorsAdapter
+  module Adapters
     class RecordInvalid
-      STATUS = 400.freeze
-      include ErrorsAdapter
+      include Adapter
+
+      STATUS = 422.freeze
       attr_reader :errors
 
       def initialize(record_invalid)

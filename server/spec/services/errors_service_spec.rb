@@ -4,7 +4,7 @@ RSpec.describe ErrorsService do
   describe '.do' do
     context 'when an errorable exception is received' do
       ErrorableException = Class.new do
-        include ErrorsService::ErrorsAdapter
+        include ErrorsService::Adapters::Adapter
 
         def errors
           ['Attribute1 must be present']

@@ -12,34 +12,52 @@ RSpec.describe '/api/composed_emails', type: :request do
         post '/api/composed_emails', headers: authentication_header
 
         expect(response).to have_http_status(:bad_request)
-        pending
-      end
-    end
-
-    context 'when the record is invalid' do
-      it 'returns a bad_request' do
-        post composed_emails_path, params: { composed_email: { foo: 'bar' } }, headers: authentication_header
-
-        expect(response).to have_http_status(:bad_request)
         expect(parsed_response['errors']).to all(include('status' => 400))
       end
     end
 
-    it 'returns not found when any association does not exist' do
-      post composed_emails_path, params: { composed_email: { subject: 'foo', body: 'bar', enquiry_ids: [-1] }}, headers: authentication_header
-      expect(response).to have_http_status(:not_found)
-      expect(response_detail).to eq('Couldn\'t find Enquiry with \'id\'=[-1]')
-      post composed_emails_path, params: { composed_email: { subject: 'foo', body: 'bar', supplier_ids: [-1] }}, headers: authentication_header
-      expect(response).to have_http_status(:not_found)
-      expect(response_detail).to eq('Couldn\'t find Supplier with \'id\'=[-1]')
+    context 'when the record is invalid' do
+      it 'returns a unprocessable_entity' do
+        post '/api/composed_emails', params: { composed_email: { foo: 'bar' } }, headers: authentication_header
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(parsed_response['errors']).to all(include('status' => 422))
+      end
     end
 
-    it 'returns success with location header set' do
-      enquiry_ids = [enquiries(:enquiry1).id]
-      supplier_ids = [suppliers(:supplier1).id]
-      post composed_emails_path, params: { composed_email: { subject: 'foo', body: 'bar', enquiry_ids: enquiry_ids, supplier_ids: supplier_ids }}, headers: authentication_header
-      expect(response).to have_http_status(:created)
-      expect(response.location).to include(/([^foo]*)/.match(composed_email_path('foo'))[0])
+    context 'when the record is not found' do
+      it 'returns not found when enquiry does not exist' do
+        post '/api/composed_emails', params: { composed_email: { subject: 'foo', body: 'bar', enquiry_ids: [-1] }}, headers: authentication_header
+        expect(response).to have_http_status(:not_found)
+        expect(parsed_response['errors']).to all(include('status' => 404))
+      end
+
+      it 'returns not found when supplier does not exist' do
+        post '/api/composed_emails', params: { composed_email: { subject: 'foo', body: 'bar', supplier_ids: [-1] }}, headers: authentication_header
+
+        expect(response).to have_http_status(:not_found)
+        expect(parsed_response['errors']).to all(include('status' => 404))
+      end
+    end
+
+    context 'when the record is created' do
+      let(:enquiry_ids) do
+        [create(:enquiry1).id]
+      end
+      let(:supplier_ids) do
+        [create(:supplier).id]
+      end
+
+      it 'returns created status' do
+        post composed_emails_path, params: { composed_email: { subject: 'foo', body: 'bar', enquiry_ids: enquiry_ids, supplier_ids: supplier_ids }}, headers: authentication_header
+        expect(response).to have_http_status(:created)
+      end
+
+      it 'returns header location' do
+        post composed_emails_path, params: { composed_email: { subject: 'foo', body: 'bar', enquiry_ids: enquiry_ids, supplier_ids: supplier_ids }}, headers: authentication_header
+
+        expect(response.location).to match(/\/api\/composed_emails\/[0-9]+/)
+      end
     end
   end
 
@@ -66,14 +84,32 @@ RSpec.describe '/api/composed_emails', type: :request do
   end
 
   describe '#show' do
-    it 'returns not found when the id does not exist' do
-      get composed_email_path(-1), headers: authentication_header
-      expect(response).to have_http_status(:not_found)
+    context 'when the record is not found' do
+      it 'returns not_found' do
+        get '/api/composed_emails/-1', headers: authentication_header
+        expect(response).to have_http_status(:not_found)
+        expect(parsed_response['errors']).to all(include('status' => 404))
+      end
     end
-    it 'returns success with the record' do
-      get composed_email_path(composed_emails(:composed_email1)), headers: authentication_header
-      expect(response).to have_http_status(:ok)
-      expect(response.body).not_to be_empty
+
+    context 'when the record is found' do
+      let(:composed_email_id) do
+        enquiry_ids = [create(:enquiry1).id]
+        supplier_ids = [create(:supplier).id]
+        create(:composed_email, enquiry_ids: enquiry_ids, supplier_ids: supplier_ids).id
+      end
+
+      it 'returns success' do
+        get "/api/composed_emails/#{composed_email_id}", headers: authentication_header
+
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'returns the record' do
+        get "/api/composed_emails/#{composed_email_id}", headers: authentication_header
+
+        expect(parsed_response['id']).to eq(composed_email_id)
+      end
     end
   end
 
