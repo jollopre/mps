@@ -1,42 +1,42 @@
 require 'rails_helper'
 require 'requests/shared_context'
+require 'requests/shared_examples_for_errors'
 
 RSpec.describe '/api/composed_emails', type: :request do
   include_context 'authentication'
-  fixtures :composed_emails
-  fixtures :enquiries, :suppliers
 
   describe '#create' do
     context 'when a parameter is missing' do
-      it 'returns bad_request' do
+      before do
         post '/api/composed_emails', headers: authentication_header
-
-        expect(response).to have_http_status(:bad_request)
-        expect(parsed_response['errors']).to all(include('status' => 400))
       end
+
+      it_behaves_like 'bad_request'
     end
 
     context 'when the record is invalid' do
-      it 'returns a unprocessable_entity' do
+      before do
         post '/api/composed_emails', params: { composed_email: { foo: 'bar' } }, headers: authentication_header
-
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(parsed_response['errors']).to all(include('status' => 422))
       end
+
+      it_behaves_like 'unprocessable_entity'
     end
 
     context 'when the record is not found' do
-      it 'returns not found when enquiry does not exist' do
-        post '/api/composed_emails', params: { composed_email: { subject: 'foo', body: 'bar', enquiry_ids: [-1] }}, headers: authentication_header
-        expect(response).to have_http_status(:not_found)
-        expect(parsed_response['errors']).to all(include('status' => 404))
+      context 'since enquiry_ids are non-existent' do
+        before do
+          post '/api/composed_emails', params: { composed_email: { subject: 'foo', body: 'bar', enquiry_ids: [-1] }}, headers: authentication_header
+        end
+
+        it_behaves_like 'not_found'
       end
 
-      it 'returns not found when supplier does not exist' do
-        post '/api/composed_emails', params: { composed_email: { subject: 'foo', body: 'bar', supplier_ids: [-1] }}, headers: authentication_header
+      context 'since supplier_ids are non-existent' do
+        before do
+          post '/api/composed_emails', params: { composed_email: { subject: 'foo', body: 'bar', supplier_ids: [-1] }}, headers: authentication_header
+        end
 
-        expect(response).to have_http_status(:not_found)
-        expect(parsed_response['errors']).to all(include('status' => 404))
+        it_behaves_like 'not_found'
       end
     end
 
@@ -62,34 +62,69 @@ RSpec.describe '/api/composed_emails', type: :request do
   end
 
   describe '#update' do
-    let(:composed_email) { composed_emails(:composed_email1) }
-    it 'returns bad request when any parameter is missing' do
-      put composed_email_path(composed_email.id), headers: authentication_header
-      expect(response).to have_http_status(:bad_request)
-      expect(response_detail).to eq('param is missing or the value is empty: composed_email')
+    let(:composed_email_id) do
+      enquiry_ids = [create(:enquiry1).id]
+      supplier_ids = [create(:supplier).id]
+      create(:composed_email, enquiry_ids: enquiry_ids, supplier_ids: supplier_ids).id
     end
-    it 'returns bad request when the record is invalid' do
-      put composed_email_path(composed_email.id), params: { composed_email: { subject: '', body: '' } }, headers: authentication_header
-      expect(response).to have_http_status(:bad_request)
-      expect(response_detail).to eq('Validation failed: Subject can\'t be blank, Body can\'t be blank')
+
+    context 'when a parameter is missing' do
+      before do
+        put "/api/composed_emails/#{composed_email_id}", headers: authentication_header
+      end
+
+      it_behaves_like 'bad_request'
     end
-    it 'returns not found when any association does not exist' do
-      put composed_email_path(composed_email.id), params: { composed_email: { subject: 'foo', body: 'bar', enquiry_ids: [-1] }}, headers: authentication_header
-      expect(response).to have_http_status(:not_found)
-      expect(response_detail).to eq('Couldn\'t find Enquiry with \'id\'=[-1]')
-      put composed_email_path(composed_email.id), params: { composed_email: { subject: 'foo', body: 'bar', supplier_ids: [-1] }}, headers: authentication_header
-      expect(response).to have_http_status(:not_found)
-      expect(response_detail).to eq('Couldn\'t find Supplier with \'id\'=[-1]')
+
+    context 'when the record is invalid' do
+      before do
+        put "/api/composed_emails/#{composed_email_id}", params: { composed_email: { subject: '', body: '' } }, headers: authentication_header
+      end
+
+      it_behaves_like 'unprocessable_entity'
+    end
+
+    context 'when the record is not found' do
+      context 'since enquiry_ids are non-existent' do
+        before do
+          put "/api/composed_emails/#{composed_email_id}", params: { composed_email: { enquiry_ids: [-1] }}, headers: authentication_header
+        end
+
+        it_behaves_like 'not_found'
+      end
+
+      context 'since supplier_ids are non-existent' do
+        before do
+          put "/api/composed_emails/#{composed_email_id}", params: { composed_email: { supplier_ids: [-1] }}, headers: authentication_header
+        end
+
+        it_behaves_like 'not_found'
+      end
+    end
+
+    context 'when the record is found' do
+      it 'returns success' do
+        put "/api/composed_emails/#{composed_email_id}", params: { composed_email: { subject: 'foo' }}, headers: authentication_header
+
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'updates it' do
+        put "/api/composed_emails/#{composed_email_id}", params: { composed_email: { subject: 'foo' }}, headers: authentication_header
+
+        composed_email = ComposedEmail.find(composed_email_id)
+        expect(composed_email.subject).to eq('foo')
+      end
     end
   end
 
   describe '#show' do
     context 'when the record is not found' do
-      it 'returns not_found' do
+      before do
         get '/api/composed_emails/-1', headers: authentication_header
-        expect(response).to have_http_status(:not_found)
-        expect(parsed_response['errors']).to all(include('status' => 404))
       end
+
+      it_behaves_like 'not_found'
     end
 
     context 'when the record is found' do

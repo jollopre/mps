@@ -5,17 +5,9 @@ class ComposedEmailsController < ApplicationController
   end
 
   def update
-    begin
-      composed_email = ComposedEmail.find(params[:id])
-      composed_email.update_attributes!(permitted_params)
-      render json: composed_email.as_json, status: :ok
-    rescue ActionController::ParameterMissing => e
-      render json: { detail: e.message }, status: :bad_request
-    rescue ActiveRecord::RecordInvalid => e
-      render json: { detail: e.message }, status: :bad_request
-    rescue ActiveRecord::RecordNotFound => e
-      render json: { detail: e.message }, status: :not_found
-    end
+    composed_email = ComposedEmail.find(params[:id])
+    composed_email.update_attributes!(permitted_params)
+    render json: composed_email.as_json, status: :ok
   end
 
   def show
