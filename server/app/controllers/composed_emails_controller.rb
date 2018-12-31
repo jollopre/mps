@@ -16,18 +16,12 @@ class ComposedEmailsController < ApplicationController
   end
 
   def send_email
-    begin
-      composed_email = ComposedEmail.find(params[:id])
-      composed_email.validate!
-      composed_email.send_email!
-      head(:created)
-    rescue ActiveRecord::RecordNotFound => e
-      render json: { detail: e.message }, status: :not_found
-    rescue ActiveRecord::RecordInvalid => e
-      render json: { detail: e.message }, status: :bad_request
-    rescue => e
-      render json: { detail: e.message }, status: :bad_request
-    end
+    composed_email = ComposedEmail.find(params[:id])
+    composed_email.send_email!
+    head(:created)
+  rescue ComposedEmail::EmailAlreadyDelivered => e
+    errors = ErrorsService.do(OpenStruct.new(errors: [e.message], status: 422))
+    render json: errors, status: :unprocessable_entity
   end
 
   private

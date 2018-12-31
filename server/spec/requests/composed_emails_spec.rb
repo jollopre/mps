@@ -149,30 +149,25 @@ RSpec.describe '/api/composed_emails', type: :request do
   end
 
   describe '#send_email' do
-    it 'returns bad request when there are no enquiries associated' do
-      composed_email = composed_emails(:composed_email1)
-      composed_email.enquiries.destroy_all
-      post send_email_composed_email_path(composed_email), headers: authentication_header
-      expect(response).to have_http_status(:bad_request)
-      expect(response_detail).to include('Enquiries can\'t be blank')
+    let(:composed_email) do
+      enquiry_ids = [create(:enquiry1).id]
+      supplier_ids = [create(:supplier, email: 'user@somewhere.com').id]
+      create(:composed_email, enquiry_ids: enquiry_ids, supplier_ids: supplier_ids)
     end
-    it 'returns bad request when there are no supplier associated' do
-      composed_email = composed_emails(:composed_email1)
-      composed_email.suppliers.destroy_all
-      post send_email_composed_email_path(composed_email), headers: authentication_header
-      expect(response).to have_http_status(:bad_request)
-      expect(response_detail).to include('Suppliers can\'t be blank')
+
+    context 'when the email has been delivered' do
+      before do
+        composed_email.delivered_at = Time.now
+        composed_email.save!
+        post "/api/composed_emails/#{composed_email.id}/send_email", headers: authentication_header
+      end
+
+      it_behaves_like 'unprocessable_entity'
     end
-    it 'returns bad request when attempting to send the email after deliverated_at set' do
-      composed_email = composed_emails(:composed_email1)
-      composed_email.delivered_at = Time.now
-      composed_email.save!
-      post send_email_composed_email_path(composed_email), headers: authentication_header
-      expect(response).to have_http_status(:bad_request)
-      expect(response_detail).to eq('Email has been already delivered')
-    end
+
     it 'returns success otherwise' do
-      post send_email_composed_email_path(composed_emails(:composed_email1)), headers: authentication_header
+      post "/api/composed_emails/#{composed_email.id}/send_email", headers: authentication_header
+
       expect(response).to have_http_status(:created)
       expect(response.body).to be_empty
     end
