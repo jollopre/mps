@@ -8,8 +8,6 @@ class CustomersController < ApplicationController
   def show
     customer = Customer.find(params[:id])
     render json: customer.as_json()
-  rescue ActiveRecord::RecordNotFound => e
-    render json: { detail: e.message }, status: :not_found
   end
 
   def search
@@ -22,10 +20,6 @@ class CustomersController < ApplicationController
     customer = Customer.find(params[:id])
     customer.update_attributes!(permitted_params)
     render json: customer.as_json, status: :ok
-  rescue ActiveRecord::RecordNotFound => e
-    render json: { detail: e.message }, status: :not_found
-  rescue ActiveRecord::RecordInvalid => e
-    render json: { detail: e.message }, status: :unprocessable_entity
   end
 
   private
