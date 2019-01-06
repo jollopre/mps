@@ -6,21 +6,13 @@ class EnquiriesController < ApplicationController
     render json: enquiries.as_json(), status: :ok
   end
 
-  # POST /quotations/:quotation_id/enquiries
   def create
-    # TODO ActionDispatch::ParamsParser for when JSON is invalid
-    begin
-      params.require(:enquiry).permit(:quantity, :product_id)
-      orderItem = Enquiry.create!({
-        quantity: params[:enquiry][:quantity].nil? ? 1 : params[:enquiry][:quantity],
+    params.require(:enquiry).permit(:quantity, :product_id)
+    enquiry = Enquiry.create!({
+        quantity: params[:enquiry][:quantity],
         quotation_id: params[:quotation_id],
         product_id: params[:enquiry][:product_id] })
-      head :created, location: enquiry_path(orderItem)
-    rescue ActionController::ParameterMissing => e
-      render json: { detail: e.message }, status: :bad_request
-    rescue ActiveRecord::RecordInvalid => e
-      render json: { detail: e.message }, status: :bad_request
-    end
+    head :created, location: enquiry_path(enquiry)
   end
 
   def show

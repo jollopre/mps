@@ -6,17 +6,76 @@ RSpec.describe EnquiriesController do
   include_context 'authentication'
 
   describe '#index' do
+    let(:quotation) do
+      create(:quotation1)
+    end
+    before do
+      create(:enquiry1, quotation: quotation)
+      create(:enquiry2)
+      get "/api/quotations/#{quotation.id}/enquiries", headers: authentication_header
+    end
+
     it 'returns success' do
-      pending
+      expect(response).to have_http_status(:ok)
     end
 
     it 'returns the enquiries for a quotation' do
-      pending
+      expect(parsed_response).to all(include({ 'quotation_id' => quotation.id }))
     end
   end
 
   describe '#create' do
-    pending
+    context 'when enquiry param is missing' do
+      before do
+        post '/api/quotations/a_quotation/enquiries', headers: authentication_header
+      end
+
+      it_behaves_like 'bad_request'
+    end
+
+    context 'when an invalid quotation is passed' do
+      before do
+        product = create(:plastic_carrier_bag)
+        post '/api/quotations/INVALID/enquiries', params: { enquiry: { quantity: 1, product_id: product.id }}, headers: authentication_header
+      end
+
+      it_behaves_like 'unprocessable_entity'
+    end
+
+    context 'when an invalid product is passed' do
+      before do
+        quotation = create(:quotation1)
+        post "/api/quotations/#{quotation.id}/enquiries", params: { enquiry: { quantity: 1, product_id: 'invalid' }}, headers: authentication_header
+      end
+
+      it_behaves_like 'unprocessable_entity'
+    end
+
+    context 'when an invalid quantity is passed' do
+      before do
+        quotation = create(:quotation1)
+        product = create(:plastic_carrier_bag)
+        post "/api/quotations/#{quotation.id}/enquiries", params: { enquiry: { quantity: -1, product_id: product.id }}, headers: authentication_header
+      end
+
+      it_behaves_like 'unprocessable_entity'
+    end
+
+    context 'when the creation succeed' do
+      before do
+        quotation = create(:quotation1)
+        product = create(:plastic_carrier_bag)
+        post "/api/quotations/#{quotation.id}/enquiries", params: { enquiry: { quantity: 100, product_id: product.id }}, headers: authentication_header
+      end
+
+      it 'returns created' do
+        expect(response).to have_http_status(:created)
+      end
+
+      it 'returns the location for the resource created' do
+        expect(response.headers['Location']).to match(/\/api\/enquiries\/[0-9]+/)
+      end
+    end
   end
 
   describe '#show' do
@@ -100,12 +159,21 @@ RSpec.describe EnquiriesController do
       it_behaves_like 'not_found'
     end
 
-    it 'returns success' do
-      pending
-    end
+    context 'when the record is found' do
+      before do
+        enquiry = create(:enquiry1)
+        get "/api/enquiries/#{enquiry.id}/export", headers: authentication_header
+      end
 
-    it 'returns pdf content' do
-      pending
+      it 'returns success' do
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'returns pdf content' do
+        headers = response.headers
+        expect(headers['Content-Type']).to eq('application/pdf')
+        expect(headers['Content-Disposition']).to match(/attachment; filename=\"enquiry_[0-9]+.pdf\"/)
+      end
     end
   end
 
