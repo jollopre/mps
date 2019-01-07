@@ -16,7 +16,7 @@ RSpec.describe '/api/products' do
     end
 
     it 'returns all the products stored' do
-      expect(parsed_response).to include({ 'name' => 'Plastic Carrier Bag' })
+      expect(parsed_response).to include(hash_including('name' => 'Plastic Carrier Bag'))
     end
   end
 
