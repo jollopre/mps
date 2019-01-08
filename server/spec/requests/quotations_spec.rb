@@ -112,7 +112,29 @@ RSpec.describe '/api/quotations' do
     end
 
     context 'when there are records matching the search term' do
-      pending
+      let(:customer) do
+        create(:ref1)
+      end
+      before do
+        create(:quotation, customer: customer, created_at: Time.new('2019','01','07'))
+        create(:quotation, customer: customer)
+        create(:quotation, customer: create(:ref2))
+        get "/api/quotations/search/2019-01-07?customer_id=#{customer.id}", headers: authentication_header
+      end
+
+      it 'returns ok' do
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'returns the quotations for date specified' do
+        data = parsed_response['data']
+        expect(data).to all(include('customer_id' => customer.id))
+        expect(data).to include(hash_including('created_at' => '2019-01-07T00:00:00.000Z'))
+      end
+
+      it 'returns meta' do
+        expect(parsed_response['meta']).to eq({ 'count' => 1, 'per_page' => 10 })
+      end
     end
   end
 end
