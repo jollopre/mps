@@ -43,6 +43,38 @@ RSpec.describe '/api/quotations' do
     end
   end
 
+  describe '#index' do
+    context 'when customer_id param is missing' do
+      before do
+        get '/api/quotations', headers: authentication_header
+      end
+
+      it_behaves_like 'bad_request'
+    end
+
+    context 'when index succeeds' do
+      let(:customer) do
+        create(:ref1)
+      end
+      before do
+        create(:quotation1, customer: customer)
+        get "/api/quotations?customer_id=#{customer.id}", headers: authentication_header
+      end
+
+      it 'returns ok' do
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'returns quotations for the customer' do
+        expect(parsed_response['data']).to all(include('customer_id' => customer.id))
+      end
+
+      it 'returns meta' do
+        expect(parsed_response['meta']).to eq({ 'count' => 1, 'per_page' => 10 })
+      end
+    end
+  end
+
   describe '#show' do
     context 'when the record is not found' do
       before do
@@ -67,6 +99,20 @@ RSpec.describe '/api/quotations' do
       it 'returns the quotation' do
         expect(parsed_response).to include('id' => quotation.id)
       end
+    end
+  end
+
+  describe '#search' do
+    context 'when customer_id param is missing' do
+      before do
+        get '/api/quotations/search/wadus', headers: authentication_header
+      end
+
+      it_behaves_like 'bad_request'
+    end
+
+    context 'when there are records matching the search term' do
+      pending
     end
   end
 end
