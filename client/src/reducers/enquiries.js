@@ -76,7 +76,9 @@ export const enquiries = (state = { byId: {}, isFetching: false, objectURL: null
           { [payload.enquiry_id]: enquiry } )
       };
     case DELETE_ENQUIRY.SUCCESS:
-      const { [`${payload.id}`]: value, ...without } = state.byId
+      const without = Object.assign({}, state.byId);
+      delete without[payload.id];
+
       return {
         ...state,
         byId: without,

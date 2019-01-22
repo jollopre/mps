@@ -17,7 +17,7 @@ export default class List extends Component {
 	}
 }
 
-List.PropTypes = {
+List.propTypes = {
 	enquiries: PropTypes.array.isRequired,
 	products: PropTypes.object.isRequired,
 	enquiryIdActive: PropTypes.number.isRequired,

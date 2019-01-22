@@ -63,7 +63,7 @@ export default class Quotation extends Component {
 	}
 }
 
-Quotation.PropTypes = {
+Quotation.propTypes = {
 	quotation: PropTypes.object.isRequired,
 	customer: PropTypes.object.isRequired,
 };

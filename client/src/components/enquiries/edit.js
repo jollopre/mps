@@ -56,7 +56,7 @@ export default class Edit extends Component {
   }
 }
 
-Edit.PropTypes = {
+Edit.propTypes = {
   enquiry: PropTypes.object.isRequired,
   product: PropTypes.object.isRequired,
 };
