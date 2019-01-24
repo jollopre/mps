@@ -1,5 +1,3 @@
-const authorization = token => ({ 'Authorization': `Token token=${token}` });
-
 const fetchWrapper = ({ url, method, body, token }, delay = 0) => {
   const delayedFetch = () => {
     return fetch(url, {
@@ -9,7 +7,7 @@ const fetchWrapper = ({ url, method, body, token }, delay = 0) => {
         { 'Accept': 'application/json' },
         { 'Accept-Charset': 'utf-8' },
         { 'Content-Type': 'application/json' },
-        authorization(token)),
+        { 'Authorization': `Token token=${token}` }),
       body: body ? JSON.stringify(body) : undefined,
     });
   };
