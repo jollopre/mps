@@ -2,7 +2,7 @@ FROM node:carbon
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY ./ui/package*.json ./
 
 RUN npm install
 

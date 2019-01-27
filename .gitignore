@@ -1,0 +1,5 @@
+infra/apache/production/htdocs
+infra/credentials/*.env
+infra/credentials/*.pem
+infra/certificates/*.crt
+infra/certificates/*.key

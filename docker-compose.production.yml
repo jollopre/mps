@@ -1,0 +1,40 @@
+version: '3.7'
+services:
+  apache:
+    build:
+      context: ./
+      dockerfile: infra/apache/production/Dockerfile
+    image: mps_production/apache
+    ports:
+      - 80:80
+      - 443:443
+    env_file:
+      - ./infra/credentials/apache.env
+    extra_hosts:
+      - "${CNAME_RECORD}:127.0.0.1"
+      - "${A_RECORD}:127.0.0.1"
+    depends_on:
+      - api
+  api:
+    build:
+      context: ./
+      dockerfile: infra/api/production/Dockerfile
+    image: mps_production/api
+    env_file:
+      - ./infra/credentials/api.env
+      - ./infra/credentials/db.env
+    depends_on:
+      - db
+      - mail
+  db:
+    image: postgres:9.5.5
+    volumes:
+      - db_production:/var/lib/postgresql/data
+    env_file:
+      - ./infra/credentials/db.env
+  mail:
+    image: namshi/smtp
+    env_file:
+      - ./infra/credentials/mail.env
+volumes:
+  db_production:

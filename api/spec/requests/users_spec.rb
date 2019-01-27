@@ -7,18 +7,11 @@ RSpec.describe '/api/sign-in' do
 
   describe '#sign_in' do
     context 'when user is already signed in' do
-      let(:password) do
-        'secret_password'
-      end
       before do
-        params = { user: { email: user.email, password: password }}
-        post '/api/sign-in', params: params
-        user.token = parsed_response['token']
+        post '/api/sign-in', headers: authentication_header
       end
 
       it 'returns unprocessable entity' do
-        post '/api/sign-in', headers: authentication_header
-
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
@@ -88,8 +81,11 @@ RSpec.describe '/api/sign-in' do
     end
 
     context 'when email and password are valid' do
+      let(:user) do
+        create(:someone)
+      end
       before do
-        params = { user: { email: 'someone@somewhere.com', password: 'secret_password' }}
+        params = { user: { email: user.email, password: 'secret_password' }}
         post '/api/sign-in', params: params
       end
 
@@ -118,6 +114,9 @@ RSpec.describe '/api/sign-out' do
   end
 
   context 'when there is an error invalidating the token' do
+    let(:user) do
+      create(:someone)
+    end
     before do
       allow(User).to receive(:find_by).with(token: user.token).and_return(user)
       allow(user).to receive(:update_columns).and_raise(ActiveRecord::ActiveRecordError)

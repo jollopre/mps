@@ -1,0 +1,40 @@
+version: '3.7'
+services:
+  api:
+    build:
+      context: ./
+      dockerfile: infra/api/development/Dockerfile
+    image: mps/api
+    volumes:
+      - ./api:/usr/src/app
+    ports:
+      - 3001:3000
+    env_file:
+      - ./infra/api/test/env
+      - ./infra/db/test/env
+      - ./infra/mail/test/env
+    depends_on:
+      - db
+      - mail
+    command: ["bundle", "exec", "rspec"]
+  ui:
+    build:
+      context: ./
+      dockerfile: infra/ui/development/Dockerfile
+    image: mps/ui
+    volumes:
+      - ./ui:/usr/src/app
+      - ui:/usr/src/app/node_modules
+    ports:
+      - 8081:3000
+    env_file:
+      - ./infra/ui/development/env
+    command: ["npm", "test"]
+  db:
+    image: postgres:9.5.5
+    env_file:
+      - ./infra/db/test/env
+  mail:
+    image: namshi/smtp
+volumes:
+  ui:

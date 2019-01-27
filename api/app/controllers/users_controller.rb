@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   def sign_in
     render json: { detail: 'already signed in' }, status: :unprocessable_entity and return if current_user
 
-    permitted = sign_in_params()
+    permitted = sign_in_params
     user = User.find_by!(email: permitted[:email])
 
     if user.valid_password?(permitted[:password])
@@ -14,7 +14,7 @@ class UsersController < ApplicationController
       errors = ErrorsService.do(OpenStruct.new(errors: ['email or password not valid'], status: 401))
       render json: errors, status: :unauthorized
     end
-  rescue ActiveRecord::RecordNotFound
+  rescue ActiveRecord::RecordNotFound => e
     errors = ErrorsService.do(OpenStruct.new(errors: ['email or password not valid'], status: 401))
     render json: errors, status: :unauthorized
   end

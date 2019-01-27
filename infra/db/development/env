@@ -1,0 +1,4 @@
+POSTGRES_HOST=db
+POSTGRES_USER=mps_user
+POSTGRES_PASSWORD=secret_password
+POSTGRES_DB=mps_db
