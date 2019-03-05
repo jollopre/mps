@@ -1,4 +1,6 @@
 class Customer < ApplicationRecord
+  extend Customers::CSVImporter
+
   has_many :quotations
 
   scope :search, ->(term) {

@@ -55,4 +55,8 @@ RSpec.describe Customer do
       end
     end
   end
+
+  it 'class respond to class method csv_importer' do
+    expect(described_class).to respond_to(:csv_importer).with(1).argument
+  end
 end
