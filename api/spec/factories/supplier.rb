@@ -1,3 +1,5 @@
 FactoryBot.define do
-  factory :supplier
+  factory :supplier, class: Supplier do
+    email { 'someone@somewhere.com' }
+  end
 end

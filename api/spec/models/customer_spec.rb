@@ -1,29 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe Customer do
-  describe '.validates_format_of' do
-    context 'when email does not match the regex' do
+  describe '.validates' do
+    context 'when email is invalid' do
       it 'raises ActiveRecord::RecordInvalid' do
-        customers = [
-          build(:customer, email: nil),
-          build(:customer, email: ''),
-          build(:customer, email: '@somewhere.com'),
-          build(:customer, email: 'a@'),
-          build(:customer, email: 'a@.com'),
-          build(:customer, email: 'a@somewhere'),
-          build(:customer, email: 'a@somewhere.'),
-          build(:customer, email: 'a@somewhere.com.'),
-          build(:customer, email: 'a@somewhere.a')
-        ]
-        customers.each do |customer|
-          expect do
-            customer.validate!
-          end.to raise_error(ActiveRecord::RecordInvalid, /Email is invalid/)
-        end
+        customer = build(:customer, email: 'foo@bar.c')
+        expect do
+          customer.validate!
+        end.to raise_error(ActiveRecord::RecordInvalid, /Email is invalid/)
       end
     end
 
-    context 'when email matches the regex' do
+    context 'when email is valid' do
       it 'does not raise any error' do
         customer = build(:customer, email: 'user@somewhere.com')
 

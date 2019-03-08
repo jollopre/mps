@@ -1,11 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Customers::CSVImporter do
-  class Test
-    extend Customers::CSVImporter
-  end
   let(:described_class) do
-    Test
+    Class.new.extend(Customers::CSVImporter)
   end
 
   describe '.csv_importer' do

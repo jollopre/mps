@@ -13,7 +13,7 @@ class Customer < ApplicationRecord
     where(query, { term: "%#{term.downcase}%" })
   }
 
-  validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+  validates :email, email: true
 
   def as_json(options = nil)
     return super({ except: [:created_at, :updated_at]}) unless options
