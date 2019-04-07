@@ -6,22 +6,59 @@ RSpec.describe Supplier do
   end
 
   describe '.validates' do
-    context 'when email is invalid' do
-      it 'raises ActiveRecord::RecordInvalid' do
-        supplier = build(:supplier, email: 'foo@bar.c')
-        expect do
-          supplier.validate!
-        end.to raise_error(ActiveRecord::RecordInvalid, /Email is invalid/)
+    context 'email' do
+      context 'when it is invalid' do
+        it 'raises ActiveRecord::RecordInvalid' do
+          supplier = build(:supplier, email: 'foo@bar.c')
+          expect do
+            supplier.validate!
+          end.to raise_error(ActiveRecord::RecordInvalid, /Email is invalid/)
+        end
+      end
+
+      context 'when it is valid' do
+        it 'does not raise any error' do
+          supplier = build(:supplier, email: 'user@somewhere.com')
+
+          expect do
+            supplier.validate!
+          end.not_to raise_error
+        end
       end
     end
 
-    context 'when email is valid' do
-      it 'does not raise any error' do
-        supplier = build(:supplier, email: 'user@somewhere.com')
+    context 'reference' do
+      context 'when it is not present' do
+        it 'raises ActiveRecord::RecordInvalid' do
+          supplier = build(:supplier, reference: nil)
 
-        expect do
-          supplier.validate!
-        end.not_to raise_error
+          expect do
+            supplier.validate!
+          end.to raise_error(ActiveRecord::RecordInvalid, /Reference can't be blank/)
+        end
+      end
+
+      context 'when it is not unique' do
+        before do
+          create(:supplier, reference: 'REF1')
+        end
+        it 'raises ActiveRecord::RecordInvalid' do
+          supplier = build(:supplier, reference: 'REF1')
+
+          expect do
+            supplier.validate!
+          end.to raise_error(ActiveRecord::RecordInvalid, /Reference has already been taken/)
+        end
+      end
+
+      context 'when it is present and unique' do
+        it 'does not raise any error' do
+          supplier = build(:supplier, reference: 'REF1')
+
+          expect do
+            supplier.validate!
+          end.not_to raise_error
+        end
       end
     end
   end
