@@ -23,6 +23,12 @@ class User < ApplicationRecord
     false
   end
 
+  def full_name
+    full_name = [name, surname].select(&:present?).join(' ')
+    return nil unless full_name.size > 1
+    full_name
+  end
+
   private
 
   def encrypt_password

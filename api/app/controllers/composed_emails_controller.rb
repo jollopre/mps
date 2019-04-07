@@ -17,7 +17,9 @@ class ComposedEmailsController < ApplicationController
 
   def send_email
     composed_email = ComposedEmail.find(params[:id])
-    composed_email.send_email!
+    composed_email.deliver! do
+      EnquiriesMailer.do(composed_email: composed_email, current_user: current_user).deliver_now
+    end
     head(:created)
   rescue ComposedEmail::EmailAlreadyDelivered => e
     errors = ErrorsService.do(OpenStruct.new(errors: [e.message], status: 422))

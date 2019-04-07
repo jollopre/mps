@@ -37,7 +37,7 @@ class EnquiriesController < ApplicationController
       feature_values: {
         feature: [ :feature_label, :feature_options ]
       }}).find(params[:id])
-    et = EnquiryTemplate.new(enquiry)
+    et = EnquiryTemplate.new(enquiry: enquiry, current_user: current_user)
     send_data(et.render, filename: "enquiry_#{params[:id]}.pdf", type: :pdf, status: :ok)
   end
 

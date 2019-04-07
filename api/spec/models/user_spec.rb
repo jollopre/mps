@@ -115,4 +115,42 @@ RSpec.describe User do
       end
     end
   end
+
+  describe '#full_name' do
+    context 'when name is blank' do
+      context 'and surname is blank' do
+        it 'returns nil' do
+          user = build(:someone)
+
+          expect(user.full_name).to be_nil
+        end
+      end
+
+      context 'and surname is present' do
+        it 'return surname' do
+          user = build(:someone, surname: 'Lloret')
+
+          expect(user.full_name).to eq('Lloret')
+        end
+      end
+    end
+
+    context 'when name is present' do
+      context 'and surname is blank' do
+        it 'returns name' do
+          user = build(:someone, name: 'Jose')
+
+          expect(user.full_name).to eq('Jose')
+        end
+      end
+
+      context 'when surname is present' do
+        it 'returns name and surname space separated' do
+          user = build(:someone, name: 'Jose', surname: 'Lloret')
+
+          expect(user.full_name).to eq('Jose Lloret')
+        end
+      end
+    end
+  end
 end

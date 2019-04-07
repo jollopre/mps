@@ -3,10 +3,12 @@ class EnquiryTemplate
 
   attr_reader :enquiry
   attr_reader :document
+  attr_reader :current_user
   FONT_SIZE = 8
 
-  def initialize(enquiry)
+  def initialize(enquiry:, current_user:)
     @enquiry = enquiry
+    @current_user = current_user
     @document = Prawn::Document.new(:page_size => 'A4')
     define_grid(columns: 12, rows: 8, gutter: 10)
     font_size(FONT_SIZE)
@@ -60,12 +62,12 @@ class EnquiryTemplate
         text("#{company_name}")
         text("#{reference}")
       end
-      grid([1,8],[1,9]).bounding_box do
+      grid([1,7],[1,9]).bounding_box do
         text("Enquiry No:", style: :bold)
         text("Contact:", style: :bold)
         text("Email:", style: :bold)
       end
-      grid([1,10],[1,11]).bounding_box do
+      grid([1,9],[1,12]).bounding_box do
         text("#{enquiry.id}")
         text("#{contact_name}")
         text("#{contact_email}")
@@ -138,10 +140,10 @@ class EnquiryTemplate
   end
 
   def contact_name
-    ENV['CONTACT_NAME'] || ''
+    current_user.full_name
   end
 
   def contact_email
-    ENV['CONTACT_EMAIL'] || ''
+    current_user.email
   end
 end

@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe EnquiriesMailer, type: :mailer do
-  describe "as_attachment" do
+  describe "#do" do
     let(:supplier1) do
       create(:supplier, email: 'supplier1@somewhere.com')
     end
@@ -12,7 +12,10 @@ RSpec.describe EnquiriesMailer, type: :mailer do
       enquiry1
     end
     let(:composed_email) { create(:composed_email, subject: 'foo', body: 'bar', enquiries: [enquiry1], suppliers: [supplier1]) }
-    let(:mail) { EnquiriesMailer.as_attachment(composed_email) }
+    let(:user) do
+      create(:someone)
+    end
+    let(:mail) { EnquiriesMailer.do(composed_email: composed_email, current_user: user) }
 
     it "renders the headers" do
       expect(mail.subject).to eq("foo")
@@ -24,7 +27,7 @@ RSpec.describe EnquiriesMailer, type: :mailer do
       expect(mail.body.encoded).to match("bar")
     end
 
-    it 'includes attachments' do
+    it 'includes attachments for each enquiry' do
       expect(mail.attachments).not_to be_empty
     end
   end

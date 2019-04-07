@@ -165,11 +165,34 @@ RSpec.describe '/api/composed_emails', type: :request do
       it_behaves_like 'unprocessable_entity'
     end
 
-    it 'returns success otherwise' do
-      post "/api/composed_emails/#{composed_email.id}/send_email", headers: authentication_header
+    context 'when the email has not been delivered yet' do
+      before do
+        allow(EnquiriesMailer).to receive(:do).and_return(message_delivery)
+      end
+      let(:message_delivery) do
+        double(:message_delivery, deliver_now: nil)
+      end
 
-      expect(response).to have_http_status(:created)
-      expect(response.body).to be_empty
+      it 'returns success' do
+        post "/api/composed_emails/#{composed_email.id}/send_email", headers: authentication_header
+
+        expect(response).to have_http_status(:created)
+        expect(response.body).to be_empty
+      end
+
+      it 'an EnquiriesMailer is actioned' do
+        post "/api/composed_emails/#{composed_email.id}/send_email", headers: authentication_header
+
+        expect(EnquiriesMailer).to have_received(:do).with(composed_email: composed_email, current_user: instance_of(User))
+      end
+
+      it 'the email gets sent' do
+        allow(message_delivery).to receive(:deliver_now)
+
+        post "/api/composed_emails/#{composed_email.id}/send_email", headers: authentication_header
+
+        expect(message_delivery).to have_received(:deliver_now)
+      end
     end
   end
 end

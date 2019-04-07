@@ -4,9 +4,9 @@ class ComposedEmail < ApplicationRecord
 
   validates :subject, :body, :enquiries, :suppliers, presence: true
 
-  def send_email!
+  def deliver!
     raise EmailAlreadyDelivered.new('Email has been already delivered') unless delivered_at.nil?
-    EnquiriesMailer.as_attachment(self).deliver_now
+    yield if block_given?
     update_column(:delivered_at, Time.now)
   end
 

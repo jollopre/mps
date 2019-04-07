@@ -47,12 +47,12 @@ RSpec.describe ComposedEmail do
     end
   end
 
-  describe '#send_email!' do
+  describe '#deliver!' do
     context 'when delivered_at is present' do
       it 'raises RuntimeError' do
         composed_email.delivered_at = Time.now
         expect do
-          composed_email.send_email!
+          composed_email.deliver!
         end.to raise_error(described_class::EmailAlreadyDelivered, /Email has been already delivered/)
       end
     end
@@ -66,24 +66,20 @@ RSpec.describe ComposedEmail do
       let(:now) do
         Time.new(2018,12,31,10,30,00)
       end
-      let(:message_delivery) do
-        double(:message_delivery, deliver_now: nil)
-      end
-      before do
-        allow(EnquiriesMailer).to receive(:as_attachment).with(composed_email).and_return(message_delivery)
-      end
 
-      it "sends email" do
-        composed_email.send_email!
-
-        expect(message_delivery).to have_received(:deliver_now)
+      context 'when block is passed' do
+        it 'yields to it' do
+          expect do |b|
+            composed_email.deliver!(&b)
+          end.to yield_with_no_args
+        end
       end
 
       it 'updates delivered_at to now' do
         allow(Time).to receive(:now).and_return(now)
         allow(composed_email).to receive(:update_column)
 
-        composed_email.send_email!
+        composed_email.deliver!
 
         expect(composed_email).to have_received(:update_column).with(:delivered_at, now)
       end
